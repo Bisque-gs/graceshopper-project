@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const { models: {User }} = require('../db')
+const { User } = require('../db')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
   try {
-    res.send({ token: await User.authenticate(req.body)}); 
+    res.send({ token: await User.authenticate(req.body)});
   } catch (err) {
     next(err)
   }
