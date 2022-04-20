@@ -44,7 +44,7 @@ const seed = async () => {
     });
 
     const order1 = await Order.create({
-      status: true,
+      isCurrentOrder: true,
     });
 
     await order1.setProducts([product1/*, product2*/]);
