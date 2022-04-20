@@ -7,13 +7,13 @@ const seed = async () => {
     await db.sync({ force: true });
 
     const user1 = await User.create({
-      userName: "spencer69",
+      username: "spencer69",
       password: "password123",
       email: "test@email.com",
     });
 
     const user2 = await User.create({
-      userName: "Brian69",
+      username: "Brian69",
       password: "hello1234",
       email: "test2@email.com",
     });

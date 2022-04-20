@@ -19,3 +19,127 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+/*
+ * Hi! I'm your stylesheet! I've got some sensible defaults here,
+ * but feel free to change me to your heart's content!
+ */
+
+ * {
+  box-sizing: border-box;
+  font-family: arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(#ffffff, #caddda);
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#header {
+  background-image: url(https://i.postimg.cc/PxKxKRkq/image.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 150px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  width: 200px;
+}
+
+nav {
+  align-items: center;
+  background-color: #398486;
+  color: #353535;
+  height: 80px;
+  padding: 10px;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.unit {
+  height: 100%;
+  width: 100%;
+  color: #252525;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.unit .profile {
+  margin: 40px;
+  height: 100%;
+  width: 200px;
+}
+
+.singleView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button {
+  align-items: center;
+  border: 0;
+  border-radius: 3px;
+  background: #398486;
+  color: white;
+  display: flex;
+
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  justify-content: center;
+  margin-top: 20px;
+  outline: none;
+  padding: 10px 9px 10px 11px;
+  text-transform: uppercase;
+  width: 200px;
+}
+
+input {
+  margin: 15px 0;
+  font-size: 16px;
+  padding: 10px;
+  width: 200px;
+  border: 1px solid rgba(10, 180, 180, 1);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background: rgba(20, 20, 20, .2);
+  color: black;
+  outline: none;
+}
+
+.submit {
+  background: #39866f;
+}
+
+.cancel {
+  background: #863939;
+}
