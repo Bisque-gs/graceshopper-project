@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const GET_SINGLE_USER = "GET_SINGLE_USER"
+const GET_SINGLE_USER = 'GET_SINGLE_USER';
+const GET_USER_CART = 'GET_USER_CART';
 
 const getUser = (user) => {
   return {
@@ -8,6 +9,13 @@ const getUser = (user) => {
     user,
   }
 }
+
+const getUserCart = (user) => {
+  return {
+    type: GET_USER_CART,
+    user,
+  };
+};
 
 export const fetchUser = (id) => {
   return async (dispatch) => {
@@ -21,7 +29,18 @@ export const fetchUser = (id) => {
   }
 }
 
-const defaultState = {}
+export const fetchUserCart = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/api/users/${id}/orders`);
+      dispatch(getUserCart(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const defaultState = {};
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
