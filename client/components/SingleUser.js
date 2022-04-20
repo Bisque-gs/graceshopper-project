@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchUser } from '../store/singleUser';
+import { fetchUser } from '../redux/singleUser';
 
 class SingleUser extends React.Component {
   componentDidMount() {
@@ -16,7 +16,7 @@ class SingleUser extends React.Component {
 
 function mapState(state) {
   return {
-    user: state.singleUserReducer,
+    user: state.user,
   };
 }
 
