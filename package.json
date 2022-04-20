@@ -20,6 +20,11 @@
   },
   "author": "Fullstack Academy of Code",
   "license": "MIT",
+  "prettier": {
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "semi": false
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
