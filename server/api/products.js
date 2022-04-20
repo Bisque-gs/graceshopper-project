@@ -1,6 +1,6 @@
-const router = require('express').Router()
-const { Product } = require('../db')
-module.exports = router
+const router = require('express').Router();
+const { Product } = require('../db');
+module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
@@ -10,3 +10,12 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    res.send(product);
+  } catch (err) {
+    next(err);
+  }
+});
