@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 5;
 
 const User = db.define("user", {
-  userName: {
+  username: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
