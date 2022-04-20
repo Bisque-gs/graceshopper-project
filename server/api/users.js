@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { User, Order, OrderProducts, Product } = require("../db");
 module.exports = router;
 
+
 router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -9,25 +10,26 @@ router.get("/", async (req, res, next) => {
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
       attributes: ["id", "username"],
-    });
-    res.json(users);
+    })
+    res.json(users)
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
+})
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    res.send(user);
+    const user = await User.findByPk(req.params.id)
+    res.send(user)
   } catch (err) {
-    next(err);
+    next(err)
   }
+
 });
 
 
 //First we Grab all the orders associated with that user 
-//Next we fitler all the orders and grab the 'current order', the one with a status of True 
+//Next we filter all the orders and grab the 'current order', the one with a status of True 
 //Then we grab all the entries in our through table that share the same OrderId
 //Then we map over this array and we grab all the items from our item model and save that in an item array
 //send all info to front end 
@@ -45,3 +47,15 @@ router.get("/:id/orders", async (req, res, next) => {
     next(err);
   }
 });
+
+
+
+router.put("/:id", async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id)
+    res.send(await user.update(req.body))
+  } catch (error) {
+    next(error)
+  }
+})
+
