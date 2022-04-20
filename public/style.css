@@ -13,6 +13,14 @@ label {
 nav a {
   display: inline-block;
   margin: 1em;
+  color: aliceblue;
+  font-size: 1.25em;
+}
+
+
+nav a:hover {
+  color: #ccc;
+  transition: 0.25s ease-in-out;
 }
 
 form div {
@@ -142,4 +150,8 @@ input {
 
 .cancel {
   background: #863939;
+}
+
+.container{
+  margin: 0 50px;
 }

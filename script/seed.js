@@ -5,7 +5,7 @@ const axios = require("axios");
 
 const seed = async () => {
   try {
-    await db.sync({ force: true });
+    await db.sync({ force: true })
 
     async function productGenerator(index) {
       let obj = {};
@@ -29,19 +29,19 @@ const seed = async () => {
       username: "spencer69",
       password: "password123",
       email: "test@email.com",
-    });
+    })
 
     const user2 = await User.create({
       username: "Brian69",
       password: "hello1234",
       email: "test2@email.com",
-    });
+    })
 
     const product1 = await Product.create({
       name: "Magic Bebra",
       quantity: 1,
       price: 25,
-    });
+    })
 
     const order1 = await Order.create({
       isCurrentOrder: true,
@@ -50,20 +50,20 @@ const seed = async () => {
     await order1.setProducts([product1/*, product2*/]);
     await user1.setOrders(order1);
   } catch (err) {
-    console.log(red(err));
+    console.log(red(err))
   }
-};
+}
 
 module.exports = seed;
 if (require.main === module) {
   seed()
     .then(() => {
-      console.log(green("Seeding success!"));
-      db.close();
+      console.log(green("Seeding success!"))
+      db.close()
     })
     .catch((err) => {
-      console.error(red("Oh noes! Something went wrong!"));
-      console.error(err);
-      db.close();
-    });
+      console.error(red("Oh noes! Something went wrong!"))
+      console.error(err)
+      db.close()
+    })
 }

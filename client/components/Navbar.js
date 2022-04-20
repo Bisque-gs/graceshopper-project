@@ -2,10 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-// console.log(this.props.user)
 const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
   <div>
-    {console.log(auth)}
     <nav>
       {isLoggedIn ? (
         <div>
@@ -33,7 +31,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
     auth: state.auth,
     isLoggedIn: !!state.auth.id,
@@ -41,11 +39,11 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     handleClick() {
       dispatch(logout())
-    }
+    },
   }
 }
 

@@ -2,7 +2,6 @@ const router = require("express").Router();
 const { User, Order, OrderProducts, Product } = require("../db");
 module.exports = router;
 
-
 router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -44,11 +43,20 @@ router.get("/:id/orders", async (req, res, next) => {
     }) )
     res.send({ userAllOrders, currentOrder, itemQuantities, cartItems });
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
+})
 
+router.post("/:userId/orders/:orderId", async (req, res, next) => {
+  try {
+    const order = await Order.create(req.body)
+    // const orderprod = await OrderProducts.update({req.params.userId, productId: orderId})
 
+    res.send(order)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.put("/:id", async (req, res, next) => {
   try {
@@ -58,4 +66,3 @@ router.put("/:id", async (req, res, next) => {
     next(error)
   }
 })
-
