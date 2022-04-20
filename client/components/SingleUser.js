@@ -8,7 +8,7 @@ class SingleUser extends React.Component {
     this.props.getUser(Number(id));
   }
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     const { user } = this.props;
     return <div>Single user {user.username} here</div>;
   }
