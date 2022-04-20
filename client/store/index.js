@@ -5,9 +5,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import auth from './auth';
 import singleUserReducer from './singleUser';
 import singleProductReducer from './singleProduct';
+import productsReducer from "../redux/products";
 
 const reducer = combineReducers({
   auth,
+  products: productsReducer,
   singleUserReducer,
   singleProductReducer,
 });
