@@ -58,43 +58,51 @@ router.get("/:id/orders", async (req, res, next) => {
 })
 
 //POST /api/users/:userid/orders/:productId
-router.post("/:userId/orders/:productId", async (req, res, next) => {
+router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
   try {
-    // create new active order connected to userid
     // check if cart (order) exists. if so, find it. if not, create it
-    const checkOrder = await Order.findOne({
+    let order = await Order.findOne({
       where: {
         isCurrentOrder: true,
         userId: Number(req.params.userId),
       },
     })
 
-    let order = {}
-    if (!checkOrder) {
+    if (!order) {
       console.log("first item in new order")
       order = await Order.create(req.body)
     } else {
       console.log("adding to existing order")
-      order = { ...checkOrder }
     }
-
-    console.log(order)
 
     // get the id of the new order
     const orderId = order.dataValues.id
-    // create corresponding orderProduct
-    // const orderProduct = await OrderProducts.create({
-    //   orderId,
-    //   productId: Number(req.params.productId),
-    // })
-    // set the product id of the order from the route
-    // const orderProd = await orderProduct.update({
-    //   productId: req.params.productId,
-    //   orderId,
-    // })
 
-    // console.log(orderProduct)
-    res.send(order)
+    // there was a conflict with users adding the same item twice. solved below:
+    // check if orderProduct exists. if so, update it. if not, create it
+    let orderProduct = await OrderProducts.findOne({
+      where: {
+        productId: Number(req.params.productId),
+      },
+    })
+
+    // create corresponding orderProduct
+    if (!orderProduct) {
+      console.log("first of this product in this order")
+      orderProduct = await OrderProducts.create({
+        orderId,
+        productId: Number(req.params.productId),
+        quantity: Number(req.params.quantity),
+      })
+    } else {
+      console.log("product already exists in this order; adding to quantity")
+      const alreadyInCart = orderProduct.quantity
+      await orderProduct.update({
+        quantity: Number(req.params.quantity) + alreadyInCart,
+      })
+    }
+
+    res.send({ order, orderProduct })
   } catch (err) {
     next(err)
   }
