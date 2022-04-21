@@ -40,10 +40,9 @@ form div {
 
 body {
   background: linear-gradient(#ffffff, #caddda);
-  height: 100vh;
   padding: 0;
   margin: 0;
-  width: 100%;
+  background-attachment: fixed;
 }
 
 #header {
@@ -65,16 +64,22 @@ body {
   align-items: center;
 }
 
-img {
+.profile img {
   width: 200px;
 }
 
 nav {
+  display: flex;
   align-items: center;
   background-color: #398486;
   color: #353535;
   height: 80px;
   padding: 10px;
+}
+
+nav img {
+  width: 60px;
+  height: 60px;
 }
 
 main {

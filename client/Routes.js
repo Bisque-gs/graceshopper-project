@@ -5,6 +5,7 @@ import AllProducts from './components/AllProducts';
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import SingleUser from './components/SingleUser';
+import UserProfile from './components/UserProfile';
 import SingleProduct from './components/SingleProduct';
 import { me } from './store';
 import Cart from './components/Cart';
