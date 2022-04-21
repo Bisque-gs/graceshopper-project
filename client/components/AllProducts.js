@@ -52,7 +52,11 @@ export class AllProducts extends React.Component {
                   <h3>
                     <Link to={`/products/${product.id}`}>{product.name}</Link>
                   </h3>
-                  <img src={product.imageUrl} />
+                  <span>
+                    <a href={`/products/${product.id}`}>
+                      <img src={product.imageUrl}/>
+                    </a>
+                  </span>
                   <button
                     className="cancel"
                     type="button"
