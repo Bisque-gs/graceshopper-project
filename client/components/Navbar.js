@@ -1,17 +1,21 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import React from "react"
+import { connect } from "react-redux"
+import { Link } from "react-router-dom"
+import { logout } from "../store"
 const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
   <div>
     <nav>
-      <img src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png" alt='logo'/>
+      <img
+        src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
+        alt="logo"
+      />
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
           <Link to={`/users/${auth.id}/cart`}>Cart (x)</Link>
           <Link to="/products">Products</Link>
+          <Link to={`/users/${auth.id}`}>My Profile</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>

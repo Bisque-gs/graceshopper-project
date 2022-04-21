@@ -1,28 +1,30 @@
-const { green, red } = require("chalk");
-const { db } = require("../server/db");
-const { Product, User, Order } = require("../server/db/");
-const axios = require("axios");
+const { green, red } = require("chalk")
+const { db } = require("../server/db")
+const { Product, User, Order } = require("../server/db/")
+const axios = require("axios")
+
+async function productGenerator(index) {
+  let obj = {}
+  const { data } = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/${index}/`
+  )
+  obj.pokId = data.id
+  obj.name = data.name
+  const product = await Product.create({
+    name: obj.name,
+    price: 0.01,
+    quantity: 100,
+    imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${obj.pokId}.png`,
+  })
+  return product
+}
 
 const seed = async () => {
   try {
     await db.sync({ force: true })
 
-    async function productGenerator(index) {
-      let obj = {};
-      const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${index}/`);
-      obj.pokId = data.id;
-      obj.name = data.name;
-      const product = await Product.create({
-        name: obj.name,
-        price: 0.01,
-        quantity: 100,
-        imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${obj.pokId}.png`
-      })
-      return product;
-    }
-
-    for(let i = 1; i <= 25; i++) {
-      await productGenerator(i);
+    for (let i = 1; i <= 25; i++) {
+      await productGenerator(i)
     }
 
     const user1 = await User.create({
@@ -42,25 +44,24 @@ const seed = async () => {
       quantity: 1,
       price: 25,
     })
-     const product2 = await Product.create({
+    const product2 = await Product.create({
       name: "Crazy Steve",
       quantity: 1,
       price: 70,
     })
 
-
     const order1 = await Order.create({
       isCurrentOrder: true,
-    });
+    })
 
-    await order1.setProducts([product1, product2]);
-    await user1.setOrders(order1);
+    await order1.setProducts([product1, product2])
+    await user1.setOrders(order1)
   } catch (err) {
     console.log(red(err))
   }
 }
 
-module.exports = seed;
+module.exports = seed
 if (require.main === module) {
   seed()
     .then(() => {

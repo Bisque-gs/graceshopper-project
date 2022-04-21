@@ -1,15 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import AllProducts from './components/AllProducts';
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/Home';
-import SingleUser from './components/SingleUser';
-import UserProfile from './components/UserProfile';
-import SingleProduct from './components/SingleProduct';
-import UserProfile from './components/UserProfile';
-import { me } from './store';
-import Cart from './components/Cart';
+import React, { Component, Fragment } from "react"
+import { connect } from "react-redux"
+import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import AllProducts from "./components/AllProducts"
+import { Login, Signup } from "./components/AuthForm"
+import Home from "./components/Home"
+import SingleUser from "./components/SingleUser"
+import EditUserProfile from "./components/EditUserProfile"
+import SingleProduct from "./components/SingleProduct"
+import { me } from "./store"
+import Cart from "./components/Cart"
 
 /**
  * COMPONENT
@@ -30,7 +29,8 @@ class Routes extends Component {
             <Route path="/products" exact component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/users/:id/cart" component={Cart} />
-            <Route path="/profile" component={UserProfile} />
+            <Route path="/users/:id/edituser" component={EditUserProfile} />
+            <Route path="/users/:id" component={SingleUser} />
 
             <Redirect to="/home" />
           </Switch>
@@ -40,7 +40,7 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/products" exact component={AllProducts} />
-            <Route path="/users/:id" component={SingleUser} />
+            {/* <Route path="/users/:id" component={SingleUser} /> */}
             <Route path="/products/:id" component={SingleProduct} />
           </Switch>
         )}

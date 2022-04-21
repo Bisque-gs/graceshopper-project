@@ -1,8 +1,9 @@
 import axios from "axios"
 
-const GET_SINGLE_USER = 'GET_SINGLE_USER';
-const GET_USER_CART = 'GET_USER_CART';
-const DELETE_ITEM_CART = 'DELETE_ITEM_CART';
+const GET_SINGLE_USER = "GET_SINGLE_USER"
+const UPDATE_SINGLE_USER = "UPDATE_SINGLE_USER"
+const GET_USER_CART = "GET_USER_CART"
+const DELETE_ITEM_CART = "DELETE_ITEM_CART"
 
 const getUser = (user) => {
   return {
@@ -11,19 +12,26 @@ const getUser = (user) => {
   }
 }
 
+const updateUser = (user) => {
+  return {
+    type: UPDATE_SINGLE_USER,
+    user,
+  }
+}
+
 const getUserCart = (ordersInfo) => {
   return {
     type: GET_USER_CART,
     ordersInfo,
-  };
-};
+  }
+}
 
 const deleteItemCart = (item) => {
   return {
     type: DELETE_ITEM_CART,
     item,
-  };
-};
+  }
+}
 
 export const fetchUser = (id) => {
   return async (dispatch) => {
@@ -37,35 +45,47 @@ export const fetchUser = (id) => {
   }
 }
 
-//We dont want to delete the item we just want to delete the order of the item. Need to access and 
-//delete the item from the junction table 
+export const updateSingleUser = ({ id, field }) => {
+  console.log(id, field, "RIGHT HERE")
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(`/api/users/${id}`, field)
+      console.log("updated")
+      dispatch(updateUser(updated))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+//We dont want to delete the item we just want to delete the order of the item. Need to access and
+//delete the item from the junction table
 export const deleteItemCartThunk = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}/orders`);
-      dispatch(getUserCart(data));
+      const { data } = await axios.get(`/api/users/${id}/orders`)
+      dispatch(getUserCart(data))
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
-};
+  }
+}
 
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}/orders`);
-      dispatch(getUserCart(data));
+      const { data } = await axios.get(`/api/users/${id}/orders`)
+      dispatch(getUserCart(data))
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
-};
+  }
+}
 
 const defaultState = {
   user: {},
-  ordersInfo: {}
-
-};
+  ordersInfo: {},
+}
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
@@ -73,22 +93,23 @@ export default function singleUserReducer(state = defaultState, action) {
     //   return { ...action.user }
     case GET_SINGLE_USER:
       return { ...state, user: action.user }
-        case GET_USER_CART:
+    case UPDATE_SINGLE_USER:
+      return { ...state, user: action.user }
+    case GET_USER_CART:
       return { ...state, ordersInfo: action.ordersInfo }
-            case DELETE_ITEM_CART:
-      // return {
-      //   ...state, ordersInfo: {
-      //     ...state.ordersInfo,
-      //     ordersInfo.cartItems:
-          
-      // } }
-      // return {
-      //   ...state, ordersInfo: {
-      //     ...ordersInfo, cartItems: cartItems.filter((item) => {
-        
-      // }) }}
-    
-    
+    // case DELETE_ITEM_CART:
+    // return {
+    //   ...state, ordersInfo: {
+    //     ...state.ordersInfo,
+    //     ordersInfo.cartItems:
+
+    // } }
+    // return {
+    //   ...state, ordersInfo: {
+    //     ...ordersInfo, cartItems: cartItems.filter((item) => {
+
+    // }) }}
+
     default:
       return state
   }
