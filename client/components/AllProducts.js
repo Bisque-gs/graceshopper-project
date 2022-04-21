@@ -73,7 +73,7 @@ export class AllProducts extends React.Component {
                   >
                     Add to cart
                   </button>
-                  <button
+                  {auth.isAdmin ? <button
                     className="cancel"
                     type="button"
                     onClick={() => {
@@ -81,7 +81,7 @@ export class AllProducts extends React.Component {
                     }}
                   >
                     Delete
-                  </button>
+                  </button> : console.log("You're not admin")}
                 </div>
               );
             })
