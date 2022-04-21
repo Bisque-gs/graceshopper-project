@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const { User, Order, OrderProducts, Product } = require("../db");
 module.exports = router;
+//  Here we are "mounted on" (starts with) /api/users
 
+//GET /api/users
 router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -16,6 +18,7 @@ router.get("/", async (req, res, next) => {
   }
 })
 
+//GET /api/users/:userid
 router.get("/:id", async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id)
@@ -33,6 +36,7 @@ router.get("/:id", async (req, res, next) => {
 //Then we map over this array and we grab all the items from our item model and save that in an item array
 //send all info to front end 
 
+//GET /api/users/:userid/orders
 router.get("/:id/orders", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({ where: { userId: req.params.id } });
@@ -47,6 +51,7 @@ router.get("/:id/orders", async (req, res, next) => {
   }
 })
 
+//POST /api/users/:userid/orders/:orderId
 router.post("/:userId/orders/:orderId", async (req, res, next) => {
   try {
     const order = await Order.create(req.body)
@@ -58,6 +63,7 @@ router.post("/:userId/orders/:orderId", async (req, res, next) => {
   }
 })
 
+//PUT /api/users/:userid
 router.put("/:id", async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id)
@@ -66,3 +72,18 @@ router.put("/:id", async (req, res, next) => {
     next(error)
   }
 })
+
+// DELETE /api/users/:userid/orders/:orderId
+// DELETE /api/users/:userid/cart/:itemId
+//gets rid of the order entirely
+router.delete("/:userId/cart/:itemId", async (req, res, next) => {
+  try {
+    console.log(req.params)
+    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId } });
+    console.log(item)
+    await item.destroy();
+    res.send(item);
+  } catch (error) {
+    next(error);
+  }
+});
