@@ -42,12 +42,18 @@ const seed = async () => {
       quantity: 1,
       price: 25,
     })
+     const product2 = await Product.create({
+      name: "Crazy Steve",
+      quantity: 1,
+      price: 70,
+    })
+
 
     const order1 = await Order.create({
       isCurrentOrder: true,
     });
 
-    await order1.setProducts([product1/*, product2*/]);
+    await order1.setProducts([product1, product2]);
     await user1.setOrders(order1);
   } catch (err) {
     console.log(red(err))
