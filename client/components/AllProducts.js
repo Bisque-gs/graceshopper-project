@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchProducts } from "../redux/products";
+import { fetchProducts, deleteProductThunk } from "../redux/products";
 import { setOrder } from "../redux/singleProduct"
 import { Link } from "react-router-dom";
-// import { addProductThunk, deleteProductThunk } from "../redux/singleProduct";
 // import AddProduct from "./AddProduct";
 
 export class AllProducts extends React.Component {

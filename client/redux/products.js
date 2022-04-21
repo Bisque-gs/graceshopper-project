@@ -11,11 +11,29 @@ export const setProducts = (products) => {
   };
 };
 
+const deleteProduct = (product) => {
+  return {
+    type: DELETE_PRODUCT,
+    product,
+  }
+}
+
 export const fetchProducts = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get("/api/products");
       dispatch(setProducts(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const deleteProductThunk = (productId) => {
+  return async (dispatch) => {
+    try{
+      const { data: product } = await axios.delete(`/api/products/${productId}`);
+      dispatch(deleteProduct(product));
     } catch (error) {
       console.error(error);
     }

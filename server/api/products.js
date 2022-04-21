@@ -11,6 +11,16 @@ router.get("/", async (req, res, next) => {
   }
 })
 
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    await product.destroy();
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id)
