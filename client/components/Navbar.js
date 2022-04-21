@@ -10,7 +10,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
-          <Link to={`/users/${auth.id}/cart`}>Cart (x)</Link>
+          <Link to={`/users/${auth.id}/cart`}>Cart ({user.cartItems.length})</Link>
           <Link to="/products">Products</Link>
           <a href="#" onClick={handleClick}>
             Logout
@@ -36,6 +36,7 @@ const mapState = (state) => {
     auth: state.auth,
     isLoggedIn: !!state.auth.id,
     user: state.user,
+
   }
 }
 
