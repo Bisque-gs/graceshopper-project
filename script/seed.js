@@ -46,6 +46,7 @@ const seed = async () => {
       username: "spencer69",
       password: "password123",
       email: "test@email.com",
+      isAdmin: true
     })
 
     const user2 = await User.create({
