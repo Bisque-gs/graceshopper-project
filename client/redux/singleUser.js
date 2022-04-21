@@ -64,6 +64,7 @@ export const fetchUserCart = (id) => {
 const defaultState = {
   user: {},
   ordersInfo: {}
+
 };
 
 export default function singleUserReducer(state = defaultState, action) {
