@@ -7,9 +7,9 @@ import Home from './components/Home';
 import SingleUser from './components/SingleUser';
 import UserProfile from './components/UserProfile';
 import SingleProduct from './components/SingleProduct';
-import UserProfile from './components/UserProfile';
 import { me } from './store';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 
 /**
  * COMPONENT
@@ -29,6 +29,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route path="/products" exact component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
+            <Route path="/users/:id/cart/checkout" exact component={Checkout} />
             <Route path="/users/:id/cart" component={Cart} />
             <Route path="/profile" component={UserProfile} />
 

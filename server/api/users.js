@@ -37,7 +37,7 @@ router.get("/:id", async (req, res, next) => {
 //send all info to front end 
 
 //GET /api/users/:userid/orders
-router.get("/:id/orders", async (req, res, next) => {
+router.get("/:id/cart", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({ where: { userId: req.params.id } });
     const currentOrder = userAllOrders.filter((order) => { return order.dataValues.isCurrentOrder })
@@ -63,6 +63,60 @@ router.post("/:userId/orders/:orderId", async (req, res, next) => {
   }
 })
 
+// DELETE /api/users/:userid/orders/:orderId
+// DELETE /api/users/:userid/cart/:itemId
+//gets rid of the order entirely
+//THIS ROUTE DELETES AN ITEM FROM A USERS CART 
+router.delete("/:userId/cart/:itemId", async (req, res, next) => {
+  try {
+    //find the current Order associated with user 
+    const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
+    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    console.log(item)
+    await item.destroy();
+    res.send(item);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//HERE I WANT TO UPDATE THE QUANITY OF AN ITEM ORDER IN THE ORDER_PRODCUTS THRU TABLE 
+//PUT /api/users/:userid
+router.put("/:userId/cart/:itemId", async (req, res, next) => {
+  try {
+       //find the current Order associated with user 
+    const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
+    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    res.send(await item.update(req.body))
+    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+
+//HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT 
+//req.body will be the quanity read to decrement 
+//PUT /api/users/:userid
+router.put("/:userId/cart/checkout/:itemId", async (req, res, next) => {
+  try {
+       //find the current Order associated with user 
+    const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
+    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    const itemToDecrement = await Product.findByPk(item.productId)
+    res.send(await item.update(req.body))
+    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+
+
+
+
 //PUT /api/users/:userid
 router.put("/:id", async (req, res, next) => {
   try {
@@ -73,17 +127,3 @@ router.put("/:id", async (req, res, next) => {
   }
 })
 
-// DELETE /api/users/:userid/orders/:orderId
-// DELETE /api/users/:userid/cart/:itemId
-//gets rid of the order entirely
-router.delete("/:userId/cart/:itemId", async (req, res, next) => {
-  try {
-    console.log(req.params)
-    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId } });
-    console.log(item)
-    await item.destroy();
-    res.send(item);
-  } catch (error) {
-    next(error);
-  }
-});
