@@ -51,7 +51,12 @@ router.get("/:id/cart", async (req, res, next) => {
         return Product.findByPk(item.dataValues.productId)
       })
     )
-    res.send({ userAllOrders, currentOrder, itemQuantities, cartItems })
+    const updatedPrices = await Promise.all(
+      itemQuantities.map((x, i) => {
+        return x.update({ price: Number(cartItems[i].price) * 100 })
+      })
+    )
+    res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
   } catch (err) {
     next(err)
   }
@@ -147,34 +152,29 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
   }
 })
 
-
-
-
-
-//PROMISE ALL EXAMPLE 
+//PROMISE ALL EXAMPLE
 // const cartItems = await Promise.all(
 //       itemQuantities.map((item) => {
 //         return Product.findByPk(item.dataValues.productId)
 //       })
 //     )
 
-//HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT 
-//req.body will be the quantity of all the items that we want to decrement 
-//req.body should essentially contain the entry from the orderProducts thru table asssociated with that item 
-
-
+//HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT
+//req.body will be the quantity of all the items that we want to decrement
+//req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
 
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-       //find the current Order associated with user 
-    updatedItems = await Promise.all(req.params.itemQuantities.map((item) => {
-      let olditem = Product.findByPk(item.productId);
-      return olditem.update({ quantity: quantity - item.quantity })
-      
-    }))
+    //find the current Order associated with user
+    updatedItems = await Promise.all(
+      req.params.itemQuantities.map((item) => {
+        let olditem = Product.findByPk(item.productId)
+        return olditem.update({ quantity: quantity - item.quantity })
+      })
+    )
     res.send(updatedItems)
-    
+
     // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
     // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
     // const itemToDecrement = await Product.findByPk(item.productId)
