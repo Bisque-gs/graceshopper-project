@@ -41,7 +41,6 @@ const userCheckout = (order) => {
   }
 }
 
-
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
@@ -91,16 +90,21 @@ export const fetchUserCart = (id) => {
   }
 }
 
-// export const checkoutThunk = (id) => {
-//   return async (dispatch) => {
-//     try {
-//       const { data } = await axios.get(`/api/users/${id}/cart/`)
-//       dispatch(getUserCart(data))
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+export const checkoutThunk = ({ userId, itemQuantities }) => {
+  return async (dispatch) => {
+    try {
+      console.log("USER ID", userId)
+      console.log("THE QUANT", itemQuantities)
+
+      const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
+        itemQuantities,
+      })
+      dispatch(userCheckout(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
 const defaultState = {
   user: {},
@@ -120,14 +124,6 @@ export default function singleUserReducer(state = defaultState, action) {
         cartItems: action.ordersInfo.cartItems,
         updatedPrices: action.ordersInfo.updatedPrices,
       }
-    // return {
-    //   ...state,
-    //   ordersInfo: action.ordersInfo,
-    //   cartItems: {
-    //     ...action.ordersInfo.cartItems, action.ordersInfo.cartItems.map((item) => {
-    //     item.quantity
-    //   }) }
-    // }
     case DELETE_ITEM_CART:
       return {
         ...state,
@@ -145,15 +141,8 @@ export default function singleUserReducer(state = defaultState, action) {
           return item
         }),
       }
-    //  return {
-    //    ...state,
-    //    cartItems: state.cartItems.map((item) => {
-    //      if (item.id === action.orderUpdated.productId) {
-    //        ordersInfo = action.orderUpdated.quantity
-    //      }
-    //      return item
-    //    }),
-    //  }
+    case CHECKOUT_ITEMS:
+      return { ...state, cartItems: [], updatedPrices: [] }
     default:
       return state
   }

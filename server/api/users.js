@@ -147,8 +147,9 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
+    console.log(req.body)
     updatedItems = await Promise.all(
-      req.body.updatedPrices.map((item) => {
+      req.body.itemQuantities.map((item) => {
         let olditem = Product.findByPk(item.productId)
 
         olditem = Product.increment(
@@ -181,7 +182,6 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
       where: { productId: req.params.itemId, orderId: order.id },
     })
     res.send(await item.update(req.body))
-    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
   } catch (error) {
     next(error)
   }
