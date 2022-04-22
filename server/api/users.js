@@ -57,7 +57,7 @@ router.get("/:id/cart", async (req, res, next) => {
   }
 })
 
-//POST /api/users/:userid/orders/:productId
+//POST /api/users/:userid/orders/:productId/:quantity
 router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
   try {
     // check if cart (order) exists. if so, find it. if not, create it
@@ -75,13 +75,13 @@ router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
       console.log("adding to existing order")
     }
 
-    // get the id of the new order
     const orderId = order.dataValues.id
 
     // there was a conflict with users adding the same item twice. solved below:
     // check if orderProduct exists. if so, update it. if not, create it
     let orderProduct = await OrderProducts.findOne({
       where: {
+        orderId,
         productId: Number(req.params.productId),
       },
     })
@@ -111,35 +111,42 @@ router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
 // DELETE /api/users/:userid/orders/:orderId
 // DELETE /api/users/:userid/cart/:itemId
 //gets rid of the order entirely
-//THIS ROUTE DELETES AN ITEM FROM A USERS CART 
+//THIS ROUTE DELETES AN ITEM FROM A USERS CART
 router.delete("/:userId/cart/:itemId", async (req, res, next) => {
   try {
-
-    //find the current Order associated with user 
-    const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
-    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    //find the current Order associated with user
+    const order = await Order.findOne({
+      where: { userId: req.params.userId, isCurrentOrder: true },
+    })
+    const item = await OrderProducts.findOne({
+      where: { productId: req.params.itemId, orderId: order.id },
+    })
     console.log(item)
     await item.destroy()
     res.send(item)
   } catch (error) {
     next(error)
   }
+})
 
-});
-
-//HERE I WANT TO UPDATE THE QUANITY OF AN ITEM ORDER IN THE ORDER_PRODCUTS THRU TABLE 
+//HERE I WANT TO UPDATE THE QUANITY OF AN ITEM ORDER IN THE ORDER_PRODCUTS THRU TABLE
 //PUT /api/users/:userid
 router.put("/:userId/cart/:itemId", async (req, res, next) => {
   try {
-       //find the current Order associated with user 
-    const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
-    const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    //find the current Order associated with user
+    const order = await Order.findOne({
+      where: { userId: req.params.userId, isCurrentOrder: true },
+    })
+    const item = await OrderProducts.findOne({
+      where: { productId: req.params.itemId, orderId: order.id },
+    })
     res.send(await item.update(req.body))
     // res.send(await item.update({ quantity: Number(req.body.quantity) }))
   } catch (error) {
     next(error)
   }
 })
+
 
 
 
@@ -152,13 +159,15 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
 //     )
 
 //HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT 
-//req.body will be the quanity of all the items that we want to decrement 
+//req.body will be the quantity of all the items that we want to decrement 
 //req.body should essentially contain the entry from the orderProducts thru table asssociated with that item 
+
+
+
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
        //find the current Order associated with user 
-    
     updatedItems = await Promise.all(req.params.itemQuantities.map((item) => {
       let olditem = Product.findByPk(item.productId);
       return olditem.update({ quantity: quantity - item.quantity })
@@ -176,11 +185,6 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
   }
 })
 
-
-
-
-
-
 //PUT /api/users/:userid
 router.put("/:id", async (req, res, next) => {
   try {
@@ -190,7 +194,3 @@ router.put("/:id", async (req, res, next) => {
     next(error)
   }
 })
-
-
-
-

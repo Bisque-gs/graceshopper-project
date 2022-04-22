@@ -34,7 +34,6 @@ class Cart extends React.Component {
 
     // this.setState({ quantity: this.state.quantity - 1 });
     this.props.updateQuantity(obj)
-        // console.log(this.props.userInfo.ordersInfo.itemQuantities)
   }
 
   ///isLogin doesnt work here, that only checks if anyone at all is logged in
@@ -43,6 +42,7 @@ class Cart extends React.Component {
   render() {
     const user = this.props.userInfo.user
     const auth = this.props.auth
+
     // console.log("THE USER RN", user)
     // console.log("AUTH INFO", auth)
 
@@ -88,7 +88,7 @@ class Cart extends React.Component {
                           this.incrementItem({
                             userId: user.id,
                             productId: item.id,
-                            quantity: itemQuantities[i].quantity + 1,
+                            quantity: itemQuantities[i].quantity + 1,      
                           })
                         }
                         type="button"
@@ -100,13 +100,14 @@ class Cart extends React.Component {
                           this.decrementItem({
                             userId: user.id,
                             productId: item.id,
-                            quantity: itemQuantities[i].quantity - 1,
+                          quantity: itemQuantities[i].quantity - 1,                    
                           })
                         }
                         type="button"
                       >
                         Click to decrease by 1
                       </button>
+                      <hr />
                     </div>
                   </div>
                 ))}
