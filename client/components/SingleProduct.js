@@ -47,7 +47,7 @@ class SingleProduct extends React.Component {
         <div className="column">
         <h3>{product.name}</h3>
         <img src={product.imageUrl} alt={product.name} />
-        <h3>PRICE: {product.price} per card</h3>
+        <h3>PRICE: ${product.price / 100} per card</h3>
         <p>{product.quantity} remaining in stock!</p>
         {/* dropdown here? add more than one to cart? */}
         <select name="quantity" id="" onChange={this.handleChange}>
