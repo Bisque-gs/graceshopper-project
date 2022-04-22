@@ -31,6 +31,7 @@ class Cart extends React.Component {
     this.props.updateQuantity(obj)
   }
   decrementItem = (obj) => {
+
     // this.setState({ quantity: this.state.quantity - 1 });
     this.props.updateQuantity(obj)
   }
@@ -41,26 +42,28 @@ class Cart extends React.Component {
   render() {
     const user = this.props.userInfo.user
     const auth = this.props.auth
-    console.log("THE USER RN", user)
-    console.log("AUTH INFO", auth)
+
+    // console.log("THE USER RN", user)
+    // console.log("AUTH INFO", auth)
 
     const userId = this.props.userInfo.user
     const ordersInfo = this.props.userInfo.ordersInfo
-    const { itemQuantities } = ordersInfo
     const cartItems = this.props.userInfo.cartItems || []
     const isLoggedIn = this.props.isLoggedIn
+    const itemQuantities = this.props.userInfo.itemQuantities || []
     let cartAuthorization = user.id === auth.id
-    console.log("CART AUTHO", cartAuthorization)
-    console.log(itemQuantities)
+
+
+    // console.log("CART AUTHO", cartAuthorization)
     return (
       <React.Fragment>
-        <div className="container">
-          {console.log("CHECKING LOGIN STATUS", isLoggedIn)}
+        <div>
+          {/* {console.log("CHECKING LOGIN STATUS", isLoggedIn)} */}
           {cartAuthorization ? (
             <div>
               <div>This is {user.username}'s Cart!</div>
               <div>
-                {cartItems.map((item) => (
+                {cartItems.map((item, i) => (
                   <div key={item.id}>
                     <button
                       onClick={() =>
@@ -78,14 +81,14 @@ class Cart extends React.Component {
                     </Link>
                     <img src={item.imageUrl} />
                     <h3> PRICE: {item.price}</h3>
-                    <p>QUANTITY: {item.quantity}</p>
+                    <p>QUANTITY: {itemQuantities[i].quantity}</p>
                     <div>
                       <button
                         onClick={() =>
                           this.incrementItem({
                             userId: user.id,
                             productId: item.id,
-                            quantity: item.quantity + 1,
+                            quantity: itemQuantities[i].quantity + 1,      
                           })
                         }
                         type="button"
@@ -97,7 +100,7 @@ class Cart extends React.Component {
                           this.decrementItem({
                             userId: user.id,
                             productId: item.id,
-                            quantity: item.quantity - 1,
+                          quantity: itemQuantities[i].quantity - 1,                    
                           })
                         }
                         type="button"

@@ -20,16 +20,22 @@ class Checkout extends React.Component {
     
     //Checking out is an all in one process, no checking out for individual items. One button will check out every item,
         //going to need a map or some sort on the backend for our routes 
-    //What does checking out an item mean?
-        //- the orders should dissapear from the through table 
-            //Simple Delete routue should work, however we need to decremenent the quanity from item table so delete last 
+  
         
+    //What does checking out an item mean?
+
+      //REVISION ==> The orders should not dissapear from our through table! That is important for order history 
+        //Also price needs to be a column inside of through table
+
         //- the item quantity should be decremented from the item table 
             //put route to update the quantities with the decremented value 
             
         //- the 'current order' in the order table should be set to false since the order is closed/completed
             //another put route to modify the isCurrentOrder value to false 
         //start on backend
+        
+        //VALIDATION ==> before decrementing..... need to check that there is enough of the product quantity to confim the order
+        //if not then the order bounces, display message/alert
 
   render() {
     const user = this.props.userInfo.user;
@@ -38,32 +44,35 @@ class Checkout extends React.Component {
     const ordersInfo = this.props.userInfo.ordersInfo;
     const cartItems = this.props.userInfo.cartItems || [];
     const isLoggedIn = this.props.isLoggedIn
+    const itemQuantities = this.props.userInfo.itemQuantities || []
     let cartAuthorization = (user.id === auth.id)
     return (
       <React.Fragment>
         <div>
-          {console.log('CHECKING LOGIN STATUS',isLoggedIn)}
+          {console.log("CHECKING LOGIN STATUS", isLoggedIn)}
           {cartAuthorization ? (
             <div>
-      <div>{user.username}'s CHECKOUT CONFIRMATION PAGE</div>
-        <div>{cartItems.map((item) => (
-            <div key={item.id}>
-            <img src={item.imageUrl} />
-                  <h3> PRICE: {item.price}</h3>
-            <p>QUANTITY: {item.quantity}</p>
-             <div>
-          </div>      
-          </div>
-        ))}</div>
-              <button  type="button">
-              CONFIRM ORDER
-            </button>
+              <div>{user.username}'s CHECKOUT CONFIRMATION PAGE</div>
+              <div>
+                {cartItems.map((item, i) => (
+                  <div key={item.id}>
+                    <img src={item.imageUrl} />
+                    <h3> PRICE: {item.price}</h3>
+                    <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                    <div></div>
+                  </div>
+                ))}
               </div>
+              <button type="button">CONFIRM ORDER</button>
+            </div>
           ) : (
-            <div>STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT </div>
-                    )}   
+            <div>
+              STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
+              SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
+            </div>
+          )}
         </div>
-        </React.Fragment>
+      </React.Fragment>
     )
   }
 }
