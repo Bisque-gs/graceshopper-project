@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchUser, fetchUserCart } from "../redux/singleUser"
+import { fetchUser, fetchUserCart, checkoutThunk } from "../redux/singleUser"
 import { Link } from "react-router-dom"
 
 //We will grab a user orders from singleUser redux store
@@ -12,6 +12,10 @@ class Checkout extends React.Component {
     const { id } = this.props.match.params
     this.props.getUser(Number(id))
     this.props.getOrders(Number(id))
+  }
+
+  checkout = (orderobj) => {
+    this.props.checkout(orderobj)
   }
 
   ///isLogin doesnt work here, that only checks if anyone at all is logged in
@@ -44,15 +48,13 @@ class Checkout extends React.Component {
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
-    console.log("here", user)
     let total = 0
     return (
       <React.Fragment>
         <div className="container">
-          {console.log("CHECKING LOGIN STATUS", isLoggedIn)}
           {cartAuthorization ? (
             <div>
-              <br/>
+              <br />
               <div className="column">
                 {user.username}'s CHECKOUT CONFIRMATION PAGE
               </div>
@@ -64,13 +66,14 @@ class Checkout extends React.Component {
                     </h3>
                     <img src={item.imageUrl} />
                     <div className="column">
-                    <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
-                    <p>QUANTITY: {itemQuantities[i].quantity}</p>
-                    <h3>
-                      SUBPRICE:{" "}
-                      {(itemQuantities[i].price * itemQuantities[i].quantity) /
-                        10000}
-                    </h3>
+                      <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
+                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                      <h3>
+                        SUBPRICE:{" "}
+                        {(itemQuantities[i].price *
+                          itemQuantities[i].quantity) /
+                          10000}
+                      </h3>
                     </div>
                     <div style={{ display: "none" }}>
                       {
@@ -82,7 +85,17 @@ class Checkout extends React.Component {
                 ))}
               </div>
               <div>TOTAL PRICE: ${total / 10000}</div>
-              <button type="button">SUBMIT ORDER</button>
+              <button
+                onClick={() =>
+                  this.checkout({
+                    userId: user.id,
+                    itemQuantities: itemQuantities,
+                  })
+                }
+                type="button"
+              >
+                SUBMIT ORDER
+              </button>
             </div>
           ) : (
             <div>
@@ -109,6 +122,7 @@ function mapDispatch(dispatch) {
   return {
     getUser: (id) => dispatch(fetchUser(id)),
     getOrders: (id) => dispatch(fetchUserCart(id)),
+    checkout: (orderObj) => dispatch(checkoutThunk(orderObj)),
   }
 }
 
