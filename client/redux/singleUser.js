@@ -83,7 +83,8 @@ export const fetchUserCart = (id) => {
 const defaultState = {
   user: {},
   ordersInfo: {},
-  cartItems: []
+  cartItems: [],
+  itemQuantities: []
 
 
 };
@@ -95,17 +96,41 @@ export default function singleUserReducer(state = defaultState, action) {
     case GET_SINGLE_USER:
       return { ...state, user: action.user }
         case GET_USER_CART:
-      return { ...state, ordersInfo: action.ordersInfo, cartItems:action.ordersInfo.cartItems }
+      return {
+        ...state,
+        ordersInfo: action.ordersInfo,
+        cartItems: action.ordersInfo.cartItems,
+        itemQuantities: action.ordersInfo.itemQuantities,
+      }
+    // return {
+    //   ...state,
+    //   ordersInfo: action.ordersInfo,
+    //   cartItems: {
+    //     ...action.ordersInfo.cartItems, action.ordersInfo.cartItems.map((item) => {
+    //     item.quantity
+    //   }) }
+    // }
     case DELETE_ITEM_CART:
       return { ...state, cartItems: state.cartItems.filter((item) => item.id !== action.order.productId) }
     case UPDATE_QUANITY:
       return {
-        ...state, cartItems: state.cartItems.map((item) => {
-          if (item.id === action.orderUpdated.productId) {
-            item.quantity = action.orderUpdated.quantity;
+        ...state,
+        itemQuantities: state.itemQuantities.map((item) => {
+          if (item.productId === action.orderUpdated.productId) {
+            item.quantity = action.orderUpdated.quantity
           }
-          return item;
-      })}
+          return item
+        }),
+      }
+      //  return {
+      //    ...state,
+      //    cartItems: state.cartItems.map((item) => {
+      //      if (item.id === action.orderUpdated.productId) {
+      //        ordersInfo = action.orderUpdated.quantity
+      //      }
+      //      return item
+      //    }),
+      //  }
  
     
     default:
