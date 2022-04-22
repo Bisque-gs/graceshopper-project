@@ -17,7 +17,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
           <Link to={`/users/${auth.id}/cart`}>
-            Cart ({user.itemQuantities.length})
+            Cart ({user.updatedPrices.length})
           </Link>
           <Link to="/products">Products</Link>
           <a href="#" onClick={handleClick}>
@@ -44,7 +44,6 @@ const mapState = (state) => {
     auth: state.auth,
     isLoggedIn: !!state.auth.id,
     user: state.user,
-
   }
 }
 
@@ -58,17 +57,9 @@ const mapDispatch = (dispatch) => {
 
 export default connect(mapState, mapDispatch)(Navbar)
 
-
-
-
-
-
-
-
-
 //TRYING TO GET NAVBAR CART(X) TO POPULATE DYNAMICALLY UPON LOGIN
-//REFACTORED NAVBAR STATELESS FUNCTIONAL COMPONENT INTO A CLASS COMPONENT 
-//LIMITED SUCCESS SEE BELOW COMMENTS 
+//REFACTORED NAVBAR STATELESS FUNCTIONAL COMPONENT INTO A CLASS COMPONENT
+//LIMITED SUCCESS SEE BELOW COMMENTS
 // class Navbar extends React.Component {
 //   // const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
 
@@ -89,14 +80,13 @@ export default connect(mapState, mapDispatch)(Navbar)
 //   }
 
 //   //Im able to get it populate under ComponentDidUpdate Lifecylce but it infinitley loops because
-//   //i am changing props/state. dont know why its infinitley looping if i am just fetching something one time tho 
+//   //i am changing props/state. dont know why its infinitley looping if i am just fetching something one time tho
 //   // componentDidUpdate() {
 //   //   this.getOrdersUponLogin()
 //   // }
 
-
 //   render() {
-    
+
 //     // ({ handleClick, isLoggedIn, user, auth } = this.props)
 //     const handleClick = this.props.handleClick
 //     const isLoggedIn = this.props.isLoggedIn

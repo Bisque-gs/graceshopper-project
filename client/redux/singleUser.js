@@ -87,9 +87,8 @@ const defaultState = {
   user: {},
   ordersInfo: {},
   cartItems: [],
-  itemQuantities: []
-};
-
+  updatedPrices: [], // here?
+}
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
@@ -97,12 +96,12 @@ export default function singleUserReducer(state = defaultState, action) {
     //   return { ...action.user }
     case GET_SINGLE_USER:
       return { ...state, user: action.user }
- case GET_USER_CART:
+    case GET_USER_CART:
       return {
         ...state,
         ordersInfo: action.ordersInfo,
         cartItems: action.ordersInfo.cartItems,
-        itemQuantities: action.ordersInfo.itemQuantities,
+        updatedPrices: action.ordersInfo.updatedPrices,
       }
     // return {
     //   ...state,
@@ -129,15 +128,15 @@ export default function singleUserReducer(state = defaultState, action) {
           return item
         }),
       }
-      //  return {
-      //    ...state,
-      //    cartItems: state.cartItems.map((item) => {
-      //      if (item.id === action.orderUpdated.productId) {
-      //        ordersInfo = action.orderUpdated.quantity
-      //      }
-      //      return item
-      //    }),
-      //  }
+    //  return {
+    //    ...state,
+    //    cartItems: state.cartItems.map((item) => {
+    //      if (item.id === action.orderUpdated.productId) {
+    //        ordersInfo = action.orderUpdated.quantity
+    //      }
+    //      return item
+    //    }),
+    //  }
     default:
       return state
   }
