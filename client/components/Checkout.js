@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { fetchUser, fetchUserCart } from "../redux/singleUser"
+import { Link } from "react-router-dom"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
@@ -50,11 +51,18 @@ class Checkout extends React.Component {
           {console.log("CHECKING LOGIN STATUS", isLoggedIn)}
           {cartAuthorization ? (
             <div>
-              <div>{user.username}'s CHECKOUT CONFIRMATION PAGE</div>
-              <div>
+              <br/>
+              <div className="column">
+                {user.username}'s CHECKOUT CONFIRMATION PAGE
+              </div>
+              <div className="unit">
                 {cartItems.map((item, i) => (
-                  <div key={item.id}>
+                  <div key={item.id} className="profile">
+                    <h3>
+                      <Link to={`/products/${item.id}`}>{item.name}</Link>
+                    </h3>
                     <img src={item.imageUrl} />
+                    <div className="column">
                     <h3>UNIT PRICE: {itemQuantities[i].price / 100}</h3>
                     <p>QUANTITY: {itemQuantities[i].quantity}</p>
                     <h3>
@@ -62,6 +70,7 @@ class Checkout extends React.Component {
                       {(itemQuantities[i].price / 100) *
                         itemQuantities[i].quantity}
                     </h3>
+                    </div>
                     <div style={{ display: "none" }}>
                       {
                         (total +=
@@ -72,7 +81,7 @@ class Checkout extends React.Component {
                 ))}
               </div>
               <div>TOTAL PRICE: ${total / 100}</div>
-              <button type="button">CONFIRM ORDER</button>
+              <button type="button">SUBMIT ORDER</button>
             </div>
           ) : (
             <div>

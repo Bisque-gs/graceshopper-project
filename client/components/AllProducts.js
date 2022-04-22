@@ -35,8 +35,9 @@ export class AllProducts extends React.Component {
     const { auth } = this.props
     return (
       <div>
+        <br/>
         <div className="column">
-          <h5>Our products:</h5>
+          Products:
           {/* {this.state.isAddVisible ? (
             <AddCampus
               addCampus={this.props.addCampus}

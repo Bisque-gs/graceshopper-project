@@ -42,13 +42,13 @@ class SingleProduct extends React.Component {
     console.log(this.props)
     const { product, auth } = this.props
     return (
-      <div className="container">
-        <h1>{product.name}</h1>
+      <div className="profile">
+        {this.state.submitted && <p>Item(s) added to cart!</p>}
+        <div className="column">
+        <h3>{product.name}</h3>
         <img src={product.imageUrl} alt={product.name} />
-        <ul>
-          <li>${product.price}</li>
-          <li>{product.quantity} remaining in stock!</li>
-        </ul>
+        <h3>PRICE: {product.price} per card</h3>
+        <p>{product.quantity} remaining in stock!</p>
         {/* dropdown here? add more than one to cart? */}
         <select name="quantity" id="" onChange={this.handleChange}>
           {Array(10)
@@ -68,7 +68,7 @@ class SingleProduct extends React.Component {
         >
           Add to cart
         </button>
-        {this.state.submitted && <p>Item(s) added to cart!</p>}
+        </div>
       </div>
     )
   }
