@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+const Sequelize = require("sequelize")
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
@@ -113,9 +114,7 @@ router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
   }
 })
 
-// DELETE /api/users/:userid/orders/:orderId
 // DELETE /api/users/:userid/cart/:itemId
-//gets rid of the order entirely
 //THIS ROUTE DELETES AN ITEM FROM A USERS CART
 router.delete("/:userId/cart/:itemId", async (req, res, next) => {
   try {
@@ -134,6 +133,34 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
   }
 })
 
+//HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT
+//req.body will be the quantity of all the items that we want to decrement
+//req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
+//PUT /api/users/:userid
+router.put("/:userId/cart/checkout", async (req, res, next) => {
+  try {
+    updatedItems = await Promise.all(
+      req.body.updatedPrices.map((item) => {
+        let olditem = Product.findByPk(item.productId)
+
+        olditem = Product.increment(
+          { quantity: -item.quantity },
+          { where: { id: item.productId } }
+        )
+        return olditem
+      })
+    )
+    res.send(updatedItems)
+    // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
+    // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
+    // const itemToDecrement = await Product.findByPk(item.productId)
+    // res.send(await item.update(req.body))
+    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
+  } catch (error) {
+    next(error)
+  }
+})
+
 //HERE I WANT TO UPDATE THE QUANITY OF AN ITEM ORDER IN THE ORDER_PRODCUTS THRU TABLE
 //PUT /api/users/:userid
 router.put("/:userId/cart/:itemId", async (req, res, next) => {
@@ -146,39 +173,6 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
       where: { productId: req.params.itemId, orderId: order.id },
     })
     res.send(await item.update(req.body))
-    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
-  } catch (error) {
-    next(error)
-  }
-})
-
-//PROMISE ALL EXAMPLE
-// const cartItems = await Promise.all(
-//       itemQuantities.map((item) => {
-//         return Product.findByPk(item.dataValues.productId)
-//       })
-//     )
-
-//HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT
-//req.body will be the quantity of all the items that we want to decrement
-//req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
-
-//PUT /api/users/:userid
-router.put("/:userId/cart/checkout", async (req, res, next) => {
-  try {
-    //find the current Order associated with user
-    updatedItems = await Promise.all(
-      req.params.itemQuantities.map((item) => {
-        let olditem = Product.findByPk(item.productId)
-        return olditem.update({ quantity: quantity - item.quantity })
-      })
-    )
-    res.send(updatedItems)
-
-    // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
-    // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
-    // const itemToDecrement = await Product.findByPk(item.productId)
-    // res.send(await item.update(req.body))
     // res.send(await item.update({ quantity: Number(req.body.quantity) }))
   } catch (error) {
     next(error)

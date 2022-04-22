@@ -34,6 +34,14 @@ const updateQuanity = (orderUpdated) => {
   }
 }
 
+const userCheckout = (order) => {
+  return {
+    type: CHECKOUT_ITEMS,
+    order,
+  }
+}
+
+
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
@@ -83,6 +91,17 @@ export const fetchUserCart = (id) => {
   }
 }
 
+// export const checkoutThunk = (id) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.get(`/api/users/${id}/cart/`)
+//       dispatch(getUserCart(data))
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }
+
 const defaultState = {
   user: {},
   ordersInfo: {},
@@ -121,7 +140,7 @@ export default function singleUserReducer(state = defaultState, action) {
     case UPDATE_QUANITY:
       return {
         ...state,
-        itemQuantities: state.itemQuantities.map((item) => {
+        updatedPrices: state.updatedPrices.map((item) => {
           if (item.productId === action.orderUpdated.productId) {
             item.quantity = action.orderUpdated.quantity
           }
