@@ -31,7 +31,6 @@ class Cart extends React.Component {
     this.props.updateQuantity(obj)
   }
   decrementItem = (obj) => {
-
     // this.setState({ quantity: this.state.quantity - 1 });
     this.props.updateQuantity(obj)
   }
@@ -50,9 +49,8 @@ class Cart extends React.Component {
     const ordersInfo = this.props.userInfo.ordersInfo
     const cartItems = this.props.userInfo.cartItems || []
     const isLoggedIn = this.props.isLoggedIn
-    const itemQuantities = this.props.userInfo.itemQuantities || []
+    const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
-
 
     // console.log("CART AUTHO", cartAuthorization)
     return (
@@ -97,7 +95,7 @@ class Cart extends React.Component {
                           this.decrementItem({
                             userId: user.id,
                             productId: item.id,
-                          quantity: itemQuantities[i].quantity - 1,
+                            quantity: itemQuantities[i].quantity - 1,
                           })
                         }
                         type="button"
