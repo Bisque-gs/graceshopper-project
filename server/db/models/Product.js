@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require("sequelize")
+const db = require("../db")
 
 const Product = db.define("product", {
   name: {
@@ -14,9 +14,9 @@ const Product = db.define("product", {
     type: Sequelize.INTEGER,
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
     validate: {
-      min: 0.01,
+      min: 1, // 0?
     },
   },
   imageUrl: {
@@ -24,6 +24,6 @@ const Product = db.define("product", {
     defaultValue:
       "https://i.imgur.com/PD5Nx4d.png",
   },
-});
+})
 
-module.exports = Product;
+module.exports = Product
