@@ -12,6 +12,9 @@ const Product = db.define("product", {
   },
   quantity: {
     type: Sequelize.INTEGER,
+    validate: {
+      min: 0,
+    },
   },
   price: {
     type: Sequelize.INTEGER,
@@ -25,5 +28,21 @@ const Product = db.define("product", {
       "https://i.imgur.com/PD5Nx4d.png",
   },
 })
+
+//TRYING TO VALIDATE QUANITY UPON CHECKOUT 
+Product.beforeUpdate( (product) => {
+//  let olditem = await Product.findByPk(product.id)
+  //  console.log('OLD ITEM', olditem)
+  // if ((olditem.quantity - product.quantity) < 0) {
+  //   throw new Error("CANNOT GO BELOW 0")
+  // }
+  }
+)
+
+Product.beforeValidate((product) => {
+
+})
+
+
 
 module.exports = Product

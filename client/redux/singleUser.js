@@ -34,6 +34,14 @@ const updateQuanity = (orderUpdated) => {
   }
 }
 
+const userCheckout = (order) => {
+  return {
+    type: CHECKOUT_ITEMS,
+    order,
+  }
+}
+
+
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
@@ -82,6 +90,17 @@ export const fetchUserCart = (id) => {
     }
   }
 }
+
+// export const checkoutThunk = (id) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.get(`/api/users/${id}/cart/`)
+//       dispatch(getUserCart(data))
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }
 
 const defaultState = {
   user: {},
