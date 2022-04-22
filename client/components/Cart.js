@@ -51,13 +51,14 @@ class Cart extends React.Component {
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
+    console.log("here", auth.isAdmin)
 
     // console.log("CART AUTHO", cartAuthorization)
     return (
       <React.Fragment>
         <div>
           {/* {console.log("CHECKING LOGIN STATUS", isLoggedIn)} */}
-          {cartAuthorization ? (
+          {cartAuthorization || auth.isAdmin ? (
             <div>
               <div>This is {user.username}'s Cart!</div>
               <div>
@@ -78,7 +79,7 @@ class Cart extends React.Component {
                       <h2 className="nameOf">{item.name}</h2>
                     </Link>
                     <img src={item.imageUrl} />
-                    <h3> PRICE: {itemQuantities[i].price / 100}</h3>
+                    <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
                     <p>QUANTITY: {itemQuantities[i].quantity}</p>
                     <div>
                       <button

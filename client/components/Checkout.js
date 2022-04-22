@@ -43,6 +43,7 @@ class Checkout extends React.Component {
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
+    console.log("here", user)
     let total = 0
     return (
       <React.Fragment>
@@ -55,12 +56,12 @@ class Checkout extends React.Component {
                 {cartItems.map((item, i) => (
                   <div key={item.id}>
                     <img src={item.imageUrl} />
-                    <h3>UNIT PRICE: {itemQuantities[i].price / 100}</h3>
+                    <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
                     <p>QUANTITY: {itemQuantities[i].quantity}</p>
                     <h3>
                       SUBPRICE:{" "}
-                      {(itemQuantities[i].price / 100) *
-                        itemQuantities[i].quantity}
+                      {(itemQuantities[i].price * itemQuantities[i].quantity) /
+                        10000}
                     </h3>
                     <div style={{ display: "none" }}>
                       {
@@ -71,7 +72,7 @@ class Checkout extends React.Component {
                   </div>
                 ))}
               </div>
-              <div>TOTAL PRICE: ${total / 100}</div>
+              <div>TOTAL PRICE: ${total / 10000}</div>
               <button type="button">CONFIRM ORDER</button>
             </div>
           ) : (

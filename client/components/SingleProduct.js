@@ -46,7 +46,7 @@ class SingleProduct extends React.Component {
         <h1>{product.name}</h1>
         <img src={product.imageUrl} alt={product.name} />
         <ul>
-          <li>${product.price}</li>
+          <li>${product.price / 100}</li>
           <li>{product.quantity} remaining in stock!</li>
         </ul>
         {/* dropdown here? add more than one to cart? */}

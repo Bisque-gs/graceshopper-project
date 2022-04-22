@@ -43,6 +43,13 @@ router.get("/:id/cart", async (req, res, next) => {
     const currentOrder = userAllOrders.filter((order) => {
       return order.dataValues.isCurrentOrder
     })
+
+    // fixed: route breaks on cart view if the cart is empty
+    if (!currentOrder[0]) {
+      res.send(0)
+      throw new Error("This cart is empty.")
+    }
+
     const itemQuantities = await OrderProducts.findAll({
       where: { orderId: currentOrder[0].id },
     })
@@ -58,6 +65,7 @@ router.get("/:id/cart", async (req, res, next) => {
     )
     res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
   } catch (err) {
+    err.message = "Empty cart"
     next(err)
   }
 })
