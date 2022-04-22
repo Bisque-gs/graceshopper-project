@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { fetchProducts, deleteProductThunk } from "../redux/products";
+import React from "react"
+import { connect } from "react-redux"
+import { fetchProducts, deleteProductThunk } from "../redux/products"
 import { setOrder } from "../redux/singleProduct"
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 // import AddProduct from "./AddProduct";
 
 export class AllProducts extends React.Component {
@@ -15,7 +15,7 @@ export class AllProducts extends React.Component {
   // }
 
   componentDidMount() {
-    this.props.getProducts();
+    this.props.getProducts()
   }
 
   // isAddVisibleToggle() {
@@ -24,15 +24,15 @@ export class AllProducts extends React.Component {
 
   handleClick(e) {
     e.preventDefault()
-    console.log(this.props);
+    console.log(this.props)
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
     this.props.addToCart(userId, productId)
   }
 
   render() {
-    const products = this.props.products;
-    const { auth } = this.props;
+    const products = this.props.products
+    const { auth } = this.props
     return (
       <div>
         <div className="column">
@@ -62,32 +62,38 @@ export class AllProducts extends React.Component {
                     <Link to={`/products/${product.id}`}>{product.name}</Link>
                   </h3>
                   <a href={`/products/${product.id}`}>
-                    <img src={product.imageUrl}/>
+                    <img src={product.imageUrl} />
                   </a>
                   <button
                     type="button"
                     onClick={() => {
-                      auth.id ? this.props.addToCart(auth.id, product.id) : console.log('add to local storage');
+                      auth.id
+                        ? this.props.addToCart(auth.id, product.id)
+                        : console.log("add to local storage")
                     }}
                   >
                     Add to cart
                   </button>
-                  {auth.isAdmin ? <button
-                    className="cancel"
-                    type="button"
-                    onClick={() => {
-                      this.props.deleteProduct(product.id);
-                    }}
-                  >
-                    Delete
-                  </button> : console.log("You're not admin")}
+                  {auth.isAdmin ? (
+                    <button
+                      className="cancel"
+                      type="button"
+                      onClick={() => {
+                        this.props.deleteProduct(product.id)
+                      }}
+                    >
+                      Delete
+                    </button>
+                  ) : (
+                    console.log("You're not admin")
+                  )}
                 </div>
-              );
+              )
             })
           )}
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -96,18 +102,18 @@ const mapState = (state) => {
     products: state.products,
     auth: state.auth,
     // product: state.product,
-  };
-};
+  }
+}
 
 const mapDispatch = (dispatch) => {
   return {
     getProducts: () => dispatch(fetchProducts()),
-    addToCart: (userId, productId) => dispatch(setOrder(userId, productId)),
+    addToCart: (userId, productId) => dispatch(setOrder(userId, productId, 1)),
     // addProduct: (product) => dispatch(addProductThunk(product)),
     deleteProduct: (productId) => {
-      dispatch(deleteProductThunk(productId));
+      dispatch(deleteProductThunk(productId))
     },
-  };
-};
+  }
+}
 
-export default connect(mapState, mapDispatch)(AllProducts);
+export default connect(mapState, mapDispatch)(AllProducts)
