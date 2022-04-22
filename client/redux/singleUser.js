@@ -106,13 +106,11 @@ const defaultState = {
   user: {},
   ordersInfo: {},
   cartItems: [],
-  updatedPrices: [], // here?
+  updatedPrices: [],
 }
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
-    // case GET_SINGLE_USER:
-    //   return { ...action.user }
     case GET_SINGLE_USER:
       return { ...state, user: action.user }
     case GET_USER_CART:

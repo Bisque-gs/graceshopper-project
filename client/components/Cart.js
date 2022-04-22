@@ -51,35 +51,35 @@ class Cart extends React.Component {
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
+    console.log("here", auth.isAdmin)
 
     // console.log("CART AUTHO", cartAuthorization)
     return (
       <React.Fragment>
         <div>
           {/* {console.log("CHECKING LOGIN STATUS", isLoggedIn)} */}
-          {cartAuthorization ? (
+          {cartAuthorization || auth.isAdmin ? (
             <div>
-              <div>This is {user.username}'s Cart!</div>
-              <div>
+              <br />
+              <div className="column">
+                This is {user.username}'s cart!
+                <Link to={`/users/${user.id}/cart/checkout`}>
+                  <button type="button">💸CHECKOUT💸</button>
+                </Link>
+              </div>
+              <div className="unit">
                 {cartItems.map((item, i) => (
-                  <div key={item.id}>
-                    <button
-                      onClick={() =>
-                        this.clickDelete({
-                          userId: user.id,
-                          productId: item.id,
-                        })
-                      }
-                      id="x-button"
-                    >
-                      X
-                    </button>
-                    <Link to={`/products/${item.id}`}>
-                      <h2 className="nameOf">{item.name}</h2>
-                    </Link>
+                  <div key={item.id} className="profile">
+                    <h3>
+                      <Link to={`/products/${item.id}`}>{item.name}</Link>
+                    </h3>
                     <img src={item.imageUrl} />
-                    <h3> PRICE: {itemQuantities[i].price / 100}</h3>
-                    <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                    
+                    <div className="column">
+                      <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
+                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                    </div>
+
                     <div>
                       <button
                         onClick={() =>
@@ -91,7 +91,7 @@ class Cart extends React.Component {
                         }
                         type="button"
                       >
-                        Click to increment by 1
+                        ➕
                       </button>
                       <button
                         onClick={() =>
@@ -103,16 +103,23 @@ class Cart extends React.Component {
                         }
                         type="button"
                       >
-                        Click to decrease by 1
+                        ➖
                       </button>
-                      <hr />
+                      <button
+                      onClick={() =>
+                        this.clickDelete({
+                          userId: user.id,
+                          productId: item.id,
+                        })
+                      }
+                      className="cancel"
+                    >
+                      ❌
+                    </button>
                     </div>
                   </div>
                 ))}
               </div>
-              <Link to={`/users/${user.id}/cart/checkout`}>
-                <button type="button">CHECKOUT!</button>
-              </Link>
             </div>
           ) : (
             <div>

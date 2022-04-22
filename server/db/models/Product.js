@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require("sequelize")
+const db = require("../db")
 
 const Product = db.define("product", {
   name: {
@@ -17,20 +17,17 @@ const Product = db.define("product", {
     },
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
     validate: {
-      min: 0.01,
+      min: 1, // 0?
     },
   },
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue:
-      "https://assets.listia.com/photos/c939fcdb265d78ca912c/original.png?s=800x600g&sig=ead89c2504676d3c&ts=1446824194",
+      "https://i.imgur.com/PD5Nx4d.png",
   },
 })
-
-
-
 
 //TRYING TO VALIDATE QUANITY UPON CHECKOUT 
 Product.beforeUpdate( (product) => {
@@ -48,4 +45,4 @@ Product.beforeValidate((product) => {
 
 
 
-module.exports = Product;
+module.exports = Product
