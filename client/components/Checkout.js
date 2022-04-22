@@ -20,19 +20,22 @@ class Checkout extends React.Component {
     
     //Checking out is an all in one process, no checking out for individual items. One button will check out every item,
         //going to need a map or some sort on the backend for our routes 
+  
+        
     //What does checking out an item mean?
 
       //REVISION ==> The orders should not dissapear from our through table! That is important for order history 
         //Also price needs to be a column inside of through table
-        //- the orders should dissapear from the through table 
-            //Simple Delete routue should work, however we need to decremenent the quanity from item table so delete last 
-        
+
         //- the item quantity should be decremented from the item table 
             //put route to update the quantities with the decremented value 
             
         //- the 'current order' in the order table should be set to false since the order is closed/completed
             //another put route to modify the isCurrentOrder value to false 
         //start on backend
+        
+        //VALIDATION ==> before decrementing..... need to check that there is enough of the product quantity to confim the order
+        //if not then the order bounces, display message/alert
 
   render() {
     const user = this.props.userInfo.user;

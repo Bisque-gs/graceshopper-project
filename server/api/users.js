@@ -166,8 +166,6 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
     }))
     res.send(updatedItems)
     
-    
-    
     // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
     // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
     // const itemToDecrement = await Product.findByPk(item.productId)
