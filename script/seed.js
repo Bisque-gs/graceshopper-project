@@ -1,6 +1,6 @@
 const { db } = require("../server/db")
 const { Product, User, Order } = require("../server/db/")
-const axios = require("axios")
+// const axios = require("axios")
 const { faker } = require("@faker-js/faker")
 
 const seed = async () => {
@@ -21,27 +21,27 @@ const seed = async () => {
       await userGenerator()
     }
 
-    async function productGenerator(index) {
-      let obj = {}
-      let quantity = faker.datatype.number({ min: 1, max: 100 })
-      let price = faker.datatype.number({ min: 1, max: 10000, precision: 1 })
-      const { data } = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${index}/`
-      )
-      obj.pokId = data.id
-      obj.name = data.name
-      const product = await Product.create({
-        name: obj.name,
-        price: price,
-        quantity: quantity,
-        imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${obj.pokId}.png`,
-      })
-      return product
-    }
+    // async function productGenerator(index) {
+    //   let obj = {}
+    //   let quantity = faker.datatype.number({ min: 1, max: 100 })
+    //   let price = faker.datatype.number({ min: 1, max: 10000, precision: 1 })
+    //   const { data } = await axios.get(
+    //     `https://pokeapi.co/api/v2/pokemon/${index}/`
+    //   )
+    //   obj.pokId = data.id
+    //   obj.name = data.name
+    //   const product = await Product.create({
+    //     name: obj.name,
+    //     price: price,
+    //     quantity: quantity,
+    //     imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${obj.pokId}.png`,
+    //   })
+    //   return product
+    // }
 
-    for (let i = 1; i <= 25; i++) {
-      await productGenerator(i)
-    }
+    // for (let i = 1; i <= 25; i++) {
+    //   await productGenerator(i)
+    // }
 
     const user1 = await User.create({
       username: "spencer69",
