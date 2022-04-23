@@ -1,25 +1,25 @@
 const { db } = require("../server/db")
 const { Product, User, Order } = require("../server/db/")
 // const axios = require("axios")
-const { faker } = require("@faker-js/faker")
+// const { faker } = require("@faker-js/faker")
 
 const seed = async () => {
   try {
     await db.sync({ force: true })
 
-    async function userGenerator() {
-      let username = faker.random.word()
-      const user = await User.create({
-        username: username,
-        password: faker.random.word(),
-        email: `${username}@gmail.com`,
-      })
-      return user
-    }
+    // async function userGenerator() {
+    //   let username = faker.random.word()
+    //   const user = await User.create({
+    //     username: username,
+    //     password: faker.random.word(),
+    //     email: `${username}@gmail.com`,
+    //   })
+    //   return user
+    // }
 
-    for (let i = 1; i <= 10; i++) {
-      await userGenerator()
-    }
+    // for (let i = 1; i <= 10; i++) {
+    //   await userGenerator()
+    // }
 
     // async function productGenerator(index) {
     //   let obj = {}
