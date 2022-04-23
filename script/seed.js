@@ -1,6 +1,6 @@
 const { db } = require("../server/db")
 const { Product, User, Order } = require("../server/db/")
-const chalk = require("chalk")
+const { red, green } = require("chalk")
 const axios = require("axios")
 const { faker } = require("@faker-js/faker")
 
