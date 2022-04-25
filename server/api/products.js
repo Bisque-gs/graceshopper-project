@@ -37,3 +37,12 @@ router.get("/:id", async (req, res, next) => {
     next(err)
   }
 })
+
+router.put("/:id", async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    res.json(await product.update(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
