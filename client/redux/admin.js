@@ -9,9 +9,10 @@ export const getUsers = (users) => {
   }
 }
 
-export const fetchUsers = () => {
+export const fetchUsers = (str) => {
   return async (dispatch) => {
     try {
+      console.log(str)
       const { data } = await axios.get("/api/users")
       dispatch(getUsers(data))
     } catch (error) {

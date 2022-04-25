@@ -4,9 +4,11 @@ const Sequelize = require("sequelize")
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
+//GET /api/users/:userid/users
 //GET /api/users
 router.get("/", async (req, res, next) => {
   try {
+ 
     const users = await User.findAll({
       // explicitly select only the id and username fields - even though
       // users' passwords are encrypted, it won't help if we just
