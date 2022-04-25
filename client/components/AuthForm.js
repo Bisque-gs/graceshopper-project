@@ -11,7 +11,7 @@ const AuthForm = (props) => {
   console.log(props.name)
 
   return (
-    <div>
+    <div className="column">
       <form onSubmit={handleSubmit} name={name}>
         <div>
           <label htmlFor="username">
