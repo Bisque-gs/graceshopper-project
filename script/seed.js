@@ -59,12 +59,12 @@ const seed = async () => {
 
     const product1 = await Product.create({
       name: "Magic Bebra",
-      quantity: 1,
+      quantity: 10,
       price: 2500,
     })
     const product2 = await Product.create({
       name: "Crazy Steve",
-      quantity: 1,
+      quantity: 10,
       price: 7000,
     })
 
