@@ -26,11 +26,15 @@ export class EditProduct extends React.Component {
     });
   }
 
+  handleCancel = () => {
+    this.props.isEditVisible();
+  };
+
   render() {
     const { name, quantity, price } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <h5>Please input new campus information below:</h5>
+        <h5>Please input new information below:</h5>
         <label>Name:</label>
         <input name="name" value={name} onChange={this.handleChange} />
         <label>Quantity:</label>
@@ -39,6 +43,9 @@ export class EditProduct extends React.Component {
         <input name="price" value={price} onChange={this.handleChange} />
         <button className="submit" type="submit">
           Submit
+        </button>
+        <button className="cancel" type="button" onClick={this.handleCancel}>
+          Cancel
         </button>
       </form>
     );
