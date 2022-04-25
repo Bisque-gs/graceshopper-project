@@ -78,7 +78,7 @@ class SingleProduct extends React.Component {
             product={product}
             isEditVisible={this.isEditVisibleToggle}
           />
-        ) : (
+        ) : (auth.isAdmin &&
           <button
             type="button"
             onClick={() => this.setState({ isEditVisible: true })}
