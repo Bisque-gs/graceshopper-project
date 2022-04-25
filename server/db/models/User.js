@@ -34,7 +34,7 @@ const User = db.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-})
+});
 
 module.exports = User
 

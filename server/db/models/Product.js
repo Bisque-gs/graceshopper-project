@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require("sequelize")
+const db = require("../db")
 
 const Product = db.define("product", {
   name: {
@@ -12,18 +12,37 @@ const Product = db.define("product", {
   },
   quantity: {
     type: Sequelize.INTEGER,
+    validate: {
+      min: 0,
+    },
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
     validate: {
-      min: 0.01,
+      min: 1, // 0?
     },
   },
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue:
-      "https://assets.listia.com/photos/c939fcdb265d78ca912c/original.png?s=800x600g&sig=ead89c2504676d3c&ts=1446824194",
+      "https://i.imgur.com/PD5Nx4d.png",
   },
-});
+})
 
-module.exports = Product;
+//TRYING TO VALIDATE QUANITY UPON CHECKOUT 
+Product.beforeUpdate( (product) => {
+//  let olditem = await Product.findByPk(product.id)
+  //  console.log('OLD ITEM', olditem)
+  // if ((olditem.quantity - product.quantity) < 0) {
+  //   throw new Error("CANNOT GO BELOW 0")
+  // }
+  }
+)
+
+Product.beforeValidate((product) => {
+
+})
+
+
+
+module.exports = Product

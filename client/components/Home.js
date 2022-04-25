@@ -8,7 +8,7 @@ export const Home = (props) => {
   const { username } = props
 
   return (
-    <div>
+    <div className="column">
       <h3>Welcome, {username}!</h3>
       <img src="https://www.pikpng.com/pngl/b/87-875320_snorlax-png-snorlax-pokemon-clipart.png" />
     </div>

@@ -68,6 +68,14 @@ body {
   width: 200px;
 }
 
+.profile h3 {
+  text-align: center;
+  font-family: Baskerville,Times,'Times New Roman',serif;
+  font-size: 20px;
+  font-variant: small-caps;
+  font-weight: bold;
+}
+
 nav {
   display: flex;
   align-items: center;
@@ -159,4 +167,8 @@ input {
 
 .container{
   margin: 0 50px;
+}
+
+.spacer{
+  height: 50px;
 }
