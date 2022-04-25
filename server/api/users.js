@@ -51,7 +51,8 @@ router.get("/:id/cart", async (req, res, next) => {
     })
 
     if (!currentOrder[0]) {
-      res.sendStatus(404)
+      res.send(0)
+      throw new Error("This cart is empty.")
     }
 
     const orderProducts = currentOrder[0].products.map((x) => x.orderProducts)
@@ -142,13 +143,12 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
         model: Product,
       },
     })
-    const item = order.products.filter((x) => {
-      return x.id === Number(req.params.itemId)
-    })
+    const item = order.products
+      .filter((x) => x.id === Number(req.params.itemId))
+      .map((x) => x.dataValues.orderProducts)
     // const item = await OrderProducts.findOne({
     //   where: { productId: req.params.itemId, orderId: order.id },
     // })
-    // console.log(item)
     await item[0].destroy()
     res.send(item[0])
   } catch (error) {
