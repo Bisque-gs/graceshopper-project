@@ -34,7 +34,7 @@ const User = db.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-});
+})
 
 module.exports = User
 
@@ -90,4 +90,15 @@ const hashPassword = async (user) => {
 
 User.beforeCreate(hashPassword)
 User.beforeUpdate(hashPassword)
+User.beforeValidate((user) => {
+  if (user.username === "") {
+    throw new Error("Name is a required field")
+  }
+  if (user.email === "") {
+    throw new Error("Email is a required field")
+  }
+  if (user.password === "") {
+    throw new Error("Password is a required field")
+  }
+})
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)))
