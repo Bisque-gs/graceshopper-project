@@ -5,20 +5,52 @@ const Sequelize = require("sequelize")
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
-//GET /api/users
-router.get("/", async (req, res, next) => {
+//GET /api/users/:userid/users
+router.get("/:userid/users", async (req, res, next) => {
+  console.log(req.params.userid)
   try {
-    const users = await User.findAll({
-      // explicitly select only the id and username fields - even though
+    //ADMIN AUTHORIZATION
+    const findOutIfAdmin = await User.findOne({
+      where: {
+        id: req.params.userid,
+      },
+      // explicitly select only the isAdmin field - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ["id", "username"],
+      attributes: ["isAdmin"],
     })
-    res.json(users)
+
+    if (findOutIfAdmin.dataValues.isAdmin) {
+      const users = await User.findAll({
+        // explicitly select only the id and username fields - even though
+        // users' passwords are encrypted, it won't help if we just
+        // send everything to anyone who asks!
+        attributes: ["id", "username", "email"],
+      })
+      res.json(users)
+    } else {
+      throw new Error("HEY YOU ARE NOT AN ADMIN NICE TRY POSTMAN MUAHHAHA")
+    }
   } catch (err) {
     next(err)
   }
 })
+
+//GET /api/users
+// router.get("/", async (req, res, next) => {
+//   try {
+
+//     const users = await User.findAll({
+//       // explicitly select only the id and username fields - even though
+//       // users' passwords are encrypted, it won't help if we just
+//       // send everything to anyone who asks!
+//       attributes: ["id", "username", "email"],
+//     })
+//     res.json(users)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 //GET /api/users/:userid
 router.get("/:id", async (req, res, next) => {
