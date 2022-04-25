@@ -45,7 +45,6 @@ router.get("/:id/cart", async (req, res, next) => {
       return order.dataValues.isCurrentOrder
     })
 
-    // fixed: route breaks on cart view if the cart is empty
     if (!currentOrder[0]) {
       res.send(0)
       throw new Error("This cart is empty.")
@@ -53,7 +52,14 @@ router.get("/:id/cart", async (req, res, next) => {
 
     const itemQuantities = await OrderProducts.findAll({
       where: { orderId: currentOrder[0].id },
+      // include: {
+      //   model: Product,
+      //   // where: {
+
+      //   // }
+      // },
     })
+    console.log("itemQuantities")
     const cartItems = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.dataValues.productId)
@@ -144,26 +150,54 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 //HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT
 //req.body will be the quantity of all the items that we want to decrement
 //req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
+
+//  if product has enough quantity:
+//    update quantity
+//    change order.isCurrentOrder to be false
+//    res.send(?????) currently sending product info
+//  else:
+//    res.send(item that failed, quantity available)
+
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-    updatedItems = await Promise.all(
+    const products = await Promise.all(
       req.body.updatedPrices.map((item) => {
-        let olditem = Product.findByPk(item.productId)
-
-        olditem = Product.increment(
-          { quantity: -item.quantity },
-          { where: { id: item.productId } }
-        )
-        return olditem
+        return (olditem = Product.findByPk(item.productId))
       })
     )
-    res.send(updatedItems)
-    // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
-    // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
-    // const itemToDecrement = await Product.findByPk(item.productId)
-    // res.send(await item.update(req.body))
-    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
+
+    const updatedItems = await Promise.all(
+      products.map((item, i) => {
+        return item.update({
+          quantity: item.quantity - req.body.updatedPrices[i].quantity,
+        })
+      })
+    )
+
+    // update order after confirming items are in stock
+    const order = await Order.findOne({
+      where: { userId: req.params.userId, isCurrentOrder: true },
+    })
+
+    res.send(await order.update({ isCurrentOrder: false }))
+
+    // updatedItems = await Promise.all(
+    //   req.body.updatedPrices.map((item) => {
+    //     let olditem = Product.findByPk(item.productId)
+    //     console.log(item.quantity)
+    //     console.log(item.productId)
+
+    //     olditem = Product.update(
+    //       { quantity: -item.quantity },
+    //       { where: { id: item.productId } },
+    //       { options: { individualHooks: true } }
+    //     )
+    //     console.log(olditem)
+    //     return olditem
+    //   })
+    // )
+    // res.send(updatedItems)
   } catch (error) {
     next(error)
   }
