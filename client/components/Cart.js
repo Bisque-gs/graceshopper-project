@@ -38,7 +38,6 @@ class Cart extends React.Component {
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
-    console.log("here", auth.isAdmin)
     return (
       <React.Fragment>
         <div>
