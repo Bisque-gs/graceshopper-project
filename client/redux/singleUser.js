@@ -76,10 +76,10 @@ export const updateSingleUser = ({ id, field }) => {
   return async (dispatch) => {
     try {
       const { data: updated } = await axios.put(`/api/users/${id}`, field)
-      console.log("updated")
       dispatch(updateUser(updated))
     } catch (error) {
       console.log(error)
+      return dispatch(updateUser(error))
     }
   }
 }
@@ -102,7 +102,6 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
-
       const { data } = await axios.get(`/api/users/${id}/cart/`)
       dispatch(getUserCart(data))
     } catch (error) {
@@ -129,7 +128,6 @@ const defaultState = {
   ordersInfo: {},
   cartItems: [],
   updatedPrices: [],
-
 }
 
 export default function singleUserReducer(state = defaultState, action) {

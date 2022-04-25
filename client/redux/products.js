@@ -3,6 +3,7 @@ import axios from "axios";
 const SET_PRODUCTS = "SET_PRODUCTS";
 const DELETE_PRODUCT = "DELETE_PRODUCT";
 const ADD_PRODUCT = "ADD_PRODUCT";
+const CREATE_PRODUCT = "CREATE_PRODUCT"
 
 export const setProducts = (products) => {
   return {
@@ -50,6 +51,8 @@ export default function productsReducer(state = initialState, action) {
       return [...state, action.product];
     case DELETE_PRODUCT:
       return state.filter((product) => product.id !== action.product.id);
+    case CREATE_PRODUCT:
+      return [...state, action.product];
     default:
       return state;
   }
