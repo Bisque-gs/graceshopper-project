@@ -1,6 +1,8 @@
 import axios from "axios"
 
 const GET_SINGLE_USER = "GET_SINGLE_USER"
+
+const UPDATE_SINGLE_USER = "UPDATE_SINGLE_USER"
 const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
 const UPDATE_QUANITY = "UPDATE_QUANITY"
@@ -9,6 +11,13 @@ const CHECKOUT_ITEMS = "CHECKOUT_ITEMS"
 const getUser = (user) => {
   return {
     type: GET_SINGLE_USER,
+    user,
+  }
+}
+
+const updateUser = (user) => {
+  return {
+    type: UPDATE_SINGLE_USER,
     user,
   }
 }
@@ -41,12 +50,10 @@ const userCheckout = (order) => {
   }
 }
 
-
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/users/${id}`)
-      // const { data } = await axios.get(`/api/orders/${id}`);
       dispatch(getUser(data))
     } catch (error) {
       console.log(error)
@@ -60,8 +67,20 @@ export const updateQuantityThunk = ({ userId, productId, quantity }) => {
       `/api/users/${userId}/cart/${productId}`,
       { quantity }
     )
-    console.log("THIS IS SPARTAAAAAAAAAA", orderUpdated)
     dispatch(updateQuanity(orderUpdated))
+  }
+}
+
+export const updateSingleUser = ({ id, field }) => {
+  console.log(id, field, "RIGHT HERE")
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(`/api/users/${id}`, field)
+      console.log("updated")
+      dispatch(updateUser(updated))
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
@@ -83,6 +102,7 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
+
       const { data } = await axios.get(`/api/users/${id}/cart/`)
       dispatch(getUserCart(data))
     } catch (error) {
@@ -91,27 +111,32 @@ export const fetchUserCart = (id) => {
   }
 }
 
-// export const checkoutThunk = (id) => {
-//   return async (dispatch) => {
-//     try {
-//       const { data } = await axios.get(`/api/users/${id}/cart/`)
-//       dispatch(getUserCart(data))
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+export const checkoutThunk = ({ userId, itemQuantities }) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
+        itemQuantities,
+      })
+      dispatch(userCheckout(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
 const defaultState = {
   user: {},
   ordersInfo: {},
   cartItems: [],
   updatedPrices: [],
+
 }
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
+      return { ...state, user: action.user }
+    case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
     case GET_USER_CART:
       return {
@@ -120,14 +145,6 @@ export default function singleUserReducer(state = defaultState, action) {
         cartItems: action.ordersInfo.cartItems,
         updatedPrices: action.ordersInfo.updatedPrices,
       }
-    // return {
-    //   ...state,
-    //   ordersInfo: action.ordersInfo,
-    //   cartItems: {
-    //     ...action.ordersInfo.cartItems, action.ordersInfo.cartItems.map((item) => {
-    //     item.quantity
-    //   }) }
-    // }
     case DELETE_ITEM_CART:
       return {
         ...state,
@@ -145,15 +162,8 @@ export default function singleUserReducer(state = defaultState, action) {
           return item
         }),
       }
-    //  return {
-    //    ...state,
-    //    cartItems: state.cartItems.map((item) => {
-    //      if (item.id === action.orderUpdated.productId) {
-    //        ordersInfo = action.orderUpdated.quantity
-    //      }
-    //      return item
-    //    }),
-    //  }
+    case CHECKOUT_ITEMS:
+      return { ...state, cartItems: [], updatedPrices: [] }
     default:
       return state
   }

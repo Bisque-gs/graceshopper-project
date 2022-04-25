@@ -24,40 +24,23 @@ class Cart extends React.Component {
   }
 
   incrementItem = (obj) => {
-    //this.setState is asynchronous
-    //only need local state for a form
-    // this.setState({ quantity: this.state.quantity + 1 });
-    // console.log(this.state)
     this.props.updateQuantity(obj)
   }
   decrementItem = (obj) => {
-    // this.setState({ quantity: this.state.quantity - 1 });
     this.props.updateQuantity(obj)
   }
-
-  ///isLogin doesnt work here, that only checks if anyone at all is logged in
-  //we need to check whether the logged in user matches the userId of the cart we are trying to view
-
   render() {
     const user = this.props.userInfo.user
     const auth = this.props.auth
-
-    // console.log("THE USER RN", user)
-    // console.log("AUTH INFO", auth)
-
     const userId = this.props.userInfo.user
     const ordersInfo = this.props.userInfo.ordersInfo
     const cartItems = this.props.userInfo.cartItems || []
     const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
-    console.log("here", auth.isAdmin)
-
-    // console.log("CART AUTHO", cartAuthorization)
     return (
       <React.Fragment>
         <div>
-          {/* {console.log("CHECKING LOGIN STATUS", isLoggedIn)} */}
           {cartAuthorization || auth.isAdmin ? (
             <div>
               <br />
@@ -74,7 +57,7 @@ class Cart extends React.Component {
                       <Link to={`/products/${item.id}`}>{item.name}</Link>
                     </h3>
                     <img src={item.imageUrl} />
-                    
+
                     <div className="column">
                       <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
                       <p>QUANTITY: {itemQuantities[i].quantity}</p>
@@ -106,16 +89,16 @@ class Cart extends React.Component {
                         ➖
                       </button>
                       <button
-                      onClick={() =>
-                        this.clickDelete({
-                          userId: user.id,
-                          productId: item.id,
-                        })
-                      }
-                      className="cancel"
-                    >
-                      ❌
-                    </button>
+                        onClick={() =>
+                          this.clickDelete({
+                            userId: user.id,
+                            productId: item.id,
+                          })
+                        }
+                        className="cancel"
+                      >
+                        ❌
+                      </button>
                     </div>
                   </div>
                 ))}

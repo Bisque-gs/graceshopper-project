@@ -49,7 +49,7 @@ router.get("/:id/cart", async (req, res, next) => {
       res.send(0)
       throw new Error("This cart is empty.")
     }
-
+    
     const itemQuantities = await OrderProducts.findAll({
       where: { orderId: currentOrder[0].id },
       // include: {
@@ -65,6 +65,7 @@ router.get("/:id/cart", async (req, res, next) => {
         return Product.findByPk(item.dataValues.productId)
       })
     )
+
     const updatedPrices = await Promise.all(
       itemQuantities.map((x, i) => {
         return x.update({ price: Number(cartItems[i].price) * 100 })
@@ -160,44 +161,23 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
-  try {
-    const products = await Promise.all(
-      req.body.updatedPrices.map((item) => {
-        return (olditem = Product.findByPk(item.productId))
+  try {   
+      updatedItems = await Promise.all(
+      req.body.itemQuantities.map((item) => {
+        let olditem = Product.findByPk(item.productId)
+        olditem = Product.increment(
+          { quantity: -item.quantity },
+          { where: { id: item.productId } }
+        )
+        return olditem
       })
     )
-
-    const updatedItems = await Promise.all(
-      products.map((item, i) => {
-        return item.update({
-          quantity: item.quantity - req.body.updatedPrices[i].quantity,
-        })
-      })
+    await Order.update(
+      { isCurrentOrder: false },
+      { where: { id: req.body.itemQuantities[0].orderId } }
     )
+    res.send(updatedItems)
 
-    // update order after confirming items are in stock
-    const order = await Order.findOne({
-      where: { userId: req.params.userId, isCurrentOrder: true },
-    })
-
-    res.send(await order.update({ isCurrentOrder: false }))
-
-    // updatedItems = await Promise.all(
-    //   req.body.updatedPrices.map((item) => {
-    //     let olditem = Product.findByPk(item.productId)
-    //     console.log(item.quantity)
-    //     console.log(item.productId)
-
-    //     olditem = Product.update(
-    //       { quantity: -item.quantity },
-    //       { where: { id: item.productId } },
-    //       { options: { individualHooks: true } }
-    //     )
-    //     console.log(olditem)
-    //     return olditem
-    //   })
-    // )
-    // res.send(updatedItems)
   } catch (error) {
     next(error)
   }
@@ -215,7 +195,6 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
       where: { productId: req.params.itemId, orderId: order.id },
     })
     res.send(await item.update(req.body))
-    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
   } catch (error) {
     next(error)
   }

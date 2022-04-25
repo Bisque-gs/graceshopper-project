@@ -7,7 +7,6 @@ import { fetchUserCart, fetchUser } from "../redux/singleUser"
 const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
   <div>
     <nav>
-      {console.log("USERRRRRR", user)}
       <img
         src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
         alt="logo"
@@ -20,6 +19,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
             Cart ({user.updatedPrices.length})
           </Link>
           <Link to="/products">Products</Link>
+          <Link to={`/users/${auth.id}`}>My Profile</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -57,27 +57,52 @@ const mapDispatch = (dispatch) => {
 
 export default connect(mapState, mapDispatch)(Navbar)
 
-//TRYING TO GET NAVBAR CART(X) TO POPULATE DYNAMICALLY UPON LOGIN
-//REFACTORED NAVBAR STATELESS FUNCTIONAL COMPONENT INTO A CLASS COMPONENT
-//LIMITED SUCCESS SEE BELOW COMMENTS
+// // TRYING TO GET NAVBAR CART(X) TO POPULATE DYNAMICALLY UPON LOGIN
+// // REFACTORED NAVBAR STATELESS FUNCTIONAL COMPONENT INTO A CLASS COMPONENT
+// // LIMITED SUCCESS SEE BELOW COMMENTS
+
+// //Try having the local state be the number of the orders 
+// //then use setState to update the value dynamically 
 // class Navbar extends React.Component {
 //   // const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
 
-//   // componentDidMount() {
-//   //   if (this.props.isLoggedIn) {
-//   //     this.props.getUser(Number(this.props.auth.id))
-//   //     let yo = this.props.getOrders(Number(this.props.auth.id))
-//   //     console.log(yo)
-//   //   }
-//   // }
+//   componentDidMount() {
+//     if (this.props.isLoggedIn) {
+//       this.getOrdersUponLogin()
+//       // this.props.getUser(Number(this.props.auth.id))
+//       // let yo = this.props.getOrders(Number(this.props.auth.id))
+//       // console.log(yo)
+//     }
+//   }
 
 //   getOrdersUponLogin = () => {
 //     if (this.props.isLoggedIn) {
-//       this.props.getUser(Number(id))
+//       this.props.getUser(this.props.auth.id)
 //       this.props.getOrders(Number(this.props.auth.id))
 //       return
 //     }
 //   }
+
+//   componentDidUpdate(prevProps) {
+//     console.log('componentDidUpdate')
+//     //  this.getOrdersUponLogin()
+//     // if (
+//     //   prevProps.getUser(Number(this.props.auth.id)) !==
+//     //   this.props.getUser(Number(this.props.auth.id))
+//     // ) {
+//     if (prevProps.auth.id !== this.props.auth.id) {
+//       this.getOrdersUponLogin()
+//     }
+
+    
+//      if (
+//        prevProps.user.updatedPrices.length !==
+//        this.props.user.updatedPrices.length
+//      ) {
+//        console.log('ONE')
+//      this.getOrdersUponLogin()
+//   }
+// }
 
 //   //Im able to get it populate under ComponentDidUpdate Lifecylce but it infinitley loops because
 //   //i am changing props/state. dont know why its infinitley looping if i am just fetching something one time tho
@@ -85,8 +110,18 @@ export default connect(mapState, mapDispatch)(Navbar)
 //   //   this.getOrdersUponLogin()
 //   // }
 
-//   render() {
+//   //It renders the cart quantity upon login..... but is not dynamically updating whenever i add or remove an item from the cart
+//   //which is strange because im mapping state to props from the user from the store
+//   //user in the store refers to the single user Redux file & whenever i add or remove something it changes the: this.props.user.updatedPrices
+//   //thus my props are changing so why isnt react triggering a re render ?
+//   //its because my component did update only re renders upon login and not when the cart changes
+//   //change the if statement in the Component did update to trigger a re render
+  
+//   //Maybe check out thunks/routes? connect some buttons with eachother? 
+//   //
 
+//   render() {
+//     console.log("THIS.PROPS", this.props.user.updatedPrices)
 //     // ({ handleClick, isLoggedIn, user, auth } = this.props)
 //     const handleClick = this.props.handleClick
 //     const isLoggedIn = this.props.isLoggedIn
@@ -104,7 +139,7 @@ export default connect(mapState, mapDispatch)(Navbar)
 //               {/* The navbar will show these links after you log in */}
 //               <Link to="/home">Home</Link>
 //               <Link to={`/users/${auth.id}/cart`}>
-//                 Cart ({user.itemQuantities.length})
+//                 Cart ({user.updatedPrices.length})
 //               </Link>
 //               <Link to="/products">Products</Link>
 //               <a href="#" onClick={handleClick}>
