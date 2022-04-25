@@ -4,24 +4,18 @@ import { fetchUsers } from "../redux/admin"
 import { useDispatch, useSelector } from "react-redux"
 
 const AllUsersIsAdmin = () => {
+  //REPLACES MAPSTATE TO PROPS
+  const allUsers = useSelector((state) => state.allUsers)
+  const auth = useSelector((state) => state.auth)
+
   // useEffect() ==> REPLACES COMPONENT DID MOUNT
   //useDispatch() ==> REPLACES MAP DISPATCH TO PROPS
   //THE EMPTY ARRAY OF DEPENDENCIES ENSURES THAT THE useEffect ONLY HAPPENS
   //ONCE, AFTER THE INITIAL RENDER
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(
-      fetchUsers({
-        id: 1,
-        username: "Dominican",
-        email: "Dominican@gmail.com",
-      })
-    )
+    dispatch(fetchUsers(auth.id))
   }, [])
-
-  //REPLACES MAPSTATE TO PROPS
-  const allUsers = useSelector((state) => state.allUsers)
-  const auth = useSelector((state) => state.auth)
 
   return (
     <div>
