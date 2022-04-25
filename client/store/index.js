@@ -6,13 +6,15 @@ import auth from './auth';
 import singleUserReducer from '../redux/singleUser';
 import singleProductReducer from '../redux/singleProduct';
 import productsReducer from '../redux/products';
+import adminUserReducer from '../redux/admin';
 
 const reducer = combineReducers({
   auth,
   products: productsReducer,
   user: singleUserReducer,
   product: singleProductReducer,
-});
+  allUsers: adminUserReducer,
+})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );

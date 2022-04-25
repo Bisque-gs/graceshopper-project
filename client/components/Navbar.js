@@ -20,6 +20,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
           </Link>
           <Link to="/products">Products</Link>
           <Link to={`/users/${auth.id}`}>My Profile</Link>
+          {auth.isAdmin ? (<Link to={`/users`}>All Users</Link>): (console.log('NOT ADMIN ALL USERS NOT RENDERING '))}
           <a href="#" onClick={handleClick}>
             Logout
           </a>
