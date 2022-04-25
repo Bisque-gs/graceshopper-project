@@ -2,6 +2,7 @@ import axios from "axios"
 
 const GET_SINGLE_PRODUCT = "GET_SINGLE_PRODUCT"
 const ADD_PRODUCT_TO_CART = "ADD_PRODUCT_TO_CART"
+const CREATE_PRODUCT = "CREATE_PRODUCT"
 
 const getProduct = (product) => {
   return {
@@ -14,6 +15,13 @@ const addProductToCart = (product) => {
   return {
     type: ADD_PRODUCT_TO_CART,
     product,
+  }
+}
+
+export const createProduct = (product) => {
+  return {
+    type: CREATE_PRODUCT,
+    product
   }
 }
 
@@ -41,6 +49,13 @@ export const setOrder = (userId, productId, quantity) => {
     }
   }
 }
+
+export const addProductThunk = (product) => {
+  return async (dispatch) => {
+    const { data: created } = await axios.post("/api/products", product);
+    dispatch(createProduct(created));
+  };
+};
 
 const defaultState = {}
 
