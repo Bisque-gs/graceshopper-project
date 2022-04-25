@@ -19,6 +19,7 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
             Cart ({user.updatedPrices.length})
           </Link>
           <Link to="/products">Products</Link>
+          <Link to={`/users/${auth.id}`}>My Profile</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>

@@ -1,15 +1,16 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from "react"
+import { connect } from "react-redux"
 
 /**
  * COMPONENT
  */
-export const Home = props => {
-  const {username} = props
+export const Home = (props) => {
+  const { username } = props
 
   return (
     <div className="column">
       <h3>Welcome, {username}!</h3>
+      <img src="https://www.pikpng.com/pngl/b/87-875320_snorlax-png-snorlax-pokemon-clipart.png" />
     </div>
   )
 }
@@ -17,9 +18,9 @@ export const Home = props => {
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
-    username: state.auth.username
+    username: state.auth.username,
   }
 }
 
