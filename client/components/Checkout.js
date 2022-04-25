@@ -42,10 +42,7 @@ class Checkout extends React.Component {
   render() {
     const user = this.props.userInfo.user
     const auth = this.props.auth
-    const userId = this.props.userInfo.user
-    const ordersInfo = this.props.userInfo.ordersInfo
     const cartItems = this.props.userInfo.cartItems || []
-    const isLoggedIn = this.props.isLoggedIn
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
     let total = 0

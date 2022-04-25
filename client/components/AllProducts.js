@@ -18,6 +18,10 @@ export class AllProducts extends React.Component {
     this.props.getProducts()
   }
 
+  // componentDidUpdate() {
+  //   console.log('ITS WORKING')
+  // }
+
   // isAddVisibleToggle() {
   //   this.setState({ isAddVisible: false });
   // }
@@ -35,7 +39,7 @@ export class AllProducts extends React.Component {
     const { auth } = this.props
     return (
       <div>
-        <br/>
+        <br />
         <div className="column">
           Products:
           {/* {this.state.isAddVisible ? (

@@ -148,7 +148,7 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-    console.log(req.body)
+   
     updatedItems = await Promise.all(
       req.body.itemQuantities.map((item) => {
         let olditem = Product.findByPk(item.productId)
@@ -160,12 +160,11 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
         return olditem
       })
     )
+    await Order.update(
+      { isCurrentOrder: false },
+      { where: { id: req.body.itemQuantities[0].orderId } }
+    )
     res.send(updatedItems)
-    // const order = await Order.findOne({ where: { userId: req.params.userId, isCurrentOrder: true } });
-    // const item = await OrderProducts.findOne({ where: { productId: req.params.itemId, orderId: order.id } });
-    // const itemToDecrement = await Product.findByPk(item.productId)
-    // res.send(await item.update(req.body))
-    // res.send(await item.update({ quantity: Number(req.body.quantity) }))
   } catch (error) {
     next(error)
   }
