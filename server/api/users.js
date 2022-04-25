@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
 const Sequelize = require("sequelize")
+
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
@@ -40,7 +41,11 @@ router.get("/:id/cart", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({
       where: { userId: req.params.id },
+      include: {
+        model: Product, // including product also includes OrderProducts
+      },
     })
+
     const currentOrder = userAllOrders.filter((order) => {
       return order.dataValues.isCurrentOrder
     })
@@ -49,25 +54,23 @@ router.get("/:id/cart", async (req, res, next) => {
       res.send(0)
       throw new Error("This cart is empty.")
     }
-    
-    const itemQuantities = await OrderProducts.findAll({
-      where: { orderId: currentOrder[0].id },
-      // include: {
-      //   model: Product,
-      //   // where: {
 
-      //   // }
-      // },
-    })
-    console.log("itemQuantities")
-    const cartItems = await Promise.all(
-      itemQuantities.map((item) => {
-        return Product.findByPk(item.dataValues.productId)
-      })
-    )
+    const orderProducts = currentOrder[0].products.map((x) => x.orderProducts)
+
+    // const orderProducts = await OrderProducts.findAll({
+    //   where: { orderId: currentOrder[0].id },
+    // })
+
+    const cartItems = currentOrder[0].products
+
+    // const cartItems = await Promise.all(
+    //   orderProducts.map((item) => {
+    //     return Product.findByPk(item.dataValues.productId)
+    //   })
+    // )
 
     const updatedPrices = await Promise.all(
-      itemQuantities.map((x, i) => {
+      orderProducts.map((x, i) => {
         return x.update({ price: Number(cartItems[i].price) * 100 })
       })
     )
@@ -136,13 +139,18 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
     //find the current Order associated with user
     const order = await Order.findOne({
       where: { userId: req.params.userId, isCurrentOrder: true },
+      include: {
+        model: Product,
+      },
     })
-    const item = await OrderProducts.findOne({
-      where: { productId: req.params.itemId, orderId: order.id },
-    })
-    console.log(item)
-    await item.destroy()
-    res.send(item)
+    const item = order.products
+      .filter((x) => x.id === Number(req.params.itemId))
+      .map((x) => x.dataValues.orderProducts)
+    // const item = await OrderProducts.findOne({
+    //   where: { productId: req.params.itemId, orderId: order.id },
+    // })
+    await item[0].destroy()
+    res.send(item[0])
   } catch (error) {
     next(error)
   }
@@ -161,8 +169,8 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
-  try {   
-      updatedItems = await Promise.all(
+  try {
+    updatedItems = await Promise.all(
       req.body.itemQuantities.map((item) => {
         let olditem = Product.findByPk(item.productId)
         olditem = Product.increment(
@@ -177,8 +185,8 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
       { where: { id: req.body.itemQuantities[0].orderId } }
     )
     res.send(updatedItems)
-
   } catch (error) {
+    console.log(error)
     next(error)
   }
 })

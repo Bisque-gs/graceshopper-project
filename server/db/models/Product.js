@@ -46,7 +46,9 @@ Product.beforeValidate((product) => {
     //   "name": "${product.name}",
     //   "quantityInStock": ${product._previousDataValues.quantity}
     // }`)
-    const error = new Error(JSON.stringify(product._previousDataValues))
+    const error = new Error(
+      `Only ${product._previousDataValues.quantity} remaining of ${product.name}!`
+    )
     throw error
   }
 })
