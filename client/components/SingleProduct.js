@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchProduct, setOrder } from "../redux/singleProduct"
+import { fetchProduct, setOrder, updateProductThunk } from "../redux/singleProduct"
+import EditProduct from "./EditProduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -8,13 +9,19 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: "",
       submitted: false,
+      isEditVisible: false,
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.isEditVisibleToggle = this.isEditVisibleToggle.bind(this);
   }
   componentDidMount() {
     const { id } = this.props.match.params
     this.props.getProduct(Number(id))
+  }
+
+  isEditVisibleToggle() {
+    this.setState({ isEditVisible: false });
   }
 
   handleChange(e) {
@@ -35,21 +42,17 @@ class SingleProduct extends React.Component {
       quantity: 0,
       submitted: true,
     })
-    // redirect user to products
   }
 
   render() {
-    console.log(this.props)
     const { product, auth } = this.props
     return (
       <div className="profile">
-        {this.state.submitted && <p>Item(s) added to cart!</p>}
         <div className="column">
         <h3>{product.name}</h3>
         <img src={product.imageUrl} alt={product.name} />
         <h3>PRICE: ${product.price / 100} per card</h3>
         <p>{product.quantity} remaining in stock!</p>
-        {/* dropdown here? add more than one to cart? */}
         <select name="quantity" id="" onChange={this.handleChange}>
           {Array(10)
             .fill(0)
@@ -61,13 +64,28 @@ class SingleProduct extends React.Component {
               )
             })}
         </select>
+        {this.state.submitted && <p>Item(s) added to cart!</p>}
         <button
           onClick={
-            auth.id ? this.handleClick : () => console.log("Not logged in")
+            auth.id ? this.handleClick : () => console.log("Added to local storage")
           }
         >
           Add to cart
         </button>
+        {this.state.isEditVisible ? (
+          <EditProduct
+            updateProduct={this.props.updateProduct}
+            product={product}
+            isEditVisible={this.isEditVisibleToggle}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => this.setState({ isEditVisible: true })}
+          >
+            Edit
+          </button>
+        )}
         </div>
       </div>
     )
@@ -86,6 +104,7 @@ function mapDispatch(dispatch) {
     getProduct: (id) => dispatch(fetchProduct(id)),
     addToCart: (userId, productId, quantity) =>
       dispatch(setOrder(userId, productId, quantity)),
+    updateProduct: (product) => dispatch(updateProductThunk(product)),
   }
 }
 

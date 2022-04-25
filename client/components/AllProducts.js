@@ -1,30 +1,26 @@
 import React from "react"
 import { connect } from "react-redux"
 import { fetchProducts, deleteProductThunk } from "../redux/products"
-import { setOrder } from "../redux/singleProduct"
+import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
-// import AddProduct from "./AddProduct";
+import AddProduct from "./AddProduct";
 
 export class AllProducts extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     isAddVisible: false,
-  //   };
-  //   this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this);
-  // }
+  constructor() {
+    super();
+    this.state = {
+      isAddVisible: false,
+    };
+    this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this);
+  }
 
   componentDidMount() {
     this.props.getProducts()
   }
 
-  // componentDidUpdate() {
-  //   console.log('ITS WORKING')
-  // }
-
-  // isAddVisibleToggle() {
-  //   this.setState({ isAddVisible: false });
-  // }
+  isAddVisibleToggle() {
+    this.setState({ isAddVisible: false });
+  }
 
   handleClick(e) {
     e.preventDefault()
@@ -42,19 +38,20 @@ export class AllProducts extends React.Component {
         <br />
         <div className="column">
           Products:
-          {/* {this.state.isAddVisible ? (
-            <AddCampus
-              addCampus={this.props.addCampus}
+          {this.state.isAddVisible ? (
+            <AddProduct
+              addProduct={this.props.addProduct}
               isAddVisible={this.isAddVisibleToggle}
             />
           ) : (
+            auth.isAdmin ?
             <button
               type="button"
               onClick={() => this.setState({ isAddVisible: true })}
             >
-              Add Campus
-            </button>
-          )} */}
+              Add Product
+            </button> : console.log("You're not admin")
+          )}
         </div>
         <div className="unit">
           {products.length === 0 ? (
@@ -114,7 +111,7 @@ const mapDispatch = (dispatch) => {
   return {
     getProducts: () => dispatch(fetchProducts()),
     addToCart: (userId, productId) => dispatch(setOrder(userId, productId, 1)),
-    // addProduct: (product) => dispatch(addProductThunk(product)),
+    addProduct: (product) => dispatch(addProductThunk(product)),
     deleteProduct: (productId) => {
       dispatch(deleteProductThunk(productId))
     },
