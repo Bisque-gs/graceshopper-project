@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import AllProducts from './components/AllProducts';
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/Home';
-import SingleUser from './components/SingleUser';
-import SingleProduct from './components/SingleProduct';
-import { me } from './store';
-import Cart from './components/Cart';
+import React, { Component, Fragment } from "react"
+import { connect } from "react-redux"
+import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import AllProducts from "./components/AllProducts"
+import { Login, Signup } from "./components/AuthForm"
+import Home from "./components/Home"
+import SingleUser from "./components/SingleUser"
+import EditUserProfile from "./components/EditUserProfile"
+import SingleProduct from "./components/SingleProduct"
+import { me } from "./store"
+import Cart from "./components/Cart"
 import Checkout from './components/Checkout';
-
-
 
 /**
  * COMPONENT
@@ -32,7 +31,8 @@ class Routes extends Component {
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/users/:id/cart/checkout" exact component={Checkout} />
             <Route path="/users/:id/cart" component={Cart} />
-
+            <Route path="/users/:id/edituser" component={EditUserProfile} />
+            <Route path="/users/:id" component={SingleUser} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -41,7 +41,7 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/products" exact component={AllProducts} />
-            <Route path="/users/:id" component={SingleUser} />
+            {/* <Route path="/users/:id" component={SingleUser} /> */}
             <Route path="/products/:id" component={SingleProduct} />
           </Switch>
         )}

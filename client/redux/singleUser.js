@@ -1,6 +1,8 @@
 import axios from "axios"
 
 const GET_SINGLE_USER = "GET_SINGLE_USER"
+
+const UPDATE_SINGLE_USER = "UPDATE_SINGLE_USER"
 const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
 const UPDATE_QUANITY = "UPDATE_QUANITY"
@@ -9,6 +11,13 @@ const CHECKOUT_ITEMS = "CHECKOUT_ITEMS"
 const getUser = (user) => {
   return {
     type: GET_SINGLE_USER,
+    user,
+  }
+}
+
+const updateUser = (user) => {
+  return {
+    type: UPDATE_SINGLE_USER,
     user,
   }
 }
@@ -64,6 +73,19 @@ export const updateQuantityThunk = ({ userId, productId, quantity }) => {
   }
 }
 
+export const updateSingleUser = ({ id, field }) => {
+  console.log(id, field, "RIGHT HERE")
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(`/api/users/${id}`, field)
+      console.log("updated")
+      dispatch(updateUser(updated))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 //We dont want to delete the item we just want to delete the order of the item. Need to access and
 //delete the item from the junction table
 export const deleteItemCartThunk = ({ userId, productId }) => {
@@ -82,6 +104,7 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
+
       const { data } = await axios.get(`/api/users/${id}/cart/`)
       dispatch(getUserCart(data))
     } catch (error) {
@@ -111,11 +134,14 @@ const defaultState = {
   ordersInfo: {},
   cartItems: [],
   updatedPrices: [],
+
 }
 
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
+      return { ...state, user: action.user }
+    case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
     case GET_USER_CART:
       return {
