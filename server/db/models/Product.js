@@ -26,12 +26,16 @@ const Product = db.define("product", {
     type: Sequelize.STRING,
     defaultValue: "https://i.imgur.com/PD5Nx4d.png",
   },
+  // pokeType: {
+  //   type: Sequelize.STRING,
+  //   defaultValue: "normal",
+  // },
 })
 
 Product.beforeValidate((product) => {
   if (product.quantity < 0) {
     throw new Error(
-      `${product._previousDataValues.quantity} ${product.name}s remaining in stock!`
+      `${product._previousDataValues.quantity} ${product.name}s remaining in stock`
     )
   }
 })

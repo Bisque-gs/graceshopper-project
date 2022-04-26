@@ -56,8 +56,9 @@ class SingleProduct extends React.Component {
         <div className="column">
           <h3>{product.name}</h3>
           <img src={product.imageUrl} alt={product.name} />
-          <h3>PRICE: ${product.price / 100} per card</h3>
+          <h3>PRICE: ${(product.price / 100).toFixed(2)} per card</h3>
           <p>{product.quantity} remaining in stock!</p>
+          {product.quantity == 0 && (noneInStock = true)}
           <select name="quantity" id="" onChange={this.handleChange}>
             {Array(10)
               .fill(0)
@@ -76,6 +77,8 @@ class SingleProduct extends React.Component {
                 ? this.handleClick
                 : () => console.log("Added to local storage")
             }
+            disabled={noneInStock}
+            style={{ opacity: noneInStock && 0.5 }}
           >
             Add to cart
           </button>
@@ -90,8 +93,6 @@ class SingleProduct extends React.Component {
               <button
                 type="button"
                 onClick={() => this.setState({ isEditVisible: true })}
-                disabled={noneInStock}
-                style={{ opacity: noneInStock && 0.5 }}
               >
                 Edit
               </button>

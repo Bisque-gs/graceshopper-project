@@ -40,13 +40,15 @@ class Checkout extends React.Component {
   //if not then the order bounces, display message/alert
 
   render() {
-    const { user } = this.props.userInfo
     const { auth, userInfo } = this.props
-    const cartItems = this.props.userInfo.cartItems || []
-    const itemQuantities = this.props.userInfo.updatedPrices || []
+    const { user } = userInfo
+    const cartItems = userInfo.cartItems || []
+    const itemQuantities = userInfo.updatedPrices
+      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+      : []
     let cartAuthorization = user.id === auth.id
+    let cartIsEmpty = cartItems.length === 0
     let total = 0
-    console.log(userInfo)
     return (
       <React.Fragment>
         <div className="container">
@@ -57,34 +59,42 @@ class Checkout extends React.Component {
                 <h2>{user.username}'s CHECKOUT CONFIRMATION PAGE</h2>
               </div>
               <div className="unit">
-                {cartItems.map((item, i) => (
-                  <div key={item.id} className="profile">
-                    <h3>
-                      <Link to={`/products/${item.id}`}>{item.name}</Link>
-                    </h3>
-                    <img src={item.imageUrl} />
-                    <div className="column">
-                      <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
-                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                {cartItems
+                  .sort((a, b) => a.id - b.id)
+                  .map((item, i) => (
+                    <div key={item.id} className="profile">
                       <h3>
-                        SUBPRICE:{" "}
-                        {(itemQuantities[i].price *
-                          itemQuantities[i].quantity) /
-                          10000}
+                        <Link to={`/products/${item.id}`}>{item.name}</Link>
                       </h3>
+                      <img src={item.imageUrl} />
+                      <div className="column">
+                        <h3>
+                          UNIT PRICE: $
+                          {(itemQuantities[i].price / 10000).toFixed(2)}
+                        </h3>
+                        <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                        <h3>
+                          SUBPRICE: $
+                          {(
+                            (itemQuantities[i].price *
+                              itemQuantities[i].quantity) /
+                            10000
+                          ).toFixed(2)}
+                        </h3>
+                      </div>
+                      <div style={{ display: "none" }}>
+                        {
+                          (total +=
+                            itemQuantities[i].price *
+                            itemQuantities[i].quantity)
+                        }
+                      </div>
                     </div>
-                    <div style={{ display: "none" }}>
-                      {
-                        (total +=
-                          itemQuantities[i].price * itemQuantities[i].quantity)
-                      }
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
-              <div>TOTAL PRICE: ${total / 10000}</div>
+              <div>TOTAL PRICE: ${(total / 10000).toFixed(2)}</div>
               {userInfo.error && (
-                <p>{userInfo.error} Please adjust your cart.</p>
+                <p>{userInfo.error}. Please adjust your cart.</p>
               )}
               <button
                 onClick={() =>
@@ -94,6 +104,8 @@ class Checkout extends React.Component {
                   })
                 }
                 type="button"
+                disabled={cartIsEmpty}
+                style={{ opacity: cartIsEmpty && 0.5 }}
               >
                 SUBMIT ORDER
               </button>

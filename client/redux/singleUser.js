@@ -104,7 +104,7 @@ export const fetchUserCart = (id) => {
       const { data } = await axios.get(`/api/users/${id}/cart/`)
       dispatch(getUserCart(data))
     } catch (error) {
-      console.log(error)
+      dispatch(getUserCart({ error: error.response.data }))
     }
   }
 }
@@ -138,13 +138,21 @@ export default function singleUserReducer(state = defaultState, action) {
     case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
     case GET_USER_CART:
-      return {
-        ...state,
-        ordersInfo: action.ordersInfo,
-        cartItems: action.ordersInfo.cartItems,
-        updatedPrices: action.ordersInfo.updatedPrices,
-        error: "",
-      }
+      return action.error
+        ? {
+            ...state,
+            ordersInfo: {},
+            cartItems: [],
+            updatedPrices: [],
+            error: action.error,
+          }
+        : {
+            ...state,
+            ordersInfo: action.ordersInfo,
+            cartItems: action.ordersInfo.cartItems,
+            updatedPrices: action.ordersInfo.updatedPrices,
+            error: "",
+          }
     case DELETE_ITEM_CART:
       return {
         ...state,
