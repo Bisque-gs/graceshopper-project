@@ -1,6 +1,5 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
-const Sequelize = require("sequelize")
 
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
@@ -73,39 +72,25 @@ router.get("/:id/cart", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({
       where: { userId: req.params.id },
-      include: {
-        model: Product, // including product also includes OrderProducts
-      },
+      // attributes?
+      include: { model: Product }, // including product also includes OrderProducts
     })
 
-    const currentOrder = userAllOrders.filter((order) => {
-      return order.dataValues.isCurrentOrder
-    })
+    const currentOrder = userAllOrders.filter((order) => order.isCurrentOrder)
 
     if (!currentOrder[0]) {
       res.send(0)
       throw new Error("This cart is empty.")
     }
 
-    const orderProducts = currentOrder[0].products.map((x) => x.orderProducts)
-
-    // const orderProducts = await OrderProducts.findAll({
-    //   where: { orderId: currentOrder[0].id },
-    // })
-
     const cartItems = currentOrder[0].products
-
-    // const cartItems = await Promise.all(
-    //   orderProducts.map((item) => {
-    //     return Product.findByPk(item.dataValues.productId)
-    //   })
-    // )
-
+    const orderProducts = cartItems.map((x) => x.orderProducts)
     const updatedPrices = await Promise.all(
       orderProducts.map((x, i) => {
         return x.update({ price: Number(cartItems[i].price) * 100 })
       })
     )
+
     res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
   } catch (err) {
     err.message = "Empty cart"
@@ -133,7 +118,6 @@ router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
 
     const orderId = order.dataValues.id
 
-    // there was a conflict with users adding the same item twice. solved below:
     // check if orderProduct exists. if so, update it. if not, create it
     let orderProduct = await OrderProducts.findOne({
       where: {
@@ -168,21 +152,17 @@ router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
 //THIS ROUTE DELETES AN ITEM FROM A USERS CART
 router.delete("/:userId/cart/:itemId", async (req, res, next) => {
   try {
-    //find the current Order associated with user
     const order = await Order.findOne({
       where: { userId: req.params.userId, isCurrentOrder: true },
-      include: {
-        model: Product,
-      },
+      include: { model: Product },
     })
     const item = order.products
       .filter((x) => x.id === Number(req.params.itemId))
       .map((x) => x.dataValues.orderProducts)
-    // const item = await OrderProducts.findOne({
-    //   where: { productId: req.params.itemId, orderId: order.id },
-    // })
-    await item[0].destroy()
-    res.send(item[0])
+      .pop()
+
+    await item.destroy()
+    res.send(item)
   } catch (error) {
     next(error)
   }
@@ -192,26 +172,38 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 //req.body will be the quantity of all the items that we want to decrement
 //req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
 
-//  if product has enough quantity:
-//    update quantity
-//    change order.isCurrentOrder to be false
-//    res.send(?????) currently sending product info
-//  else:
-//    res.send(item that failed, quantity available)
-
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-    updatedItems = await Promise.all(
+    const items = await Promise.all(
       req.body.itemQuantities.map((item) => {
-        let olditem = Product.findByPk(item.productId)
-        olditem = Product.increment(
-          { quantity: -item.quantity },
-          { where: { id: item.productId } }
-        )
-        return olditem
+        return Product.findByPk(item.productId)
       })
     )
+
+    const updatedItems = await Promise.all(
+      items.map((item, i) => {
+        const updated = item.update(
+          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { individualHooks: true }
+        )
+        return updated
+      })
+    )
+
+    // NOT THIS WAY. The increment function is done in the db, not the instance,
+    // so it seems like we can't use hooks on it
+    //
+    // updatedItems = await Promise.all(
+    //   req.body.itemQuantities.map((item) => {
+    //     let olditem = Product.findByPk(item.productId)
+    //     olditem = Product.increment(
+    //       { quantity: -item.quantity },
+    //       { where: { id: item.productId } }
+    //     )
+    //     return olditem
+    //   })
+    // )
     await Order.update(
       { isCurrentOrder: false },
       { where: { id: req.body.itemQuantities[0].orderId } }
@@ -230,10 +222,14 @@ router.put("/:userId/cart/:itemId", async (req, res, next) => {
     //find the current Order associated with user
     const order = await Order.findOne({
       where: { userId: req.params.userId, isCurrentOrder: true },
+      include: { model: Product },
     })
-    const item = await OrderProducts.findOne({
-      where: { productId: req.params.itemId, orderId: order.id },
-    })
+
+    const item = order.products
+      .filter((x) => x.id === Number(req.params.itemId))
+      .map((x) => x.dataValues.orderProducts)
+      .pop()
+
     res.send(await item.update(req.body))
   } catch (error) {
     next(error)
