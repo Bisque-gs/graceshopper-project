@@ -5,7 +5,7 @@ We created a site where you can go to order pokemon cards!
 https://grace-pokebay.herokuapp.com
 
 ## Team Members
-https://github.com/BrianClark1
-https://github.com/Erschindel
-https://github.com/spenham
-https://github.com/AndStatik
+https://github.com/BrianClark1 <br />
+https://github.com/Erschindel <br />
+https://github.com/spenham <br />
+https://github.com/AndStatik <br />
