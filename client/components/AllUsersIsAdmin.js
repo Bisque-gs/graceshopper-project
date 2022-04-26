@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { fetchUsers } from "../redux/admin"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 const AllUsersIsAdmin = () => {
   //REPLACES MAPSTATE TO PROPS
@@ -28,10 +29,16 @@ const AllUsersIsAdmin = () => {
             ) : (
               allUsers.map((user) => {
                 return (
-                  <div key={user.id} className="profile">
-                    <h3>{user.id}</h3>
-                    <h3>{user.username}</h3>
-                    <h3>{user.email}</h3>
+                  <div key={user.id}>
+                    <Link to={`/users/${auth.id}/admin/${user.id}`}>
+                    {/* <Link to={`/users/${user.id}`}> */}
+                      <div className="profile">
+                        <h3>{user.id}</h3>
+                        <h3>{user.username}</h3>
+                        <h3>{user.email}</h3>
+                      </div>
+                      {/* </Link> */}
+                      </Link>
                   </div>
                 )
               })
@@ -49,7 +56,7 @@ const AllUsersIsAdmin = () => {
   )
 }
 
-//NO NEED FOR CONNECT 
+//NO NEED FOR CONNECT
 export default AllUsersIsAdmin
 
 // export class AllUsers extends React.Component {

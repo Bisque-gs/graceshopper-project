@@ -11,12 +11,24 @@ class SingleUser extends React.Component {
   }
   render() {
     const { user } = this.props.user
-    console.log("user", user.username)
+    const auth = this.props.auth
+    let cartAuthorization = user.id === auth.id
     return (
-      <div>
-        <div>Single user {user.username} here</div>
-        <Link to={`/users/${user.id}/edituser`}>Edit My Profile</Link>
-      </div>
+      <React.Fragment>
+        {cartAuthorization ? (
+          <div>
+            <div>Single user {user.username} here</div>
+            <Link to={`/users/${user.id}/edituser`}>Edit My Profile</Link>
+          </div>
+        ) : (
+          <div>
+            <h3>
+              STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
+              SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
+            </h3>
+          </div>
+        )}
+      </React.Fragment>
     )
   }
 }
@@ -24,6 +36,8 @@ class SingleUser extends React.Component {
 function mapState(state) {
   return {
     user: state.user,
+    isLoggedIn: !!state.auth.id,
+    auth: state.auth,
   }
 }
 

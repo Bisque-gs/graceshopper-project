@@ -9,22 +9,9 @@ export const getUsers = (users) => {
   }
 }
 
-// export const fetchUsers = (str) => {
-//   return async (dispatch) => {
-//     try {
-//       console.log(str)
-//       const { data } = await axios.get("/api/users")
-//       dispatch(getUsers(data))
-//     } catch (error) {
-//       console.error(error)
-//     }
-//   }
-// }
-
 export const fetchUsers = (id) => {
   return async (dispatch) => {
     try {
-      console.log(id)
       const { data } = await axios.get(`/api/users/${id}/users`)
       dispatch(getUsers(data))
     } catch (error) {

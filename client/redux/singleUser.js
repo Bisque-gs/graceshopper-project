@@ -1,6 +1,7 @@
 import axios from "axios"
 
 const GET_SINGLE_USER = "GET_SINGLE_USER"
+const GET_ORDER_HISTORY = "GET_ORDER_HISTORY"
 const UPDATE_SINGLE_USER = "UPDATE_SINGLE_USER"
 const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
@@ -46,6 +47,13 @@ const userCheckout = (order) => {
   return {
     type: CHECKOUT_ITEMS,
     order,
+  }
+}
+
+const orderHistory = (orderHistory) => {
+  return {
+    type: GET_ORDER_HISTORY,
+    orderHistory,
   }
 }
 
@@ -109,6 +117,17 @@ export const fetchUserCart = (id) => {
   }
 }
 
+export const fetchUserOrderHistory = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/api/users/${id}/cart/orderhistory`)
+      dispatch(orderHistory(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 export const checkoutThunk = ({ userId, itemQuantities }) => {
   return async (dispatch) => {
     try {
@@ -128,6 +147,7 @@ const defaultState = {
   ordersInfo: {},
   cartItems: [],
   updatedPrices: [],
+  orderHistory: {},
   error: "",
 }
 
@@ -171,7 +191,7 @@ export default function singleUserReducer(state = defaultState, action) {
         }),
       }
     case CHECKOUT_ITEMS:
-      return action.order.error
+         return action.order.error
         ? {
             ...state,
             error: action.order.error,
@@ -182,6 +202,9 @@ export default function singleUserReducer(state = defaultState, action) {
             updatedPrices: [],
             error: "",
           }
+    case GET_ORDER_HISTORY:
+      return { ...state, orderHistory: action.orderHistory }
+
     default:
       return state
   }
