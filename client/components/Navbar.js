@@ -16,7 +16,8 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
           <Link to={`/users/${auth.id}/cart`}>
-            Cart ({user.updatedPrices.length})
+          CART
+            {/* Cart ({user.updatedPrices.length}) */}
           </Link>
           <Link to="/products">Products</Link>
           <Link to={`/users/${auth.id}`}>My Profile</Link>

@@ -43,6 +43,12 @@ class Cart extends React.Component {
         <div>
           {cartAuthorization || auth.isAdmin ? (
             <div>
+              <div>
+                {" "}
+                <Link to={`/users/${user.id}/cart/orderhistory`}>
+                  <button type="button">💸ORDER HISTORY💸</button>
+                </Link>
+              </div>
               <br />
               <div className="column">
                 This is {user.username}'s cart!

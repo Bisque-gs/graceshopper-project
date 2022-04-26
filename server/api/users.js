@@ -5,9 +5,14 @@ const Sequelize = require("sequelize")
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
+
+
+
+
+
 //GET /api/users/:userid/users
 router.get("/:userid/users", async (req, res, next) => {
-  console.log(req.params.userid)
+  // console.log(req.params.userid)
   try {
     //ADMIN AUTHORIZATION
     const findOutIfAdmin = await User.findOne({
@@ -61,6 +66,56 @@ router.get("/:id", async (req, res, next) => {
     next(err)
   }
 })
+
+
+//GET THE ORDER HISTORY FOR A USER:
+//ITEM PURCHASED, AND THEIR PRICES AT THE TIME OF PURCHASE 
+//BASICALLY SHOULD LOAD UP THE ENTIRE CART 
+//NEED EVERY CART EVER FML 
+//GET /api/users/:userid/cart/orderhistory
+router.get("/:id/cart/orderhistory", async (req, res, next) => {
+  try {
+    const userAllOrders = await Order.findAll({
+      where: { userId: req.params.id },
+      include: {
+        model: Product, // including product also includes OrderProducts
+      },
+    })
+
+    console.log('USER ALL ORDERS', userAllOrders)
+
+    // const currentOrder = userAllOrders.filter((order) => {
+    //   return order.dataValues.isCurrentOrder
+    // })
+
+    // if (!currentOrder[0]) {
+    //   res.send(0)
+    //   throw new Error("This cart is empty.")
+    // }
+
+    // const orderProducts = currentOrder[0].products.map((x) => x.orderProducts)
+
+
+    // const cartItems = currentOrder[0].products
+
+    // const updatedPrices = await Promise.all(
+    //   orderProducts.map((x, i) => {
+    //     return x.update({ price: Number(cartItems[i].price) * 100 })
+    //   })
+    // )
+    res.send({ userAllOrders });
+
+    // res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
+  } catch (err) {
+    err.message = "Empty cart"
+    next(err)
+  }
+})
+
+
+
+
+
 
 //First we Grab all the orders associated with that user
 //Next we filter all the orders and grab the 'current order', the one with a status of True
