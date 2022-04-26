@@ -7,6 +7,14 @@ const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
 const UPDATE_QUANITY = "UPDATE_QUANITY"
 const CHECKOUT_ITEMS = "CHECKOUT_ITEMS"
+const GET_GUEST_CART = "GET_GUEST_CART"
+
+const getGuestCart = (ordersInfo) => {
+  return {
+    type: GET_GUEST_CART,
+    ordersInfo,
+  }
+}
 
 const getUser = (user) => {
   return {
@@ -53,8 +61,13 @@ const userCheckout = (order) => {
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}`)
-      dispatch(getUser(data))
+      if (!id) {
+        const { data } = await axios.get(`/api/users/guest/cart/`)
+        dispatch(getGuestCart(data))
+      } else {
+        const { data } = await axios.get(`/api/users/${id}`)
+        dispatch(getUser(data))
+      }
     } catch (error) {
       console.log(error)
     }
@@ -102,8 +115,13 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}/cart/`)
-      dispatch(getUserCart(data))
+      if (!id) {
+        const { data } = await axios.get(`/api/users/guest/cart/`)
+        dispatch(getGuestCart(data))
+      } else {
+        const { data } = await axios.get(`/api/users/${id}/cart/`)
+        dispatch(getUserCart(data))
+      }
     } catch (error) {
       console.log(error)
     }
@@ -162,6 +180,10 @@ export default function singleUserReducer(state = defaultState, action) {
       }
     case CHECKOUT_ITEMS:
       return { ...state, cartItems: [], updatedPrices: [] }
+    case GET_GUEST_CART:
+      return {...state,
+        cartItems: action.ordersInfo
+      }
     default:
       return state
   }
