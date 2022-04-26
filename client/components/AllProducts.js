@@ -3,15 +3,15 @@ import { connect } from "react-redux"
 import { fetchProducts, deleteProductThunk } from "../redux/products"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
-import AddProduct from "./AddProduct";
+import AddProduct from "./AddProduct"
 
 export class AllProducts extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       isAddVisible: false,
-    };
-    this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this);
+    }
+    this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this)
   }
 
   componentDidMount() {
@@ -19,7 +19,7 @@ export class AllProducts extends React.Component {
   }
 
   isAddVisibleToggle() {
-    this.setState({ isAddVisible: false });
+    this.setState({ isAddVisible: false })
   }
 
   handleClick(e) {
@@ -31,8 +31,7 @@ export class AllProducts extends React.Component {
   }
 
   render() {
-    const products = this.props.products
-    const { auth } = this.props
+    const { auth, products } = this.props
     return (
       <div>
         <br />
@@ -43,55 +42,58 @@ export class AllProducts extends React.Component {
               addProduct={this.props.addProduct}
               isAddVisible={this.isAddVisibleToggle}
             />
-          ) : (
-            auth.isAdmin ?
+          ) : auth.isAdmin ? (
             <button
               type="button"
               onClick={() => this.setState({ isAddVisible: true })}
             >
               Add Product
-            </button> : console.log("You're not admin")
+            </button>
+          ) : (
+            console.log("You're not admin")
           )}
         </div>
         <div className="unit">
           {products.length === 0 ? (
             <p>No products</p>
           ) : (
-            products.map((product) => {
-              return (
-                <div key={product.id} className="profile">
-                  <h3>
-                    <Link to={`/products/${product.id}`}>{product.name}</Link>
-                  </h3>
-                  <a href={`/products/${product.id}`}>
-                    <img src={product.imageUrl} />
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      auth.id
-                        ? this.props.addToCart(auth.id, product.id)
-                        : console.log("add to local storage")
-                    }}
-                  >
-                    Add to cart
-                  </button>
-                  {auth.isAdmin ? (
+            products
+              .sort((a, b) => a.id - b.id)
+              .map((product) => {
+                return (
+                  <div key={product.id} className="profile">
+                    <h3>
+                      <Link to={`/products/${product.id}`}>{product.name}</Link>
+                    </h3>
+                    <a href={`/products/${product.id}`}>
+                      <img src={product.imageUrl} />
+                    </a>
                     <button
-                      className="cancel"
                       type="button"
                       onClick={() => {
-                        this.props.deleteProduct(product.id)
+                        auth.id
+                          ? this.props.addToCart(auth.id, product.id)
+                          : console.log("add to local storage")
                       }}
                     >
-                      Delete
+                      Add to cart
                     </button>
-                  ) : (
-                    console.log("You're not admin")
-                  )}
-                </div>
-              )
-            })
+                    {auth.isAdmin ? (
+                      <button
+                        className="cancel"
+                        type="button"
+                        onClick={() => {
+                          this.props.deleteProduct(product.id)
+                        }}
+                      >
+                        Delete
+                      </button>
+                    ) : (
+                      console.log("You're not admin")
+                    )}
+                  </div>
+                )
+              })
           )}
         </div>
       </div>
