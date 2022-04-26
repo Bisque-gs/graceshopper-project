@@ -143,6 +143,15 @@ button {
   width: 200px;
 }
 
+button:hover{
+  cursor: pointer
+}
+button:focus{
+  border-left: 3px solid skyblue;
+  border-right: 3px solid skyblue;
+  border-radius: 3px;
+}
+
 input {
   margin: 15px auto;
   font-size: 16px;

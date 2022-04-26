@@ -32,7 +32,6 @@ class Cart extends React.Component {
   render() {
     const user = this.props.userInfo.user
     const auth = this.props.auth
-    const userId = this.props.userInfo.user
     const ordersInfo = this.props.userInfo.ordersInfo
     const cartItems = this.props.userInfo.cartItems || []
     const isLoggedIn = this.props.isLoggedIn

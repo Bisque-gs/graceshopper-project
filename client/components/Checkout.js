@@ -40,12 +40,13 @@ class Checkout extends React.Component {
   //if not then the order bounces, display message/alert
 
   render() {
-    const user = this.props.userInfo.user
-    const auth = this.props.auth
+    const { user } = this.props.userInfo
+    const { auth, userInfo } = this.props
     const cartItems = this.props.userInfo.cartItems || []
     const itemQuantities = this.props.userInfo.updatedPrices || []
     let cartAuthorization = user.id === auth.id
     let total = 0
+    console.log(userInfo)
     return (
       <React.Fragment>
         <div className="container">
@@ -53,7 +54,7 @@ class Checkout extends React.Component {
             <div>
               <br />
               <div className="column">
-                {user.username}'s CHECKOUT CONFIRMATION PAGE
+                <h2>{user.username}'s CHECKOUT CONFIRMATION PAGE</h2>
               </div>
               <div className="unit">
                 {cartItems.map((item, i) => (
@@ -82,6 +83,9 @@ class Checkout extends React.Component {
                 ))}
               </div>
               <div>TOTAL PRICE: ${total / 10000}</div>
+              {userInfo.error && (
+                <p>{userInfo.error} Please adjust your cart.</p>
+              )}
               <button
                 onClick={() =>
                   this.checkout({
