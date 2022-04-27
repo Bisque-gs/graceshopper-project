@@ -19,25 +19,7 @@ class Checkout extends React.Component {
   }
 
   ///isLogin doesnt work here, that only checks if anyone at all is logged in
-  //we need to check whether the logged in user matches the userId of the cart we are trying to view
-
-  //Checking out is an all in one process, no checking out for individual items. One button will check out every item,
-  //going to need a map or some sort on the backend for our routes
-
-  //What does checking out an item mean?
-
-  //REVISION ==> The orders should not dissapear from our through table! That is important for order history
-  //Also price needs to be a column inside of through table
-
-  //- the item quantity should be decremented from the item table
-  //put route to update the quantities with the decremented value
-
-  //- the 'current order' in the order table should be set to false since the order is closed/completed
-  //another put route to modify the isCurrentOrder value to false
-  //start on backend
-
-  //VALIDATION ==> before decrementing..... need to check that there is enough of the product quantity to confim the order
-  //if not then the order bounces, display message/alert
+  //we need to check whether the logged in user matches the userId of the cart we are try3ing to view
 
   render() {
     const { auth, userInfo } = this.props
