@@ -146,12 +146,14 @@ button {
   outline: none;
   padding: 10px 9px 10px 11px;
   text-transform: uppercase;
-  width: 200px;
+  width: 100%;
+  max-width:200px
 }
 
 button:hover{
   cursor: pointer
 }
+
 button:focus{
   border-left: 3px solid skyblue;
   border-right: 3px solid skyblue;

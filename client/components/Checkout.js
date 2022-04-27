@@ -44,7 +44,7 @@ class Checkout extends React.Component {
                 {cartItems
                   .sort((a, b) => a.id - b.id)
                   .map((item, i) => (
-                    <div key={item.id} className="profile">
+                    <div key={item.id} className={item.pokeType + " profile"}>
                       <h3>
                         <Link to={`/products/${item.id}`}>{item.name}</Link>
                       </h3>

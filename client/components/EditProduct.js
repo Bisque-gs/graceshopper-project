@@ -1,37 +1,38 @@
-import React from "react";
-import { connect } from "react-redux";
-import { updateProductThunk } from "../redux/singleProduct";
+import React from "react"
+import { connect } from "react-redux"
+import { updateProductThunk } from "../redux/singleProduct"
 
 export class EditProduct extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       name: "",
       quantity: 0,
-      price: 0
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+      price: 0,
+      pokeType: "",
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleSubmit(evt) {
-    evt.preventDefault();
-    this.props.updateProduct({ ...this.props.product, ...this.state });
-    this.props.isEditVisible();
+    evt.preventDefault()
+    this.props.updateProduct({ ...this.props.product, ...this.state })
+    this.props.isEditVisible()
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-    });
+    })
   }
 
   handleCancel = () => {
-    this.props.isEditVisible();
-  };
+    this.props.isEditVisible()
+  }
 
   render() {
-    const { name, quantity, price } = this.state;
+    const { name, quantity, price, pokeType } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
         <h5>Please input new information below:</h5>
@@ -41,6 +42,8 @@ export class EditProduct extends React.Component {
         <input name="quantity" value={quantity} onChange={this.handleChange} />
         <label>Price (in cents):</label>
         <input name="price" value={price} onChange={this.handleChange} />
+        <label>Type:</label>
+        <input name="pokeType" value={pokeType} onChange={this.handleChange} />
         <button className="submit" type="submit">
           Submit
         </button>
@@ -48,12 +51,12 @@ export class EditProduct extends React.Component {
           Cancel
         </button>
       </form>
-    );
+    )
   }
 }
 
 const mapDispatch = (dispatch) => ({
   updateProduct: (product) => dispatch(updateProductThunk(product)),
-});
+})
 
-export default connect(null, mapDispatch)(EditProduct);
+export default connect(null, mapDispatch)(EditProduct)
