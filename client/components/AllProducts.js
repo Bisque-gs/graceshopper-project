@@ -86,7 +86,10 @@ export class AllProducts extends React.Component {
                 .sort((a, b) => a.id - b.id)
                 .map((product) => {
                   return (
-                    <div key={product.id} className="profile">
+                    <div
+                      key={product.id}
+                      className={product.pokeType + " profile"}
+                    >
                       <h3>
                         <Link to={`/products/${product.id}`}>
                           {product.name}
@@ -128,7 +131,7 @@ export class AllProducts extends React.Component {
             products
               .sort((a, b) => a.id - b.id)
               .filter((product) => {
-                if (product.type === type) {
+                if (product.pokeType === type) {
                   return product
                 }
               })
