@@ -49,31 +49,32 @@ const OrderHistory = (props) => {
             </div>
             {currentSelectedUserIndex !== -1 ? (
               <div className="unit">
-                {ordersHistory[currentSelectedUserIndex].products.map(
-                  (product) => (
-                    <div
-                      key={product.id}
-                      className={product.pokeType + " profile"}
-                    >
-                      <h3>
-                        <Link to={`/products/${product.id}`}>
-                          {product.name}
-                        </Link>
-                      </h3>
-                      <img src={product.imageUrl} />
-
-                      <div className="column">
+                {ordersHistory[currentSelectedUserIndex] &&
+                  ordersHistory[currentSelectedUserIndex].products.map(
+                    (product) => (
+                      <div
+                        key={product.id}
+                        className={product.pokeType + " profile"}
+                      >
                         <h3>
-                          UNIT PRICE: {product.orderProducts.price / 10000}
+                          <Link to={`/products/${product.id}`}>
+                            {product.name}
+                          </Link>
                         </h3>
-                        <p>QUANTITY: {product.orderProducts.quantity}</p>
+                        <img src={product.imageUrl} />
+
+                        <div className="column">
+                          <h3>
+                            UNIT PRICE: {product.orderProducts.price / 10000}
+                          </h3>
+                          <p>QUANTITY: {product.orderProducts.quantity}</p>
+                        </div>
+                        <div style={{ display: "none" }}>
+                          {(total += product.orderProducts.price)}
+                        </div>
                       </div>
-                      <div style={{ display: "none" }}>
-                        {(total += product.orderProducts.price)}
-                      </div>
-                    </div>
-                  )
-                )}
+                    )
+                  )}
               </div>
             ) : (
               <div>SELECT AN ORDER </div>
