@@ -50,8 +50,11 @@ const OrderHistory = (props) => {
             {currentSelectedUserIndex !== -1 ? (
               <div className="unit">
                 {ordersHistory[currentSelectedUserIndex].products.map(
-                  (product, i) => (
-                    <div key={product.id} className="profile">
+                  (product) => (
+                    <div
+                      key={product.id}
+                      className={product.pokeType + " profile"}
+                    >
                       <h3>
                         <Link to={`/products/${product.id}`}>
                           {product.name}

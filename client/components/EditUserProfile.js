@@ -44,10 +44,10 @@ class EditUserProfile extends React.Component {
     const { username, email, password } = this.state
     const { handleChange, handleSubmit } = this
     const { usernameStart, emailStart, passwordStart } = this.props.user.user
-    console.log("THIS.PROPS", this.props.user)
-    console.log("USERNAME", username)
+    // console.log("THIS.PROPS", this.props.user)
+    // console.log("USERNAME", username)
     return (
-      <div>
+      <div className="column">
         <form id="edit-user" onSubmit={handleSubmit}>
           <label htmlFor="username">User Name:</label>
           <input

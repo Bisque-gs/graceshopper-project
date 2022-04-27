@@ -4,31 +4,21 @@ const { User, Order, OrderProducts, Product } = require("../db")
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
 
-
-
-
-
-
 //GET /api/users/:userid/users
 router.get("/:userid/users", async (req, res, next) => {
-  // console.log(req.params.userid)
   try {
     //ADMIN AUTHORIZATION
     const findOutIfAdmin = await User.findOne({
       where: {
         id: req.params.userid,
       },
-      // explicitly select only the isAdmin field - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
+      // explicitly select only the isAdmin field
       attributes: ["isAdmin"],
     })
 
     if (findOutIfAdmin.dataValues.isAdmin) {
       const users = await User.findAll({
-        // explicitly select only the id and username fields - even though
-        // users' passwords are encrypted, it won't help if we just
-        // send everything to anyone who asks!
+        // explicitly select only the id and username fields
         attributes: ["id", "username", "email"],
       })
       res.json(users)
@@ -66,11 +56,10 @@ router.get("/:id", async (req, res, next) => {
   }
 })
 
-
 //GET THE ORDER HISTORY FOR A USER:
-//ITEM PURCHASED, AND THEIR PRICES AT THE TIME OF PURCHASE 
-//BASICALLY SHOULD LOAD UP THE ENTIRE CART 
-//NEED EVERY CART EVER FML 
+//ITEM PURCHASED, AND THEIR PRICES AT THE TIME OF PURCHASE
+//BASICALLY SHOULD LOAD UP THE ENTIRE CART
+//NEED EVERY CART EVER FML
 //GET /api/users/:userid/cart/orderhistory
 router.get("/:id/cart/orderhistory", async (req, res, next) => {
   try {
@@ -81,7 +70,7 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
       },
     })
 
-    console.log('USER ALL ORDERS', userAllOrders)
+    console.log("USER ALL ORDERS", userAllOrders)
 
     // const currentOrder = userAllOrders.filter((order) => {
     //   return order.dataValues.isCurrentOrder
@@ -94,7 +83,6 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
 
     // const orderProducts = currentOrder[0].products.map((x) => x.orderProducts)
 
-
     // const cartItems = currentOrder[0].products
 
     // const updatedPrices = await Promise.all(
@@ -102,7 +90,7 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
     //     return x.update({ price: Number(cartItems[i].price) * 100 })
     //   })
     // )
-    res.send({ userAllOrders });
+    res.send({ userAllOrders })
 
     // res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
   } catch (err) {
@@ -110,11 +98,6 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
     next(err)
   }
 })
-
-
-
-
-
 
 //First we Grab all the orders associated with that user
 //Next we filter all the orders and grab the 'current order', the one with a status of True
@@ -127,8 +110,7 @@ router.get("/:id/cart", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({
       where: { userId: req.params.id },
-      // attributes?
-      include: { model: Product }, // including product also includes OrderProducts
+      include: { model: Product },
     })
 
     const currentOrder = userAllOrders.filter((order) => order.isCurrentOrder)
@@ -246,19 +228,6 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
       })
     )
 
-    // NOT THIS WAY. The increment function is done in the db, not the instance,
-    // so it seems like we can't use hooks on it
-    //
-    // updatedItems = await Promise.all(
-    //   req.body.itemQuantities.map((item) => {
-    //     let olditem = Product.findByPk(item.productId)
-    //     olditem = Product.increment(
-    //       { quantity: -item.quantity },
-    //       { where: { id: item.productId } }
-    //     )
-    //     return olditem
-    //   })
-    // )
     await Order.update(
       { isCurrentOrder: false },
       { where: { id: req.body.itemQuantities[0].orderId } }
