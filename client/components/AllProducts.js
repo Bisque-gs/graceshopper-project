@@ -10,8 +10,10 @@ export class AllProducts extends React.Component {
     super()
     this.state = {
       isAddVisible: false,
+      selectedType: "",
     }
     this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -30,9 +32,18 @@ export class AllProducts extends React.Component {
     this.props.addToCart(userId, productId)
   }
 
+  handleChange(evt) {
+    this.setState({
+      selectedType: evt.target.value,
+    })
+  }
+
   render() {
+    console.log("THE TYPE", this.state.selectedType)
     const { auth, products } = this.props
-    console.log(products)
+
+    let type = this.state.selectedType
+
     return (
       <div>
         <br />
@@ -54,12 +65,73 @@ export class AllProducts extends React.Component {
             console.log("You're not admin")
           )}
         </div>
+        <select id="choose-type" name="selectList" onChange={this.handleChange}>
+          <option value="">Pick a Type!</option>
+          <option value="grass">grass</option>
+          <option value="fire">fire</option>
+          <option value="bug">bug</option>
+          <option value="flying">flying</option>
+          <option value="poison">poison</option>
+          <option value="normal">normal</option>
+          <option value="electric">electric</option>
+          <option value="water">water</option>
+          <option value="ground">ground</option>
+        </select>
         <div className="unit">
-          {products.length === 0 ? (
+          {type === "" ? (
+            products.length === 0 ? (
+              <p>No products</p>
+            ) : (
+              products
+                .sort((a, b) => a.id - b.id)
+                .map((product) => {
+                  return (
+                    <div key={product.id} className="profile">
+                      <h3>
+                        <Link to={`/products/${product.id}`}>
+                          {product.name}
+                        </Link>
+                      </h3>
+                      <a href={`/products/${product.id}`}>
+                        <img src={product.imageUrl} />
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          auth.id
+                            ? this.props.addToCart(auth.id, product.id)
+                            : console.log("add to local storage")
+                        }}
+                      >
+                        Add to cart
+                      </button>
+                      {auth.isAdmin ? (
+                        <button
+                          className="cancel"
+                          type="button"
+                          onClick={() => {
+                            this.props.deleteProduct(product.id)
+                          }}
+                        >
+                          Delete
+                        </button>
+                      ) : (
+                        console.log("You're not admin")
+                      )}
+                    </div>
+                  )
+                })
+            )
+          ) : products.length === 0 ? (
             <p>No products</p>
           ) : (
             products
               .sort((a, b) => a.id - b.id)
+              .filter((product) => {
+                if (product.type === type) {
+                  return product
+                }
+              })
               .map((product) => {
                 return (
                   <div

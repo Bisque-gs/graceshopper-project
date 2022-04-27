@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { connect, useDispatch, useSelector } from "react-redux"
-import {
-  fetchUser,
-  fetchUserCart,
-  deleteItemCartThunk,
-  updateQuantityThunk,
-  fetchUserOrderHistory,
-} from "../redux/singleUser"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchUser, fetchUserOrderHistory } from "../redux/singleUser"
 import { Link } from "react-router-dom"
 
 const OrderHistory = (props) => {
@@ -14,8 +8,8 @@ const OrderHistory = (props) => {
 
   const user = useSelector((state) => state.user)
   const auth = useSelector((state) => state.auth)
-    let cartAuthorization = user.user.id === auth.id
-    console.log(user);
+  let cartAuthorization = user.user.id === auth.id
+  console.log(user)
 
   const dispatch = useDispatch()
 
