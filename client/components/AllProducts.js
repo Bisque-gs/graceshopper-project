@@ -37,7 +37,6 @@ export class AllProducts extends React.Component {
       selectedType: evt.target.value,
     })
   }
-
   render() {
     console.log("THE TYPE", this.state.selectedType)
     const { auth, products } = this.props
@@ -45,7 +44,7 @@ export class AllProducts extends React.Component {
     let type = this.state.selectedType
 
     return (
-      <div>
+       <div>
         <br />
         <div className="column">
           Products:
@@ -78,60 +77,14 @@ export class AllProducts extends React.Component {
           <option value="ground">ground</option>
         </select>
         <div className="unit">
-          {type === "" ? (
-            products.length === 0 ? (
-              <p>No products</p>
-            ) : (
-              products
-                .sort((a, b) => a.id - b.id)
-                .map((product) => {
-                  return (
-                    <div
-                      key={product.id}
-                      className={product.pokeType + " profile"}
-                    >
-                      <h3>
-                        <Link to={`/products/${product.id}`}>
-                          {product.name}
-                        </Link>
-                      </h3>
-                      <a href={`/products/${product.id}`}>
-                        <img src={product.imageUrl} />
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          auth.id
-                            ? this.props.addToCart(auth.id, product.id)
-                            : console.log("add to local storage")
-                        }}
-                      >
-                        Add to cart
-                      </button>
-                      {auth.isAdmin ? (
-                        <button
-                          className="cancel"
-                          type="button"
-                          onClick={() => {
-                            this.props.deleteProduct(product.id)
-                          }}
-                        >
-                          Delete
-                        </button>
-                      ) : (
-                        console.log("You're not admin")
-                      )}
-                    </div>
-                  )
-                })
-            )
-          ) : products.length === 0 ? (
+
+          { products.length === 0 ? (
             <p>No products</p>
           ) : (
             products
               .sort((a, b) => a.id - b.id)
               .filter((product) => {
-                if (product.pokeType === type) {
+                if (product.pokeType === type || type === "") {
                   return product
                 }
               })
@@ -176,6 +129,7 @@ export class AllProducts extends React.Component {
           )}
         </div>
       </div>
+     
     )
   }
 }
@@ -200,3 +154,6 @@ const mapDispatch = (dispatch) => {
 }
 
 export default connect(mapState, mapDispatch)(AllProducts)
+
+
+
