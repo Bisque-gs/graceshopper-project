@@ -8,232 +8,305 @@ const products = [
     name: "bulbasaur",
     price: 4354,
     quantity: 34,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+    pokeType: "grass",
   },
   {
     name: "ivysaur",
     price: 6331,
     quantity: 23,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    pokeType: "grass",
   },
   {
     name: "venusaur",
     price: 1245,
-    quantity: 14,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png"
+    quantity: 9,
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+    pokeType: "grass",
   },
   {
     name: "charmander",
     price: 4632,
     quantity: 87,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    pokeType: "fire",
   },
   {
     name: "charmeleon",
     price: 1897,
     quantity: 87,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+    pokeType: "fire",
   },
   {
     name: "charizard",
     price: 6441,
     quantity: 11,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+    pokeType: "fire",
   },
   {
     name: "squirtle",
     price: 7651,
     quantity: 22,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
+    pokeType: "water",
   },
   {
     name: "wartortle",
     price: 9786,
     quantity: 23,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
+    pokeType: "water",
   },
   {
     name: "blastoise",
     price: 5443,
     quantity: 19,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
+    pokeType: "water",
   },
   {
     name: "caterpie",
     price: 125,
     quantity: 99,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
+    pokeType: "bug",
   },
   {
     name: "metapod",
     price: 3456,
     quantity: 23,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png",
+    pokeType: "bug",
   },
   {
     name: "butterfree",
     price: 9999,
     quantity: 2,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png",
+    pokeType: "bug",
   },
   {
     name: "weedle",
     price: 1,
     quantity: 99,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png",
+    pokeType: "bug",
   },
   {
     name: "kakuna",
     price: 100,
     quantity: 70,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png",
+    pokeType: "bug",
   },
   {
     name: "beedrill",
     price: 1000,
     quantity: 30,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png",
+    pokeType: "bug",
   },
   {
     name: "pidgey",
     price: 8,
     quantity: 98,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png",
+    pokeType: "flying",
   },
   {
     name: "pidgeotto",
     price: 954,
     quantity: 68,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png",
+    pokeType: "flying",
   },
   {
     name: "pidgeot",
     price: 4023,
     quantity: 21,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png",
+    pokeType: "flying",
   },
   {
     name: "rattata",
     price: 675,
     quantity: 65,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png",
+    pokeType: "normal",
   },
   {
     name: "raticate",
     price: 4563,
     quantity: 34,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png",
+    pokeType: "normal",
   },
   {
     name: "spearow",
     price: 675,
     quantity: 24,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png",
+    pokeType: "flying",
   },
   {
     name: "fearow",
     price: 5685,
     quantity: 87,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/22.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/22.png",
+    pokeType: "flying",
   },
   {
     name: "ekans",
     price: 1234,
     quantity: 96,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png",
+    pokeType: "poison",
   },
   {
     name: "arbok",
     price: 978,
     quantity: 23,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png",
+    pokeType: "poison",
   },
   {
     name: "pikachu",
     price: 10000,
     quantity: 100,
-    imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    pokeType: "electric",
   },
-];
+  {
+    name: "raichu",
+    price: 9300,
+    quantity: 45,
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
+    pokeType: "electric",
+  },
+  {
+    name: "sandshrew",
+    price: 1704,
+    quantity: 88,
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png",
+    pokeType: "ground",
+  },
+  {
+    name: "sandslash",
+    price: 3000,
+    quantity: 68,
+    imageUrl:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png",
+    pokeType: "ground",
+  },
+]
 
 const users = [
   {
     username: "mark",
     password: "jemison",
-    email: "mark@mail.com"
+    email: "mark@mail.com",
   },
   {
     username: "anton",
     password: "leroy",
-    email: "anton@mail.com"
+    email: "anton@mail.com",
   },
   {
     username: "igor",
     password: "dima",
-    email: "igor@mail.com"
+    email: "igor@mail.com",
   },
   {
     username: "vasya",
     password: "petya",
-    email: "vasya@mail.com"
+    email: "vasya@mail.com",
   },
   {
     username: "grisha",
     password: "yeger",
-    email: "grisha@mail.com"
+    email: "grisha@mail.com",
   },
   {
     username: "oniichan",
     password: "yametekudasai",
-    email: "oniichan@mail.com"
+    email: "oniichan@mail.com",
   },
   {
     username: "hello",
     password: "goodbye",
-    email: "hello@mail.com"
+    email: "hello@mail.com",
   },
   {
     username: "turtle",
     password: "nourturtle",
-    email: "turtle@mail.com"
+    email: "turtle@mail.com",
   },
   {
     username: "yareyare",
     password: "daze",
-    email: "yareyare@mail.com"
+    email: "yareyare@mail.com",
   },
   {
     username: "platinum",
     password: "zaworudo",
-    email: "platinum@mail.com"
+    email: "platinum@mail.com",
   },
   {
     username: "leslie",
     password: "john",
-    email: "leslie@mail.com"
+    email: "leslie@mail.com",
   },
   {
     username: "masha",
     password: "parasha",
-    email: "masha@mail.com"
+    email: "masha@mail.com",
   },
   {
     username: "yaebal",
     password: "tvoirot",
-    email: "yaebal@mail.com"
+    email: "yaebal@mail.com",
   },
   {
     username: "cream",
     password: "icing",
-    email: "cream@mail.com"
+    email: "cream@mail.com",
   },
   {
     username: "sweet",
     password: "sour",
-    email: "sweet@mail.com"
+    email: "sweet@mail.com",
   },
-];
-
+]
 
 const seed = async () => {
   try {
@@ -241,14 +314,14 @@ const seed = async () => {
 
     await Promise.all(
       products.map((product) => {
-        return Product.create(product);
+        return Product.create(product)
       })
-    );
+    )
     await Promise.all(
       users.map((user) => {
-        return User.create(user);
+        return User.create(user)
       })
-    );
+    )
 
     const user1 = await User.create({
       username: "spencer69",

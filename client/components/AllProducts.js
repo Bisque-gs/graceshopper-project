@@ -41,7 +41,9 @@ export class AllProducts extends React.Component {
   render() {
     console.log("THE TYPE", this.state.selectedType)
     const { auth, products } = this.props
+
     let type = this.state.selectedType
+
     return (
       <div>
         <br />
@@ -132,7 +134,10 @@ export class AllProducts extends React.Component {
               })
               .map((product) => {
                 return (
-                  <div key={product.id} className="profile">
+                  <div
+                    key={product.id}
+                    className={product.pokeType + " profile"}
+                  >
                     <h3>
                       <Link to={`/products/${product.id}`}>{product.name}</Link>
                     </h3>
