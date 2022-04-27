@@ -1,35 +1,36 @@
-import React from "react";
+import React from "react"
 
 export class AddProduct extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       name: "",
       quantity: 0,
-      price: 0
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+      price: 0,
+      pokeType: "",
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleSubmit(evt) {
-    evt.preventDefault();
-    this.props.addProduct({ ...this.state });
-    this.props.isAddVisible();
+    evt.preventDefault()
+    this.props.addProduct({ ...this.state })
+    this.props.isAddVisible()
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-    });
+    })
   }
 
   handleCancel = () => {
-    this.props.isAddVisible();
-  };
+    this.props.isAddVisible()
+  }
 
   render() {
-    const { name, quantity, price } = this.state;
+    const { name, quantity, price, pokeType } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
         <h4>Please input new product information below:</h4>
@@ -39,6 +40,8 @@ export class AddProduct extends React.Component {
         <input name="quantity" value={quantity} onChange={this.handleChange} />
         <label>Price (in cents):</label>
         <input name="price" value={price} onChange={this.handleChange} />
+        <label>Type:</label>
+        <input name="pokeType" value={pokeType} onChange={this.handleChange} />
         <button className="submit" type="submit">
           Submit
         </button>
@@ -46,8 +49,8 @@ export class AddProduct extends React.Component {
           Cancel
         </button>
       </form>
-    );
+    )
   }
 }
 
-export default AddProduct;
+export default AddProduct
