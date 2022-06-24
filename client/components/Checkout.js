@@ -93,7 +93,12 @@ class Checkout extends React.Component {
                 SUBMIT ORDER
               </button>
               <div className="column">
-                <PayPal totalPrice={(total / 10000).toFixed(2)} />
+                <PayPal
+                  totalPrice={(total / 10000).toFixed(2)}
+                  userId={user.id}
+                  itemQuantities={itemQuantities}
+                  checkout={this.checkout}
+                />
               </div>
             </div>
           ) : (

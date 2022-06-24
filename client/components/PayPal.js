@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from "react"
 
-export default function Paypal({ totalPrice }) {
+export default function Paypal({
+  totalPrice,
+  userId,
+  itemQuantities,
+  checkout,
+}) {
   const paypal = useRef()
+
   useEffect(() => {
     window.paypal
       .Buttons({
@@ -21,6 +27,10 @@ export default function Paypal({ totalPrice }) {
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture()
+          checkout({
+            userId: userId,
+            itemQuantities,
+          })
           console.log(order)
         },
         onError: (err) => {
