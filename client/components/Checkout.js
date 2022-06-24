@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { fetchUser, fetchUserCart, checkoutThunk } from "../redux/singleUser"
 import { Link } from "react-router-dom"
+import PayPal from "./PayPal"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
@@ -91,6 +92,9 @@ class Checkout extends React.Component {
               >
                 SUBMIT ORDER
               </button>
+              <div className="column">
+                <PayPal totalPrice={(total / 10000).toFixed(2)} />
+              </div>
             </div>
           ) : (
             <div>
