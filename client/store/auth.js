@@ -16,6 +16,9 @@ const setAuth = (auth) => ({ type: SET_AUTH, auth })
 /**
  * THUNK CREATORS
  */
+
+//IF THERES A USER WITH THAT TOKEN, SEND THEM THE USER 
+//IF USER AND PASS MATCHES SOMETHING IN DB 
 export const me = () => async (dispatch) => {
   const token = window.localStorage.getItem(TOKEN)
   if (token) {
@@ -28,6 +31,8 @@ export const me = () => async (dispatch) => {
   }
 }
 
+//DECIDES WHAT TO DO WHETHER LOGGED IN OR SIGN UP 
+//USES ME TO CHECK WHETHER THE TOKENS MATCH UP 
 export const authenticate =
   (username, password, email, method) => async (dispatch) => {
     try {

@@ -17,6 +17,7 @@ export class EditProduct extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
+    console.log("yao ming", { ...this.props.product, ...this.state })
     this.props.updateProduct({ ...this.props.product, ...this.state })
     this.props.isEditVisible()
   }
