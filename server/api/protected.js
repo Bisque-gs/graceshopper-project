@@ -2,6 +2,8 @@ const router = require("express").Router()
 const { Product, User } = require("../db")
 module.exports = router
 
+// These routes are only accessible to an admin
+
 //GET /api/protected/users/:userid/users
 router.get("/users/:userid/users", async (req, res, next) => {
   try {

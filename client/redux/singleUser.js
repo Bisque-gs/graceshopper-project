@@ -60,16 +60,16 @@ const orderHistory = (orderHistory) => {
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
-      const token = window.localStorage.getItem("token")
-      const { data } = await axios.get(`/api/users/${id}`, {
-        headers: { authorization: token },
-      })
+      // const token = window.localStorage.getItem("token")
+      const { data } = await axios.get(`/api/users/${id}`)
       dispatch(getUser(data))
     } catch (error) {
       console.log(error)
     }
   }
 }
+
+// might need to remove token here
 export const updateQuantityThunk = ({ userId, productId, quantity }) => {
   return async (dispatch) => {
     // console.log(quantity)

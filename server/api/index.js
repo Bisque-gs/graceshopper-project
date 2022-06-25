@@ -19,6 +19,7 @@ router.use(async (req, res, next) => {
   }
 })
 
+// These routes are only accessible to an admin
 router.use("/protected", require("./protected"))
 
 router.use((req, res, next) => {
