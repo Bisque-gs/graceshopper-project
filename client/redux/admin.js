@@ -12,7 +12,10 @@ export const getUsers = (users) => {
 export const fetchUsers = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}/users`)
+      const token = window.localStorage.getItem("token")
+      const { data } = await axios.get(`/api/protected/users/${id}/users`, {
+        headers: { authorization: token },
+      })
       dispatch(getUsers(data))
     } catch (error) {
       console.error(error)
