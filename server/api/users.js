@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
 const Sequelize = require("sequelize")
 // const { LocalStorage } = require("node-localstorage");
-const localStorage = require("../../client/components/AllProducts");
+// const localStorage = require("../../client/components/AllProducts");
 
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
@@ -72,8 +72,8 @@ router.get("/:id", async (req, res, next) => {
 
 router.get("/guest/cart", async (req, res, next) => {
   try {
-    const cartItems = localStorage.getItem("cart");
-    res.send(cartItems);
+    const cartItems = localStorage.getItem("cart")
+    res.send(cartItems)
   } catch (err) {
     console.log(err)
     // err.message = "Empty cart"
@@ -125,7 +125,6 @@ router.get("/:id/cart", async (req, res, next) => {
     next(err)
   }
 })
-
 
 //POST /api/users/:userid/orders/:productId/:quantity
 router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
