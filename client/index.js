@@ -10,9 +10,9 @@ import { ChakraProvider } from "@chakra-ui/react"
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <ChakraProvider>
+      {/* <ChakraProvider> */}
         <App />
-      </ChakraProvider>
+      {/* </ChakraProvider> */}
     </Router>
   </Provider>,
   document.getElementById("app")
