@@ -19,37 +19,30 @@ const OrderHistory = (props) => {
     dispatch(fetchUserOrderHistory(Number(id)))
   }, [])
 
-
-   console.log('ORDER UP', user.orderHistory)
   let ordersHistory = user.orderHistory.userAllOrders || []
-  let orderToPrint 
-  console.log("selectedOrder", typeof selectedOrder)
+  let orderToPrint
   if (selectedOrder !== "") {
-    console.log('in for loop')
     orderToPrint = ordersHistory.filter((order) => {
-      console.log("order", typeof order.id)
-      console.log("bool", order.id === selectedOrder)
       if (order.id == parseInt(selectedOrder)) return order
     })
   }
-  console.log("orderToPrint", orderToPrint)
 
   const handleChange = (evt) => {
     setSelectedOrder(evt.target.value)
   }
 
-
-  let currentSelectedUserIndex = selectedOrder - 1
   let total = 0
+  let count = 0
 
   return (
     <React.Fragment>
       <select name="selectList" id="selectList" onChange={handleChange}>
         <option value={""}>Choose An Order!</option>
         {ordersHistory.map((order) => {
+          count++
           return (
             <option key={order.id} value={order.id}>
-              Order: {order.id}
+              Order: {count}
             </option>
           )
         })}
@@ -101,8 +94,6 @@ const OrderHistory = (props) => {
 
 export default OrderHistory
 
-
-
 // const OrderHistory = (props) => {
 //   let [selectedOrder, setSelectedOrder] = useState("")
 
@@ -118,7 +109,6 @@ export default OrderHistory
 //     dispatch(fetchUser(Number(id)))
 //     dispatch(fetchUserOrderHistory(Number(id)))
 //   }, [])
-
 
 //    console.log('ORDER UP', user.orderHistory)
 //   let ordersHistory = user.orderHistory.userAllOrders || []
