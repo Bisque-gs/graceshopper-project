@@ -26,14 +26,19 @@
     "semi": false
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "compression": "^1.7.3",
     "express": "^4.16.4",
+    "framer-motion": "^6.3.15",
     "history": "^4.9.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^8.5.1",
+    "redux-thunk": "^2.4.1",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
@@ -51,7 +56,7 @@
     "mocha": "^6.2.3",
     "nodemon": "^1.19.4",
     "prettier": "2.6.2",
-    "react": "^16.8.6",
+    "react": "^16.14.0",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
@@ -60,7 +65,6 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
-    "v": "^2.3.0",
     "supertest": "^4.0.2",
     "webpack": "^5.15.0",
     "webpack-cli": "^4.3.1"

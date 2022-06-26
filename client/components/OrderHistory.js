@@ -6,18 +6,17 @@ import { Link } from "react-router-dom"
 const OrderHistory = (props) => {
   let [selectedOrder, setSelectedOrder] = useState("")
 
-  const user = useSelector((state) => state.user)
-  const auth = useSelector((state) => state.auth)
-  let cartAuthorization = user.user.id === auth.id
-  // console.log(user)
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  let cartAuthorization = user.user.id === auth.id;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const { id } = props.match.params
     dispatch(fetchUser(Number(id)))
     dispatch(fetchUserOrderHistory(Number(id)))
-  }, [])
+  }, []);
 
   let ordersHistory = user.orderHistory.userAllOrders || []
   let orderToPrint
@@ -25,14 +24,14 @@ const OrderHistory = (props) => {
     orderToPrint = ordersHistory.filter((order) => {
       if (order.id == parseInt(selectedOrder)) return order
     })
-  }
+  };
 
   const handleChange = (evt) => {
     setSelectedOrder(evt.target.value)
-  }
+  };
 
-  let total = 0
-  let count = 0
+  let total = 0;
+  let count = 0;
 
   return (
     <React.Fragment>
@@ -45,7 +44,7 @@ const OrderHistory = (props) => {
               Order: {count}
             </option>
           )
-        })}
+        })};
       </select>
       <div>
         {cartAuthorization ? (
@@ -54,7 +53,7 @@ const OrderHistory = (props) => {
             <div className="column">
               This is {user.user.username}'s Order History!
             </div>
-            {orderToPrint !== undefined ? (
+            {orderToPrint && (
               <div className="unit">
                 {orderToPrint[0].products.map((product) => (
                   <div
@@ -76,9 +75,11 @@ const OrderHistory = (props) => {
                   </div>
                 ))}
               </div>
-            ) : (
-              <div>SELECT AN ORDER </div>
-            )}
+            )
+              // : (
+              // <div>SELECT AN ORDER </div>
+              // )
+            }
             <div>TOTAL PRICE: ${total / 10000}</div>
           </div>
         ) : (

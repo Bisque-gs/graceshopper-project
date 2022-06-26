@@ -5,12 +5,15 @@ import {Router} from 'react-router-dom'
 import history from './history'
 import store from './store'
 import App from './App'
+import { ChakraProvider } from "@chakra-ui/react"
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </Router>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById("app")
 )
