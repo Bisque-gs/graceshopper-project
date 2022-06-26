@@ -3,7 +3,7 @@ import axios from "axios"
 const GET_SINGLE_PRODUCT = "GET_SINGLE_PRODUCT"
 const ADD_PRODUCT_TO_CART = "ADD_PRODUCT_TO_CART"
 const CREATE_PRODUCT = "CREATE_PRODUCT"
-const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+const UPDATE_PRODUCT = "UPDATE_PRODUCT"
 
 const getProduct = (product) => {
   return {
@@ -22,7 +22,7 @@ const addProductToCart = (product) => {
 export const createProduct = (product) => {
   return {
     type: CREATE_PRODUCT,
-    product
+    product,
   }
 }
 
@@ -30,8 +30,8 @@ export const updateProduct = (product) => {
   return {
     type: UPDATE_PRODUCT,
     product,
-  };
-};
+  }
+}
 
 export const fetchProduct = (id) => {
   return async (dispatch) => {
@@ -60,20 +60,29 @@ export const setOrder = (userId, productId, quantity) => {
 
 export const addProductThunk = (product) => {
   return async (dispatch) => {
-    const { data: created } = await axios.post("/api/products", product);
-    dispatch(createProduct(created));
-  };
-};
+    const token = window.localStorage.getItem("token")
+    const { data: created } = await axios.post(
+      "/api/protected/products",
+      product,
+      {
+        headers: { authorization: token },
+      }
+    )
+    dispatch(createProduct(created))
+  }
+}
 
 export const updateProductThunk = (product) => {
   return async (dispatch) => {
+    const token = window.localStorage.getItem("token")
     const { data: updated } = await axios.put(
-      `/api/products/${product.id}`,
-      product
-    );
-    dispatch(updateProduct(updated));
-  };
-};
+      `/api/protected/products/${product.id}`,
+      product,
+      { headers: { authorization: token } }
+    )
+    dispatch(updateProduct(updated))
+  }
+}
 
 const defaultState = {}
 
@@ -84,7 +93,7 @@ export default function singleProductReducer(state = defaultState, action) {
     case ADD_PRODUCT_TO_CART:
       return { ...state, ...action.product }
     case UPDATE_PRODUCT:
-      return { ...action.product };
+      return { ...action.product }
     default:
       return state
   }

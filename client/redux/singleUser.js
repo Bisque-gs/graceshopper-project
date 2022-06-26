@@ -60,6 +60,7 @@ const orderHistory = (orderHistory) => {
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
+      // const token = window.localStorage.getItem("token")
       const { data } = await axios.get(`/api/users/${id}`)
       dispatch(getUser(data))
     } catch (error) {
@@ -67,12 +68,18 @@ export const fetchUser = (id) => {
     }
   }
 }
+
+// might need to remove token here
 export const updateQuantityThunk = ({ userId, productId, quantity }) => {
   return async (dispatch) => {
-    console.log(quantity)
+    // console.log(quantity)
+    const token = window.localStorage.getItem("token")
     const { data: orderUpdated } = await axios.put(
       `/api/users/${userId}/cart/${productId}`,
-      { quantity }
+      { quantity },
+      {
+        headers: { authorization: token },
+      }
     )
     dispatch(updateQuanity(orderUpdated))
   }
@@ -191,7 +198,7 @@ export default function singleUserReducer(state = defaultState, action) {
         }),
       }
     case CHECKOUT_ITEMS:
-         return action.order.error
+      return action.order.error
         ? {
             ...state,
             error: action.order.error,
