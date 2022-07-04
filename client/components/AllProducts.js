@@ -129,7 +129,19 @@ export class AllProducts extends React.Component {
                         className="cancel"
                         type="button"
                         onClick={() => {
-                          this.props.deleteProduct(product.id)
+                          this.props.deleteProduct(product.id);
+                          Toastify({
+                            text: `${product.name} was successfully removed`,
+                            duration: 3000,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "right", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                              background: "linear-gradient(to right, #00b09b, #863939)",
+                            },
+                            onClick: function(){} // Callback after click
+                          }).showToast()
                         }}
                       >
                         Delete
