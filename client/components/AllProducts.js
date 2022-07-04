@@ -39,7 +39,7 @@ export class AllProducts extends React.Component {
   }
   render() {
     console.log("THE TYPE", this.state.selectedType)
-    const { auth, products } = this.props
+    const { auth, products, userInfo } = this.props
 
     let type = this.state.selectedType
 
@@ -104,7 +104,21 @@ export class AllProducts extends React.Component {
                       type="button"
                       onClick={() => {
                         auth.id
-                          ? this.props.addToCart(auth.id, product.id)
+                          ? (this.props.addToCart(auth.id, product.id) &&
+                            Toastify({
+                              text: `${product.name} was successfully added to cart`,
+                              duration: 3000,
+                              destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
+                              newWindow: true,
+                              close: true,
+                              gravity: "top", // `top` or `bottom`
+                              position: "right", // `left`, `center` or `right`
+                              stopOnFocus: true, // Prevents dismissing of toast on hover
+                              style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                              },
+                              onClick: function(){} // Callback after click
+                            }).showToast())
                           : console.log("add to local storage")
                       }}
                     >
@@ -138,7 +152,6 @@ const mapState = (state) => {
   return {
     products: state.products,
     auth: state.auth,
-    // product: state.product,
   }
 }
 
