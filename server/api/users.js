@@ -1,7 +1,39 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+// const Sequelize = require("sequelize")
+// const Op = Sequelize.Op
+// const { LocalStorage } = require("node-localstorage")
+// const localStorage = require("../../client/components/AllProducts")
 
 module.exports = router
+
+router.get("/guest/cart", async (req, res, next) => {
+  try {
+    const cartItems = JSON.parse(req.headers.cart)
+    const productIds = cartItems.reduce((acc, x) => {
+      return acc.concat(x.id)
+    }, [])
+    // get correct item prices
+    const productInfo = await Product.findAll({
+      where: {
+        id: productIds,
+      },
+    })
+
+    // generate updated cart
+    const updatedCart = cartItems.map((x) => {
+      const matchingItem = productInfo.filter((y) => y.id === x.id)[0]
+      x.price = matchingItem.price
+      return x
+    })
+    // console.log(updatedCart)
+    res.send(updatedCart)
+  } catch (err) {
+    console.log(err)
+    // err.message = "Empty cart"
+    next(err)
+  }
+})
 
 //GET /api/users/:userid
 router.get("/:id", async (req, res, next) => {
