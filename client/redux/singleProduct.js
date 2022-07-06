@@ -47,11 +47,16 @@ export const fetchProduct = (id) => {
 export const setOrder = (userId, productId, quantity) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(
-        `/api/users/${userId}/orders/${productId}/${quantity}`,
-        { isCurrentOrder: true, userId }
-      )
-      dispatch(addProductToCart(data))
+      console.log("userId")
+      if (!userId) {
+        console.log("here")
+      } else {
+        const { data } = await axios.post(
+          `/api/users/${userId}/orders/${productId}/${quantity}`,
+          { isCurrentOrder: true, userId }
+        )
+        dispatch(addProductToCart(data))
+      }
     } catch (error) {
       console.log(error)
     }

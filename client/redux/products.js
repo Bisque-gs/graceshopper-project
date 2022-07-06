@@ -5,7 +5,7 @@ const DELETE_PRODUCT = "DELETE_PRODUCT"
 const ADD_PRODUCT = "ADD_PRODUCT"
 const CREATE_PRODUCT = "CREATE_PRODUCT"
 
-export const setProducts = (products) => {
+const setProducts = (products) => {
   return {
     type: SET_PRODUCTS,
     products,

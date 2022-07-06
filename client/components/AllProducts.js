@@ -4,6 +4,7 @@ import { fetchProducts, deleteProductThunk } from "../redux/products"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
 import AddProduct from "./AddProduct"
+import { addItemToLS } from "../localStorageMethods"
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -41,10 +42,14 @@ export class AllProducts extends React.Component {
     console.log("THE TYPE", this.state.selectedType)
     const { auth, products, userInfo } = this.props
 
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", "[]")
+    }
+    let cart = JSON.parse(localStorage.getItem("cart"))
     let type = this.state.selectedType
 
     return (
-       <div>
+      <div>
         <br />
         <div className="column">
           Products:
@@ -77,8 +82,7 @@ export class AllProducts extends React.Component {
           <option value="ground">ground</option>
         </select>
         <div className="unit">
-
-          { products.length === 0 ? (
+          {products.length === 0 ? (
             <p>No products</p>
           ) : (
             products
@@ -119,7 +123,24 @@ export class AllProducts extends React.Component {
                               },
                               onClick: function(){} // Callback after click
                             }).showToast())
-                          : console.log("add to local storage")
+                          
+                          : (function addItemToLS(prodId) {
+                              let item = products.find(function (item) {
+                                return item.id === prodId
+                              })
+                              if (cart.length === 0) {
+                                cart.push(item)
+                              } else {
+                                let res = cart.find(
+                                  (element) => element.id === prodId
+                                )
+                                if (res === undefined) {
+                                  cart.push(item)
+                                }
+                              }
+                              console.log(cart)
+                              localStorage.setItem("cart", JSON.stringify(cart))
+                            })(product.id)
                       }}
                     >
                       Add to cart
@@ -155,7 +176,6 @@ export class AllProducts extends React.Component {
           )}
         </div>
       </div>
-     
     )
   }
 }
@@ -179,6 +199,3 @@ const mapDispatch = (dispatch) => {
 }
 
 export default connect(mapState, mapDispatch)(AllProducts)
-
-
-
