@@ -1,5 +1,8 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+const Sequelize = require("sequelize")
+// const { LocalStorage } = require("node-localstorage");
+// const localStorage = require("../../client/components/AllProducts");
 
 module.exports = router
 //  Here we are "mounted on" (starts with) /api/users
@@ -104,6 +107,17 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
 //Then we grab all the entries in our through table that share the same OrderId
 //Then we map over this array and we grab all the items from our item model and save that in an item array
 //send all info to front end
+
+router.get("/guest/cart", async (req, res, next) => {
+  try {
+    const cartItems = localStorage.getItem("cart")
+    res.send(cartItems)
+  } catch (err) {
+    console.log(err)
+    // err.message = "Empty cart"
+    next(err)
+  }
+})
 
 //GET /api/users/:userid/cart
 router.get("/:id/cart", async (req, res, next) => {

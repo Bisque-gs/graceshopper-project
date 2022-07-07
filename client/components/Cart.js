@@ -51,7 +51,7 @@ class Cart extends React.Component {
               </div>
               <br />
               <div className="column">
-                This is {user.username}'s cart!
+                This is {user.username ? user.username : 'guest'}'s cart!
                 <Link to={`/users/${user.id}/cart/checkout`}>
                   <button type="button">💸CHECKOUT💸</button>
                 </Link>

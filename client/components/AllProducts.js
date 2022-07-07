@@ -3,7 +3,8 @@ import { connect } from "react-redux"
 import { fetchProducts, deleteProductThunk } from "../redux/products"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
-import AddProduct from "./AddProduct"
+import AddProduct from "./AddProduct";
+import { addItemToLS } from "../localStorageMethods";
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -38,11 +39,15 @@ export class AllProducts extends React.Component {
     })
   }
   render() {
-    console.log("THE TYPE", this.state.selectedType)
     const { auth, products } = this.props
 
-    let type = this.state.selectedType
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", "[]");
+    }
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    console.log("THE TYPE", this.state.selectedType)
 
+    let type = this.state.selectedType
     return (
        <div>
         <br />
@@ -59,9 +64,7 @@ export class AllProducts extends React.Component {
               onClick={() => this.setState({ isAddVisible: true })}
             >
               Add Product
-            </button>
-          ) : (
-            console.log("You're not admin")
+            </button> : console.log("You won't see the add button (not admin)")
           )}
         </div>
         <select id="choose-type" name="selectList" onChange={this.handleChange}>
@@ -105,7 +108,18 @@ export class AllProducts extends React.Component {
                       onClick={() => {
                         auth.id
                           ? this.props.addToCart(auth.id, product.id)
-                          : console.log("add to local storage")
+                          : (function addItemToLS(prodId){
+                          let item = products.find(function(item){
+                            return item.id === prodId;
+                          })
+                          if (cart.length === 0) {
+                            cart.push(item);
+                          }else {
+                            let res = cart.find(element => element.id === prodId);
+                            if (res === undefined) {cart.push(item)};
+                          }
+                          localStorage.setItem("cart", JSON.stringify(cart));
+                        }(product.id))
                       }}
                     >
                       Add to cart
