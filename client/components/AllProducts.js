@@ -64,8 +64,8 @@ export class AllProducts extends React.Component {
               onClick={() => this.setState({ isAddVisible: true })}
             >
               Add Product
-            </button> : console.log("You won't see the add button (not admin)")
-          )}
+            </button>) : console.log("You won't see the add button (not admin)")
+          }
         </div>
         <select id="choose-type" name="selectList" onChange={this.handleChange}>
           <option value="">Pick a Type!</option>
