@@ -30,19 +30,25 @@ class Cart extends React.Component {
     this.props.updateQuantity(obj)
   }
   render() {
-    const user = this.props.userInfo.user
-    const auth = this.props.auth
-    const userId = this.props.userInfo.user
-    const ordersInfo = this.props.userInfo.ordersInfo
-    const cartItems = this.props.userInfo.cartItems || []
-    const isLoggedIn = this.props.isLoggedIn
-    const itemQuantities = this.props.userInfo.updatedPrices || []
+    const { userInfo, auth } = this.props
+    const user = userInfo.user
+    const cartItems = userInfo.cartItems || []
+    const itemQuantities = userInfo.updatedPrices
+      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+      : []
     let cartAuthorization = user.id === auth.id
+
     return (
       <React.Fragment>
         <div>
           {cartAuthorization || auth.isAdmin ? (
             <div>
+              <div>
+                {" "}
+                <Link to={`/users/${user.id}/cart/orderhistory`}>
+                  <button type="button">💸ORDER HISTORY💸</button>
+                </Link>
+              </div>
               <br />
               <div className="column">
                 This is {user.username ? user.username : 'guest'}'s cart!
@@ -51,57 +57,62 @@ class Cart extends React.Component {
                 </Link>
               </div>
               <div className="unit">
-                {cartItems.map((item, i) => (
-                  <div key={item.id} className="profile">
-                    <h3>
-                      <Link to={`/products/${item.id}`}>{item.name}</Link>
-                    </h3>
-                    <img src={item.imageUrl} />
+                {cartItems
+                  .sort((a, b) => a.id - b.id)
+                  .map((item, i) => (
+                    <div key={item.id} className={item.pokeType + " profile"}>
+                      <h3>
+                        <Link to={`/products/${item.id}`}>{item.name}</Link>
+                      </h3>
+                      <img src={item.imageUrl} />
 
-                    <div className="column">
-                      <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
-                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
-                    </div>
+                      <div className="column">
+                        <h3>
+                          UNIT PRICE: $
+                          {(itemQuantities[i].price / 10000).toFixed(2)}
+                        </h3>
+                        <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                      </div>
 
-                    <div>
-                      <button
-                        onClick={() =>
-                          this.incrementItem({
-                            userId: user.id,
-                            productId: item.id,
-                            quantity: itemQuantities[i].quantity + 1,
-                          })
-                        }
-                        type="button"
-                      >
-                        ➕
-                      </button>
-                      <button
-                        onClick={() =>
-                          this.decrementItem({
-                            userId: user.id,
-                            productId: item.id,
-                            quantity: itemQuantities[i].quantity - 1,
-                          })
-                        }
-                        type="button"
-                      >
-                        ➖
-                      </button>
-                      <button
-                        onClick={() =>
-                          this.clickDelete({
-                            userId: user.id,
-                            productId: item.id,
-                          })
-                        }
-                        className="cancel"
-                      >
-                        ❌
-                      </button>
+                      <div>
+                        <button
+                          onClick={() =>
+                            this.incrementItem({
+                              userId: user.id,
+                              productId: item.id,
+                              quantity: itemQuantities[i].quantity + 1,
+                            })
+                          }
+                          type="button"
+                        >
+                          ➕
+                        </button>
+                        <button
+                          onClick={() =>
+                            this.decrementItem({
+                              userId: user.id,
+                              productId: item.id,
+                              quantity: itemQuantities[i].quantity - 1,
+                            })
+                          }
+                          type="button"
+                        >
+                          ➖
+                        </button>
+                        <button
+                          onClick={() =>
+                            this.clickDelete({
+                              userId: user.id,
+                              productId: item.id,
+                            })
+                          }
+                          className="cancel"
+                        >
+                          ❌
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           ) : (

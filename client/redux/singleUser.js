@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const GET_SINGLE_USER = "GET_SINGLE_USER"
-
+const GET_ORDER_HISTORY = "GET_ORDER_HISTORY"
 const UPDATE_SINGLE_USER = "UPDATE_SINGLE_USER"
 const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
@@ -55,6 +55,13 @@ const userCheckout = (order) => {
   return {
     type: CHECKOUT_ITEMS,
     order,
+  }
+}
+
+const orderHistory = (orderHistory) => {
+  return {
+    type: GET_ORDER_HISTORY,
+    orderHistory,
   }
 }
 
@@ -123,6 +130,17 @@ export const fetchUserCart = (id) => {
         dispatch(getUserCart(data))
       }
     } catch (error) {
+      dispatch(getUserCart({ error: error.response.data }))
+    }
+  }
+}
+
+export const fetchUserOrderHistory = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/api/users/${id}/cart/orderhistory`)
+      dispatch(orderHistory(data))
+    } catch (error) {
       console.log(error)
     }
   }
@@ -137,6 +155,7 @@ export const checkoutThunk = ({ userId, itemQuantities }) => {
       dispatch(userCheckout(data))
     } catch (error) {
       console.log(error)
+      return dispatch(userCheckout({ error: error.response.data }))
     }
   }
 }
@@ -146,6 +165,8 @@ const defaultState = {
   ordersInfo: {},
   cartItems: [],
   updatedPrices: [],
+  orderHistory: {},
+  error: "",
 }
 
 export default function singleUserReducer(state = defaultState, action) {
@@ -155,12 +176,21 @@ export default function singleUserReducer(state = defaultState, action) {
     case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
     case GET_USER_CART:
-      return {
-        ...state,
-        ordersInfo: action.ordersInfo,
-        cartItems: action.ordersInfo.cartItems,
-        updatedPrices: action.ordersInfo.updatedPrices,
-      }
+      return action.error
+        ? {
+            ...state,
+            ordersInfo: {},
+            cartItems: [],
+            updatedPrices: [],
+            error: action.error,
+          }
+        : {
+            ...state,
+            ordersInfo: action.ordersInfo,
+            cartItems: action.ordersInfo.cartItems,
+            updatedPrices: action.ordersInfo.updatedPrices,
+            error: "",
+          }
     case DELETE_ITEM_CART:
       return {
         ...state,

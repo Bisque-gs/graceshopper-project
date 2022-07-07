@@ -64,6 +64,12 @@ body {
   align-items: center;
 }
 
+/* .profile {
+  padding-left: 10px;
+  padding-right: 50px;
+
+} */
+
 .profile img {
   width: 200px;
 }
@@ -140,7 +146,18 @@ button {
   outline: none;
   padding: 10px 9px 10px 11px;
   text-transform: uppercase;
-  width: 200px;
+  width: 100%;
+  max-width:200px
+}
+
+button:hover{
+  cursor: pointer
+}
+
+button:focus{
+  border-left: 3px solid skyblue;
+  border-right: 3px solid skyblue;
+  border-radius: 3px;
 }
 
 input {
@@ -171,4 +188,51 @@ input {
 
 .spacer{
   height: 50px;
+}
+
+/* colors for pokeTypes */
+
+.normal{
+  background:#ecc;
+  border: 1px solid black;
+}
+
+.fire{
+  background:#f22;
+  border: 1px solid black;
+}
+
+.water{
+  background:#44f;
+  border: 1px solid black;
+}
+
+.grass{
+  background:#070;
+  border: 1px solid black;
+}
+
+.bug{
+  background:#9f0;
+  border: 1px solid black;
+}
+
+.poison{
+  background:#f0f;
+  border: 1px solid black;
+}
+
+.flying{
+  background:#bbf;
+  border: 1px solid black;
+}
+
+.ground{
+  background:#a77;
+  border: 1px solid black;
+}
+
+.electric{
+  background:#ee0;
+  border: 1px solid black;
 }

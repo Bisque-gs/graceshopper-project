@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { fetchUser, fetchUserCart, checkoutThunk } from "../redux/singleUser"
 import { Link } from "react-router-dom"
+import PayPal from "./PayPal"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
@@ -19,32 +20,17 @@ class Checkout extends React.Component {
   }
 
   ///isLogin doesnt work here, that only checks if anyone at all is logged in
-  //we need to check whether the logged in user matches the userId of the cart we are trying to view
-
-  //Checking out is an all in one process, no checking out for individual items. One button will check out every item,
-  //going to need a map or some sort on the backend for our routes
-
-  //What does checking out an item mean?
-
-  //REVISION ==> The orders should not dissapear from our through table! That is important for order history
-  //Also price needs to be a column inside of through table
-
-  //- the item quantity should be decremented from the item table
-  //put route to update the quantities with the decremented value
-
-  //- the 'current order' in the order table should be set to false since the order is closed/completed
-  //another put route to modify the isCurrentOrder value to false
-  //start on backend
-
-  //VALIDATION ==> before decrementing..... need to check that there is enough of the product quantity to confim the order
-  //if not then the order bounces, display message/alert
+  //we need to check whether the logged in user matches the userId of the cart we are try3ing to view
 
   render() {
-    const user = this.props.userInfo.user
-    const auth = this.props.auth
-    const cartItems = this.props.userInfo.cartItems || []
-    const itemQuantities = this.props.userInfo.updatedPrices || []
+    const { auth, userInfo } = this.props
+    const { user } = userInfo
+    const cartItems = userInfo.cartItems || []
+    const itemQuantities = userInfo.updatedPrices
+      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+      : []
     let cartAuthorization = user.id === auth.id
+    let cartIsEmpty = cartItems.length === 0
     let total = 0
     return (
       <React.Fragment>
@@ -53,35 +39,46 @@ class Checkout extends React.Component {
             <div>
               <br />
               <div className="column">
-                {user.username}'s CHECKOUT CONFIRMATION PAGE
+                <h2>{user.username}'s CHECKOUT CONFIRMATION PAGE</h2>
               </div>
               <div className="unit">
-                {cartItems.map((item, i) => (
-                  <div key={item.id} className="profile">
-                    <h3>
-                      <Link to={`/products/${item.id}`}>{item.name}</Link>
-                    </h3>
-                    <img src={item.imageUrl} />
-                    <div className="column">
-                      <h3>UNIT PRICE: {itemQuantities[i].price / 10000}</h3>
-                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                {cartItems
+                  .sort((a, b) => a.id - b.id)
+                  .map((item, i) => (
+                    <div key={item.id} className={item.pokeType + " profile"}>
                       <h3>
-                        SUBPRICE:{" "}
-                        {(itemQuantities[i].price *
-                          itemQuantities[i].quantity) /
-                          10000}
+                        <Link to={`/products/${item.id}`}>{item.name}</Link>
                       </h3>
+                      <img src={item.imageUrl} />
+                      <div className="column">
+                        <h3>
+                          UNIT PRICE: $
+                          {(itemQuantities[i].price / 10000).toFixed(2)}
+                        </h3>
+                        <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                        <h3>
+                          SUBPRICE: $
+                          {(
+                            (itemQuantities[i].price *
+                              itemQuantities[i].quantity) /
+                            10000
+                          ).toFixed(2)}
+                        </h3>
+                      </div>
+                      <div style={{ display: "none" }}>
+                        {
+                          (total +=
+                            itemQuantities[i].price *
+                            itemQuantities[i].quantity)
+                        }
+                      </div>
                     </div>
-                    <div style={{ display: "none" }}>
-                      {
-                        (total +=
-                          itemQuantities[i].price * itemQuantities[i].quantity)
-                      }
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
-              <div>TOTAL PRICE: ${total / 10000}</div>
+              <div>TOTAL PRICE: ${(total / 10000).toFixed(2)}</div>
+              {userInfo.error && (
+                <p>{userInfo.error}. Please adjust your cart.</p>
+              )}
               <button
                 onClick={() =>
                   this.checkout({
@@ -90,9 +87,23 @@ class Checkout extends React.Component {
                   })
                 }
                 type="button"
+                disabled={cartIsEmpty}
+                style={{ opacity: cartIsEmpty && 0.5 }}
               >
                 SUBMIT ORDER
               </button>
+              {cartIsEmpty ? (
+                (cartIsEmpty = true)
+              ) : (
+                <div className="column">
+                  <PayPal
+                    totalPrice={(total / 10000).toFixed(2)}
+                    userId={user.id}
+                    itemQuantities={itemQuantities}
+                    checkout={this.checkout}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div>

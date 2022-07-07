@@ -11,6 +11,8 @@ import { me } from "./store"
 import Cart from "./components/Cart"
 import Checkout from './components/Checkout';
 import AllUsersIsAdmin from "./components/AllUsersIsAdmin"
+import ViewUserAdmin from "./components/ViewUserAdmin"
+import OrderHistory from "./components/OrderHistory"
 
 /**
  * COMPONENT
@@ -32,9 +34,19 @@ class Routes extends Component {
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/users" exact component={AllUsersIsAdmin} />
             <Route path="/users/:id/cart/checkout" exact component={Checkout} />
+            <Route
+              path="/users/:id/cart/orderhistory"
+              exact
+              component={OrderHistory}
+            />
             <Route path="/users/:id/cart" component={Cart} />
             <Route path="/users/:id/edituser" component={EditUserProfile} />
-            <Route path="/users/:id" component={SingleUser} />
+            <Route
+              path="/users/:id/admin/:userId"
+              exact
+              component={ViewUserAdmin}
+            />
+            <Route path="/users/:id" exact component={SingleUser} />
             <Redirect to="/home" />
           </Switch>
         ) : (

@@ -26,30 +26,17 @@ const Product = db.define("product", {
     type: Sequelize.STRING,
     defaultValue: "https://i.imgur.com/PD5Nx4d.png",
   },
+  pokeType: {
+    type: Sequelize.STRING,
+    defaultValue: "normal",
+  },
 })
-
-//TRYING TO VALIDATE QUANITY UPON CHECKOUT
-// can't use beforeUpdate, this runs after changes are attempted.
-// Product.beforeUpdate((product) => {
-//   // let olditem = await Product.findByPk(product.id)
-//   console.log(product.quantity)
-//   if (product.quantity < 0) {
-//     console.log("beforeUpdate")
-
-//     // throw new Error("CANNOT GO BELOW 0")
-//   }
-// })
 
 Product.beforeValidate((product) => {
   if (product.quantity < 0) {
-    // const error = new Error(`{
-    //   "name": "${product.name}",
-    //   "quantityInStock": ${product._previousDataValues.quantity}
-    // }`)
-    const error = new Error(
-      `Only ${product._previousDataValues.quantity} remaining of ${product.name}!`
+    throw new Error(
+      `${product._previousDataValues.quantity} ${product.name}s remaining in stock`
     )
-    throw error
   }
 })
 

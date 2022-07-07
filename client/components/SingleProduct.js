@@ -1,7 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchProduct, setOrder, updateProductThunk } from "../redux/singleProduct"
-import EditProduct from "./EditProduct";
+import {
+  fetchProduct,
+  setOrder,
+  updateProductThunk,
+} from "../redux/singleProduct"
+import EditProduct from "./EditProduct"
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -13,7 +17,7 @@ class SingleProduct extends React.Component {
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.isEditVisibleToggle = this.isEditVisibleToggle.bind(this);
+    this.isEditVisibleToggle = this.isEditVisibleToggle.bind(this)
   }
   componentDidMount() {
     const { id } = this.props.match.params
@@ -21,7 +25,7 @@ class SingleProduct extends React.Component {
   }
 
   isEditVisibleToggle() {
-    this.setState({ isEditVisible: false });
+    this.setState({ isEditVisible: false })
   }
 
   handleChange(e) {
@@ -46,46 +50,54 @@ class SingleProduct extends React.Component {
 
   render() {
     const { product, auth } = this.props
+    let noneInStock = false
     return (
       <div className="profile">
         <div className="column">
-        <h3>{product.name}</h3>
-        <img src={product.imageUrl} alt={product.name} />
-        <h3>PRICE: ${product.price / 100} per card</h3>
-        <p>{product.quantity} remaining in stock!</p>
-        <select name="quantity" id="" onChange={this.handleChange}>
-          {Array(10)
-            .fill(0)
-            .map((_, i) => {
-              return (
-                <option key={i} value={i + 1} id="">
-                  {i + 1}
-                </option>
-              )
-            })}
-        </select>
-        {this.state.submitted && <p>Item(s) added to cart!</p>}
-        <button
-          onClick={
-            auth.id ? this.handleClick : () => console.log("Added to local storage")
-          }
-        >
-          Add to cart
-        </button>
-        {this.state.isEditVisible ? (
-          <EditProduct
-            updateProduct={this.props.updateProduct}
-            product={product}
-            isEditVisible={this.isEditVisibleToggle}
-          />
-        ) : (auth.isAdmin &&
+          <h3>{product.name}</h3>
+          <img src={product.imageUrl} alt={product.name} />
+          <h3>PRICE: ${(product.price / 100).toFixed(2)} per card</h3>
+          <p>{product.quantity} remaining in stock!</p>
+          {product.quantity == 0 && (noneInStock = true)}
+          <select name="quantity" id="" onChange={this.handleChange}>
+            {Array(10)
+              .fill(0)
+              .map((_, i) => {
+                return (
+                  <option key={i} value={i + 1} id="">
+                    {i + 1}
+                  </option>
+                )
+              })}
+          </select>
+          {this.state.submitted && <p>Item(s) added to cart!</p>}
           <button
-            type="button"
-            onClick={() => this.setState({ isEditVisible: true })}
+            onClick={
+              auth.id
+                ? this.handleClick
+                : () => console.log("Added to local storage")
+            }
+            disabled={noneInStock}
+            style={{ opacity: noneInStock && 0.5 }}
           >
-            Edit
+            Add to cart
           </button>
-        )}
+          {this.state.isEditVisible ? (
+            <EditProduct
+              updateProduct={this.props.updateProduct}
+              product={product}
+              isEditVisible={this.isEditVisibleToggle}
+            />
+          ) : (
+            auth.isAdmin && (
+              <button
+                type="button"
+                onClick={() => this.setState({ isEditVisible: true })}
+              >
+                Edit
+              </button>
+            )
+          )}
         </div>
       </div>
     )

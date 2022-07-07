@@ -2,7 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { logout } from "../store"
-import { fetchUserCart, fetchUser } from "../redux/singleUser"
 
 const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
   <div>
@@ -18,11 +17,16 @@ const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
           <Link to={`/users/${auth.id}/cart`}>
-            Cart ({user.updatedPrices.length})
+            {/* Cart ({user.updatedPrices.length}) */}
+            Cart ({user.updatedPrices ? user.updatedPrices.length : 0})
           </Link>
           <Link to="/products">Products</Link>
           <Link to={`/users/${auth.id}`}>My Profile</Link>
-          {auth.isAdmin ? (<Link to={`/users`}>All Users</Link>): (console.log('NOT ADMIN ALL USERS NOT RENDERING '))}
+          {auth.isAdmin ? (
+            <Link to={`/users`}>All Users</Link>
+          ) : (
+            console.log("NOT ADMIN ALL USERS NOT RENDERING ")
+          )}
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -97,7 +101,6 @@ export default connect(mapState, mapDispatch)(Navbar)
 //     if (prevProps.auth.id !== this.props.auth.id) {
 //       this.getOrdersUponLogin()
 //     }
-
 
 //      if (
 //        prevProps.user.updatedPrices.length !==
