@@ -9,12 +9,6 @@ import PayPal from "./PayPal"
 //have an option to grab current orders
 //reducer
 class Checkout extends React.Component {
-  componentDidMount() {
-    const { id } = this.props.match.params
-    this.props.getUser(Number(id))
-    this.props.getOrders(Number(id))
-  }
-
   checkout = (orderobj) => {
     this.props.checkout(orderobj)
   }
@@ -23,10 +17,12 @@ class Checkout extends React.Component {
     const { user } = userInfo
     const cartItems = userInfo.cartItems || []
     const itemQuantities = userInfo.updatedPrices
-      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-      : []
+    ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+    : []
     let cartIsEmpty = cartItems.length === 0
     let total = 0
+    console.log(itemQuantities)
+    console.log('cart items', cartItems)
     return (
       <React.Fragment>
         <div className="container">
@@ -47,52 +43,39 @@ class Checkout extends React.Component {
                     <div className="column">
                       <h3>
                         UNIT PRICE: $
-                        {(itemQuantities[i].price / 10000).toFixed(2)}
+                        {(item.price / 100).toFixed(2)}
                       </h3>
-                      <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                      <p>QUANTITY: {item.quantity}</p>
                       <h3>
                         SUBPRICE: $
                         {(
-                          (itemQuantities[i].price *
-                            itemQuantities[i].quantity) /
-                          10000
+                          (item.price *
+                            item.quantity) /
+                          100
                         ).toFixed(2)}
                       </h3>
                     </div>
                     <div style={{ display: "none" }}>
                       {
                         (total +=
-                          itemQuantities[i].price * itemQuantities[i].quantity)
+                          item.price * item.quantity)
                       }
                     </div>
                   </div>
                 ))}
             </div>
-            <div>TOTAL PRICE: ${(total / 10000).toFixed(2)}</div>
+            <div>TOTAL PRICE: ${(total / 100).toFixed(2)}</div>
             {userInfo.error && (
               <p>{userInfo.error}. Please adjust your cart.</p>
             )}
-            <button
-              onClick={() =>
-                this.checkout({
-                  userId: user.id,
-                  itemQuantities: itemQuantities,
-                })
-              }
-              type="button"
-              disabled={cartIsEmpty}
-              style={{ opacity: cartIsEmpty && 0.5 }}
-            >
-              SUBMIT ORDER
-            </button>
             {cartIsEmpty ? (
               (cartIsEmpty = true)
             ) : (
               <div className="column">
                 <PayPal
-                  totalPrice={(total / 10000).toFixed(2)}
+                  totalPrice={(total / 100).toFixed(2)}
                   userId={user.id}
-                  itemQuantities={itemQuantities}
+                  itemQuantities={cartItems}
                   checkout={this.checkout}
                 />
               </div>

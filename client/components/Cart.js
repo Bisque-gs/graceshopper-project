@@ -18,7 +18,9 @@ class Cart extends React.Component {
     const { id } = this.props.match.params
     // also gets info for guests
     this.props.getUser(Number(id))
-    if (id) this.props.getOrders(Number(id))
+    if (id) {
+      this.props.getOrders(Number(id))
+    }
   }
 
   clickDelete = (deleteInfo) => {
