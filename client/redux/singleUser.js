@@ -72,10 +72,15 @@ export const fetchUser = (id) => {
       // const { data } = await axios.get(`/api/users/${id}`)
       // dispatch(getUser(data))
       if (!id) {
+<<<<<<< HEAD
+=======
+        // console.log("here")
+>>>>>>> 33787e1ad68bcd84185c6bfe916ebba9e651bcc2
         const data = window.localStorage.getItem("cart")
         // const { data } = await axios.get(`/api/users/guest/`)
         dispatch(getGuestCart(data))
       } else {
+        console.log("here")
         const { data } = await axios.get(`/api/users/${id}`)
         dispatch(getUser(data))
       }
@@ -195,6 +200,7 @@ const defaultState = {
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
+      console.log("GET_SINGLE_USER")
       return { ...state, user: action.user }
     case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
@@ -244,11 +250,6 @@ export default function singleUserReducer(state = defaultState, action) {
             error: "",
           }
     case GET_GUEST_CART:
-      // console.log("guest reduce")
-      // const items =
-      //   typeof action.ordersInfo === "string"
-      //     ? JSON.parse(action.ordersInfo)
-      //     : action.ordersInfo
       return { ...state, cartItems: JSON.parse(action.ordersInfo) }
     case GET_ORDER_HISTORY:
       return { ...state, orderHistory: action.orderHistory }

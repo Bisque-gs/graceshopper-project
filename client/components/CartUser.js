@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
+// import {
+//   fetchUser,
+//   // fetchUserCart,
+//   // deleteItemCartThunk,
+//   // updateQuantityThunk,
+// } from "../redux/singleUser"
 
 function CartUser(props) {
   const {
+    // id,
     cartAuthorization,
-    user,
+    userInfo,
     cartItems,
-    itemQuantities,
     auth,
     adjustQuantity,
     clickDelete,
   } = props
-  console.log("user", itemQuantities)
+  const { user } = userInfo
+  console.log(props)
+  const itemQuantities = userInfo.updatedPrices
+    ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+    : [] // helps with rendering?
+
+  //   console.log("itemQuantities", itemQuantities)
+  //   console.log("auth", auth)
+  //   console.log("userInfo", user)
   return (
     <div>
-      {cartAuthorization || auth.isAdmin ? (
+      {cartAuthorization || auth.isAdmin ? ( // this won't work for non-admins right now
         <div>
           <div>
             This is {user.username}'s cart!
@@ -36,12 +50,12 @@ function CartUser(props) {
               .sort((a, b) => a.id - b.id)
               .map((item, i) => (
                 <div key={item.id} className={item.pokeType + " profile"}>
-                  {console.log(item)}
                   <h3>
                     <Link to={`/products/${item.id}`}>{item.name}</Link>
                   </h3>
                   <img src={item.imageUrl} />
 
+                  {/* BUG: guest cart (with items?) -> login -> landing -> user cart */}
                   <div className="column">
                     <h3>
                       UNIT PRICE: $

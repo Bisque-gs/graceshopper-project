@@ -224,6 +224,32 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
   }
 })
 
+// GUEST checkout, doesn't affect Order table
+router.put("/guest/cart/checkout", async (req, res, next) => {
+  try {
+    const items = await Promise.all(
+      req.body.itemQuantities.map((item) => {
+        return Product.findByPk(item.productId)
+      })
+    )
+
+    const updatedItems = await Promise.all(
+      items.map((item, i) => {
+        const updated = item.update(
+          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { individualHooks: true }
+        )
+        return updated
+      })
+    )
+
+    res.send(updatedItems)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
 //HERE I WANT TO DECREMENT THE QUANTITY OF THE ITEM THAT HAS BEEN ORDERED VIA CHECKOUT
 //req.body will be the quantity of all the items that we want to decrement
 //req.body should essentially contain the entry from the orderProducts thru table asssociated with that item
