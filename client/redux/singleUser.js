@@ -72,10 +72,6 @@ export const fetchUser = (id) => {
       // const { data } = await axios.get(`/api/users/${id}`)
       // dispatch(getUser(data))
       if (!id) {
-<<<<<<< HEAD
-=======
-        // console.log("here")
->>>>>>> 33787e1ad68bcd84185c6bfe916ebba9e651bcc2
         const data = window.localStorage.getItem("cart")
         // const { data } = await axios.get(`/api/users/guest/`)
         dispatch(getGuestCart(data))

@@ -36,20 +36,8 @@ class Cart extends React.Component {
     const user = userInfo.user
     let cartItems = userInfo.cartItems || []
     const isGuest = auth.id ? false : true
-<<<<<<< HEAD
-
-    const itemQuantities = auth.id // if user is logged in
-      ? userInfo.updatedPrices // helps with rendering?
-        ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-        : []
-      : // if guest
-        cartItems
-
-    let cartAuthorization = user.id === auth.id
-=======
     const cartAuthorization = user.id === auth.id
     const { id } = this.props.match.params
->>>>>>> 33787e1ad68bcd84185c6bfe916ebba9e651bcc2
 
     return (
       <React.Fragment>

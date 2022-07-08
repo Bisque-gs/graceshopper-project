@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
 function CartGuest(props) {
-<<<<<<< HEAD
-  const { user, cartItems, itemQuantities, adjustQuantity, clickDelete } = props
-=======
   const { user, cartItems, adjustQuantity, clickDelete, auth } = props
   console.log(auth)
->>>>>>> 33787e1ad68bcd84185c6bfe916ebba9e651bcc2
 
   return (
     <div>

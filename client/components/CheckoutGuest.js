@@ -19,7 +19,7 @@ class Checkout extends React.Component {
     this.props.checkout(orderobj)
   }
   render() {
-    const { auth, userInfo } = this.props
+    const { userInfo } = this.props
     const { user } = userInfo
     const cartItems = userInfo.cartItems || []
     const itemQuantities = userInfo.updatedPrices
@@ -108,8 +108,6 @@ class Checkout extends React.Component {
 function mapState(state) {
   return {
     userInfo: state.user,
-    isLoggedIn: !!state.auth.id,
-    auth: state.auth,
   }
 }
 

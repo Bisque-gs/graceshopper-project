@@ -146,8 +146,7 @@ router.get("/guest/cart", async (req, res, next) => {
       })
     )
 
-    // res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
-    res.send("hi")
+    res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
   } catch (err) {
     err.message = "Empty cart"
     next(err)
