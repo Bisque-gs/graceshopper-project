@@ -16,7 +16,6 @@ import CartGuest from "./CartGuest"
 class Cart extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params
-    // console.log(id)
     // also gets info for guests
     this.props.getUser(Number(id))
     if (id) this.props.getOrders(Number(id))
@@ -26,7 +25,6 @@ class Cart extends React.Component {
     this.props.deleteItemfromCart(deleteInfo)
   }
 
-  // NOTE: the next two functions can just be one "adjustQuantity" function, right?
   adjustQuantity = (obj) => {
     // for guest, obj.id === undefined
     this.props.updateQuantity(obj)
@@ -34,38 +32,31 @@ class Cart extends React.Component {
 
   render() {
     const { userInfo, auth } = this.props
+    // userInfo.cartItems messes up in here
     const user = userInfo.user
     let cartItems = userInfo.cartItems || []
     const isGuest = auth.id ? false : true
-
-    const itemQuantities = auth.id // if user is logged in
-      ? userInfo.updatedPrices // helps with rendering?
-        ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-        : []
-      : // if guest
-        cartItems
-
-    console.log(itemQuantities)
-    let cartAuthorization = user.id === auth.id
+    const cartAuthorization = user.id === auth.id
+    const { id } = this.props.match.params
 
     return (
       <React.Fragment>
         <div>
           {isGuest ? (
             <CartGuest
+              auth={auth}
               user={user}
               cartItems={cartItems}
-              itemQuantities={itemQuantities}
               adjustQuantity={this.adjustQuantity}
               clickDelete={this.clickDelete}
             />
           ) : (
             <CartUser
+              id={id}
               auth={auth}
               cartAuthorization={cartAuthorization}
-              user={user}
+              userInfo={userInfo}
               cartItems={cartItems}
-              itemQuantities={itemQuantities}
               adjustQuantity={this.adjustQuantity}
               clickDelete={this.clickDelete}
             />

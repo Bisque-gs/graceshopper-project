@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
 function CartGuest(props) {
-  const { user, cartItems, itemQuantities, adjustQuantity, clickDelete } = props
-  console.log("guest", itemQuantities)
+  const { user, cartItems, adjustQuantity, clickDelete, auth } = props
+  console.log(auth)
 
   return (
     <div>
@@ -27,10 +27,8 @@ function CartGuest(props) {
               <img src={item.imageUrl} />
 
               <div className="column">
-                <h3>
-                  UNIT PRICE: ${(itemQuantities[i].price / 10000).toFixed(2)}
-                </h3>
-                <p>QUANTITY: {itemQuantities[i].quantity}</p>
+                <h3>UNIT PRICE: ${(item.price / 100).toFixed(2)}</h3>
+                <p>QUANTITY: {item.quantity}</p>
               </div>
 
               <div>
@@ -39,7 +37,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
-                      quantity: itemQuantities[i].quantity + 1,
+                      quantity: item.quantity + 1,
                     })
                   }
                   type="button"
@@ -51,7 +49,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
-                      quantity: itemQuantities[i].quantity - 1,
+                      quantity: item.quantity - 1,
                     })
                   }
                   type="button"
