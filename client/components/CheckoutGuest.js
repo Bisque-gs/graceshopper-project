@@ -11,6 +11,7 @@ import PayPal from "./PayPal"
 class Checkout extends React.Component {
   checkout = (orderobj) => {
     this.props.checkout(orderobj)
+    window.localStorage.setItem("cart", '[]')
   }
   render() {
     const { userInfo } = this.props
@@ -68,9 +69,7 @@ class Checkout extends React.Component {
             {userInfo.error && (
               <p>{userInfo.error}. Please adjust your cart.</p>
             )}
-            {cartIsEmpty ? (
-              (cartIsEmpty = true)
-            ) : (
+            {!cartIsEmpty && (
               <div className="column">
                 <PayPal
                   totalPrice={(total / 100).toFixed(2)}

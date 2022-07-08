@@ -228,7 +228,7 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
     const items = await Promise.all(
       req.body.itemQuantities.map((item) => {
-        return Product.findByPk(item.productId)
+        return Product.findByPk(item.id)
       })
     )
 
