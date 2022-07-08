@@ -107,8 +107,8 @@ export class AllProducts extends React.Component {
                     <button
                       type="button"
                       onClick={() => {
-                        auth.id
-                          ? (this.props.addToCart(auth.id, product.id) &&
+                        auth.id // logged in user
+                          ? this.props.addToCart(auth.id, product.id) &&
                             Toastify({
                               text: `${product.name} was successfully added to cart`,
                               duration: 3000,
@@ -119,24 +119,25 @@ export class AllProducts extends React.Component {
                               position: "right", // `left`, `center` or `right`
                               stopOnFocus: true, // Prevents dismissing of toast on hover
                               style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                background:
+                                  "linear-gradient(to right, #00b09b, #96c93d)",
                               },
-                              onClick: function(){} // Callback after click
-                            }).showToast())
-                          
+                              onClick: function () {}, // Callback after click
+                            }).showToast()
                           : (function addItemToLS(prodId) {
-                              let item = products.find(function (item) {
-                                return item.id === prodId
-                              })
-                              if (cart.length === 0) {
+                              // guest
+                              const item = products.find(
+                                (item) => item.id === prodId
+                              )
+                              console.log(item)
+                              const res = cart.find(
+                                (element) => element.id === prodId
+                              )
+                              if (cart.length === 0 || !res) {
+                                item.quantity = 1
                                 cart.push(item)
                               } else {
-                                let res = cart.find(
-                                  (element) => element.id === prodId
-                                )
-                                if (res === undefined) {
-                                  cart.push(item)
-                                }
+                                res.quantity++
                               }
                               console.log(cart)
                               localStorage.setItem("cart", JSON.stringify(cart))
@@ -150,7 +151,7 @@ export class AllProducts extends React.Component {
                         className="cancel"
                         type="button"
                         onClick={() => {
-                          this.props.deleteProduct(product.id);
+                          this.props.deleteProduct(product.id)
                           Toastify({
                             text: `${product.name} was successfully removed`,
                             duration: 3000,
@@ -159,9 +160,10 @@ export class AllProducts extends React.Component {
                             position: "right", // `left`, `center` or `right`
                             stopOnFocus: true, // Prevents dismissing of toast on hover
                             style: {
-                              background: "linear-gradient(to right, #00b09b, #863939)",
+                              background:
+                                "linear-gradient(to right, #00b09b, #863939)",
                             },
-                            onClick: function(){} // Callback after click
+                            onClick: function () {}, // Callback after click
                           }).showToast()
                         }}
                       >

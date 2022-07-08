@@ -79,7 +79,7 @@ class Checkout extends React.Component {
               {userInfo.error && (
                 <p>{userInfo.error}. Please adjust your cart.</p>
               )}
-              <button
+              {/* <button
                 onClick={() =>
                   this.checkout({
                     userId: user.id,
@@ -91,7 +91,7 @@ class Checkout extends React.Component {
                 style={{ opacity: cartIsEmpty && 0.5 }}
               >
                 SUBMIT ORDER
-              </button>
+              </button> */}
               {cartIsEmpty ? (
                 (cartIsEmpty = true)
               ) : (
