@@ -45,7 +45,6 @@ class Cart extends React.Component {
       : // if guest
         cartItems
 
-    console.log(itemQuantities)
     let cartAuthorization = user.id === auth.id
 
     return (

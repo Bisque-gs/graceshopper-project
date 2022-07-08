@@ -124,6 +124,36 @@ router.get("/:id/cart", async (req, res, next) => {
   }
 })
 
+router.get("/guest/cart", async (req, res, next) => {
+  try {
+    const userAllOrders = await Order.findAll({
+      where: { userId: req.params.id },
+      include: { model: Product },
+    })
+
+    const currentOrder = userAllOrders.filter((order) => order.isCurrentOrder)
+
+    if (!currentOrder[0]) {
+      res.send(0)
+      throw new Error("This cart is empty.")
+    }
+
+    const cartItems = currentOrder[0].products
+    const orderProducts = cartItems.map((x) => x.orderProducts)
+    const updatedPrices = await Promise.all(
+      orderProducts.map((x, i) => {
+        return x.update({ price: Number(cartItems[i].price) * 100 })
+      })
+    )
+
+    // res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
+    res.send("hi")
+  } catch (err) {
+    err.message = "Empty cart"
+    next(err)
+  }
+})
+
 //POST /api/users/:userid/orders/:productId/:quantity
 router.post("/:userId/orders/:productId/:quantity", async (req, res, next) => {
   try {

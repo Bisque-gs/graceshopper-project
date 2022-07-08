@@ -3,11 +3,9 @@ import { Link } from "react-router-dom"
 
 function CartGuest(props) {
   const { user, cartItems, itemQuantities, adjustQuantity, clickDelete } = props
-  console.log("guest", itemQuantities)
 
   return (
     <div>
-      This is guest's cart!
       <br />
       <div className="column">
         This is guest's cart!
@@ -20,7 +18,6 @@ function CartGuest(props) {
           .sort((a, b) => a.id - b.id)
           .map((item, i) => (
             <div key={item.id} className={item.pokeType + " profile"}>
-              {console.log(item)}
               <h3>
                 <Link to={`/products/${item.id}`}>{item.name}</Link>
               </h3>
