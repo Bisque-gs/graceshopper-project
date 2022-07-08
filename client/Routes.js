@@ -13,6 +13,7 @@ import Checkout from "./components/Checkout"
 import AllUsersIsAdmin from "./components/AllUsersIsAdmin"
 import ViewUserAdmin from "./components/ViewUserAdmin"
 import OrderHistory from "./components/OrderHistory"
+import CheckoutGuest from "./components/CheckoutGuest"
 
 /**
  * COMPONENT
@@ -54,12 +55,8 @@ class Routes extends Component {
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/users/guest/cart" component={Cart} />
-            <Route
-              path="/users/guest/cart/checkout"
-              exact
-              component={Checkout}
-            />
+            <Route exact path="/users/guest/cart" component={Cart} />
+            <Route path="/users/guest/cart/checkout" component={CheckoutGuest} />
             <Route path="/products" exact component={AllProducts} />
             {/* <Route path="/users/:id" component={SingleUser} /> */}
             <Route path="/products/:id" component={SingleProduct} />

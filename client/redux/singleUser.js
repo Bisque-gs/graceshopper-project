@@ -72,7 +72,6 @@ export const fetchUser = (id) => {
       // const { data } = await axios.get(`/api/users/${id}`)
       // dispatch(getUser(data))
       if (!id) {
-        // console.log("here")
         const data = window.localStorage.getItem("cart")
         // const { data } = await axios.get(`/api/users/guest/`)
         dispatch(getGuestCart(data))
@@ -140,20 +139,20 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
-      if (!id) {
-        console.log("first")
-        // get cart from localStorage
-        const cart = window.localStorage.getItem("cart")
-        // update item prices
-        const { data } = await axios.get(`/api/users/guest/cart/`, {
-          headers: { cart },
-        })
-        console.log("here", typeof data)
-        dispatch(getGuestCart(data))
-      } else {
+      // if (!id) {
+      //   console.log("first")
+      //   // get cart from localStorage
+      //   const cart = window.localStorage.getItem("cart")
+      //   // update item prices
+      //   const { data } = await axios.get(`/api/users/guest/cart/`, {
+      //     headers: { cart },
+      //   })
+      //   console.log("here", typeof data)
+      //   dispatch(getGuestCart(data))
+      // } else {
         const { data } = await axios.get(`/api/users/${id}/cart/`)
         dispatch(getUserCart(data))
-      }
+      // }
     } catch (error) {
       dispatch(getUserCart({ error: error.response.data }))
     }
@@ -174,10 +173,18 @@ export const fetchUserOrderHistory = (id) => {
 export const checkoutThunk = ({ userId, itemQuantities }) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
-        itemQuantities,
-      })
-      dispatch(userCheckout(data))
+      console.log(itemQuantities)
+      if (userId) {
+        const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
+          itemQuantities,
+        })
+        dispatch(userCheckout(data))
+      } else {
+        const { data } = await axios.put(`/api/users/guest/cart/checkout`, {
+          itemQuantities,
+        })
+        dispatch(userCheckout(data))
+      }
     } catch (error) {
       console.log(error)
       return dispatch(userCheckout({ error: error.response.data }))
