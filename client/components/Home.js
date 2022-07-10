@@ -13,6 +13,8 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    // only if user? we should make sure a guest doesn't go to /home manually in the searchbar
+    // get user here as well? Or does that mess w auth?
     this.props.getCart(this.props.id)
   }
 
