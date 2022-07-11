@@ -30,7 +30,6 @@ class SingleProduct extends React.Component {
 
   handleChange(e) {
     e.preventDefault()
-    console.log(e.target.value)
     this.setState({
       quantity: e.target.value,
       submitted: false,
@@ -62,7 +61,6 @@ class SingleProduct extends React.Component {
         : cart.concat(product)
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
-      console.log(cart)
     }
 
     this.setState({

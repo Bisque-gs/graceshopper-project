@@ -11,19 +11,19 @@ import PayPal from "./PayPal"
 class Checkout extends React.Component {
   checkout = (orderobj) => {
     this.props.checkout(orderobj)
-    window.localStorage.setItem("cart", '[]')
+    window.localStorage.setItem("cart", "[]")
   }
   render() {
     const { userInfo } = this.props
     const { user } = userInfo
-    const cartItems = userInfo.cartItems || []
-    const itemQuantities = userInfo.updatedPrices
-    ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-    : []
+    const cartItems = userInfo.cartItems || [] // should we get this from localStorage? userInfo.cartItems seems to be one behind
+    // const itemQuantities = userInfo.updatedPrices
+    //   ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+    //   : []
     let cartIsEmpty = cartItems.length === 0
     let total = 0
-    console.log(itemQuantities)
-    console.log('cart items', cartItems)
+    // console.log(itemQuantities)
+    // console.log("cart items", cartItems)
     return (
       <React.Fragment>
         <div className="container">
@@ -42,25 +42,15 @@ class Checkout extends React.Component {
                     </h3>
                     <img src={item.imageUrl} />
                     <div className="column">
-                      <h3>
-                        UNIT PRICE: $
-                        {(item.price / 100).toFixed(2)}
-                      </h3>
+                      <h3>UNIT PRICE: ${(item.price / 100).toFixed(2)}</h3>
                       <p>QUANTITY: {item.quantity}</p>
                       <h3>
                         SUBPRICE: $
-                        {(
-                          (item.price *
-                            item.quantity) /
-                          100
-                        ).toFixed(2)}
+                        {((item.price * item.quantity) / 100).toFixed(2)}
                       </h3>
                     </div>
                     <div style={{ display: "none" }}>
-                      {
-                        (total +=
-                          item.price * item.quantity)
-                      }
+                      {(total += item.price * item.quantity)}
                     </div>
                   </div>
                 ))}

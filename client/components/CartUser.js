@@ -9,7 +9,6 @@ import { Link } from "react-router-dom"
 
 function CartUser(props) {
   const {
-    // id,
     cartAuthorization,
     userInfo,
     cartItems,
@@ -23,9 +22,6 @@ function CartUser(props) {
     ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
     : [] // helps with rendering?
 
-  //   console.log("itemQuantities", itemQuantities)
-  //   console.log("auth", auth)
-  //   console.log("userInfo", user)
   return (
     <div>
       {cartAuthorization || auth.isAdmin ? ( // this won't work for non-admins right now
@@ -55,7 +51,6 @@ function CartUser(props) {
                   </h3>
                   <img src={item.imageUrl} />
 
-                  {/* BUG: guest cart (with items?) -> login -> landing -> user cart */}
                   <div className="column">
                     <h3>
                       UNIT PRICE: $
