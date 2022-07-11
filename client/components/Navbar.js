@@ -229,6 +229,22 @@ const Navbar = () => {
                   </Typography>
                 </MenuItem>
               </Link>
+              {isLoggedIn && auth.isAdmin && (
+                <Link to={`/users`}>
+                  <MenuItem key={"All Users"} onClick={handleCloseNavMenu}>
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        fontFamily: "monospace",
+                        fontWeight: "bold",
+                        color: "black",
+                      }}
+                    >
+                      {"All Users"}
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              )}
               {/* {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography
@@ -293,6 +309,22 @@ const Navbar = () => {
                 {"Products"}
               </Button>
             </Link>
+            {isLoggedIn && auth.isAdmin && (
+              <Link to={`/users`}>
+                <Button
+                  key={"All Users"}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    fontWeight: 800,
+                  }}
+                >
+                  {"All Users"}
+                </Button>
+              </Link>
+            )}
 
             {/* {pages.map((page) => (
               <Button
@@ -309,46 +341,50 @@ const Navbar = () => {
               </Button>
             ))} */}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={auth.username} src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Link to={`/users/${auth.id}`}>
-                <MenuItem key={"Profile"} onClick={handleCloseUserMenu}>
-                  <Typography
-                    textAlign="center"
-                    sx={{
-                      color: "black",
-                    }}
-                  >
-                    {"Profile"}
-                  </Typography>
+          {isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt={auth.username}
+                    src="/static/images/avatar/2.jpg"
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <Link to={`/users/${auth.id}`}>
+                  <MenuItem key={"Profile"} onClick={handleCloseUserMenu}>
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        color: "black",
+                      }}
+                    >
+                      {"Profile"}
+                    </Typography>
+                  </MenuItem>
+                </Link>
+                <MenuItem key={"Logout"} onClick={handleClick}>
+                  <Typography textAlign="center">{"Logout"}</Typography>
                 </MenuItem>
-              </Link>
-              <MenuItem key={"Logout"} onClick={handleClick}>
-                <Typography textAlign="center">{"Logout"}</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
