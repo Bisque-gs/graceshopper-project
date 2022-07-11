@@ -2,6 +2,7 @@ const Sequelize = require("sequelize")
 const db = require("../db")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const nodemailer = require("nodemailer");
 // const axios = require("axios");
 
 const SALT_ROUNDS = 5
@@ -50,8 +51,28 @@ User.prototype.correctPassword = function (candidatePwd) {
   return bcrypt.compare(candidatePwd, this.password)
 }
 
-User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT)
+User.prototype.generateToken = async function (username) {
+  const user = await User.findOne({ where: { username } })
+
+  if (user.confirmed) return jwt.sign({ id: this.id }, process.env.JWT);
+  return jwt.sign(
+    {
+      user: _.pick(user, 'id')
+    },
+    user.email,
+    {
+      expiresIn: '1d'
+    },
+    (err, emailToken) => {
+      // const url = `https://grace-pokebay.herokuapp.com/confirmation/${emailToken}`;
+      const url = `http://localhost:8080/confirmation/${emailToken}`;
+      transporter.sendMail({
+        to: user.email,
+        subject: 'Confirm your email for PokeBay!',
+        html: `Please click the link to confirm your email and start using pokeBay! <a href="${url}">${url}</a>`
+      });
+    }
+  )
 }
 
 /**
@@ -69,7 +90,7 @@ User.authenticate = async function ({ username, password }) {
     error.status = 401
     throw error
   }
-  return user.generateToken()
+  return user.generateToken(username)
 }
 
 User.findByToken = async function (token) {
