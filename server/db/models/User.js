@@ -59,7 +59,7 @@ User.prototype.generateToken = async function (username) {
     {
       user: _.pick(user, 'id')
     },
-    user.email,
+    EMAIL_SECRET,
     {
       expiresIn: '1d'
     },

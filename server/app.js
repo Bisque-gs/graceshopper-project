@@ -1,6 +1,8 @@
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
+const { User } = require('./db')
+const jwt = require("jsonwebtoken")
 const app = express()
 module.exports = app
 
@@ -15,6 +17,16 @@ app.use('/auth', require('./auth'))
 app.use('/api', require('./api'))
 
 app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));
+
+app.get('/confirmation/:token', async (req, res) => {
+  try {
+    const { user: { id } } = jwt.verify(req.params.token, EMAIL_SECRET)
+    await User.update({ confirmed: true }, { where: { id } });
+  } catch (e) {
+    res.send('error', e);
+  }
+  return res.redirect('http://localhost:8080/login')
+})
 
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
