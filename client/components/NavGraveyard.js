@@ -603,3 +603,169 @@
 //     </ThemeProvider>
 //   )
 // }
+
+
+
+
+
+ const Navbar = (props) => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
+    const auth = useSelector((state) => state.auth)
+    const isLoggedIn = !!auth.id
+
+    const handleClick = () =>  {
+      dispatch(logout())
+    }
+
+    return (
+        <div>
+            <nav>
+                <img
+                    src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
+                    alt="logo"
+                />
+                {isLoggedIn ? (
+                    <div>
+                        {/* The navbar will show these links after you log in */}
+                        <Link to="/home">Home</Link>
+                        <Link to={`/users/${auth.id}/cart`}>
+                            {/* Cart ({user.updatedPrices.length}) */}
+                            Cart ({user.updatedPrices ? user.updatedPrices.length : 0})
+                        </Link>
+                        <Link to="/products">Products</Link>
+                        <Link to={`/users/${auth.id}`}>My Profile</Link>
+                        {auth.isAdmin ? (
+                            <Link to={`/users`}>All Users</Link>
+                        ) : (
+                            console.log("NOT ADMIN ALL USERS NOT RENDERING ")
+                        )}
+                        <a href="#" onClick={handleClick}>
+                            Logout
+                        </a>
+                    </div>
+                ) : (
+                    <div>
+                        {/* The navbar will show these links before you log in */}
+                        <Link to="/login">Login</Link>
+                        <Link to="/signup">Sign Up</Link>
+                        <Link to="/products">Products</Link>
+                    </div>
+                )}
+            </nav>
+        </div>
+    )
+}
+
+/**
+ * CONTAINER
+ */
+const mapState = (state) => {
+  return {
+    auth: state.auth,
+    isLoggedIn: !!state.auth.id,
+    user: state.user,
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    handleClick() {
+      dispatch(logout())
+    },
+  }
+}
+
+export default Navbar
+
+
+
+
+// import {
+//   useColorMode,
+//   IconButton,
+//   Switch,
+//   Flex,
+//   Button,
+// } from "@chakra-ui/react"
+// import { SunIcon, MoonIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons"
+
+
+// export const Navbar = () => {
+//   const { colorMode, toggleColorMode } = useColorMode()
+//   const isDark = colorMode === "dark"
+//   return (
+//     <Flex>
+//       <Flex position="fixed" top={4} right={4} align="center">
+//         <Flex
+//           //Responsive Design, Fullscreen => Display flex
+//           //Media Queries
+//           display={["none", "none", "none", "flex"]}
+//           //
+//           gap="50"
+//           //Margin Right
+//           mr="8"
+//           align="center"
+//           colorScheme="teal"
+//           size="md"
+//         >
+//           <Link href="/post" passHref>
+//             <Button
+//               colorScheme="teal"
+//               size="md"
+//               //   as={ChakraLink}
+//               variant="ghost"
+//               //Button Label
+//               aria-label="Contact"
+//               my={5}
+//               w="100%"
+//             >
+//               Products
+//             </Button>
+//           </Link>
+//           <Link href="/post" passHref>
+//             <Button
+//               colorScheme="teal"
+//               size="md"
+//               //   as={ChakraLink}
+//               //no outline
+//               variant="ghost"
+//               aria-label="Contact"
+//               my={5}
+//               w="100%"
+//             >
+//               Cart
+//             </Button>
+//           </Link>
+//           <Link href="/post" passHref>
+//             <Button
+//               colorScheme="teal"
+//               size="md"
+//               //   as={ChakraLink}
+//               variant="solid"
+//               aria-label="Contact"
+//               my={5}
+//               w="100%"
+//             >
+//               Profile
+//             </Button>
+//           </Link>
+//           <Button onClick={toggleColorMode} variant="ghost">
+//             {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
+//           </Button>
+//         </Flex>
+//         {/* <Switch
+//           //   position="fixed"
+//           size="lg"
+//           top={4}
+//           right={4}
+//           //   icon={isDark ? <SunIcon /> : <MoonIcon />}
+//           //   aria-label="Toggle Theme"
+//           color="red"
+//           onClick={toggleColorMode}
+//         /> */}
+//       </Flex>
+//     </Flex>
+//   )
+// }
+// export default Navbar

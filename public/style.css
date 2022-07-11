@@ -1,8 +1,12 @@
-body {
+/* body {
   font-family: sans-serif;
-}
+} */
 
 a {
+  text-decoration: none;
+}
+
+href {
   text-decoration: none;
 }
 
@@ -10,18 +14,18 @@ label {
   display: block;
 }
 
-nav a {
+/* nav a {
   display: inline-block;
   margin: 1em;
   color: aliceblue;
   font-size: 1.25em;
-}
+} */
 
-
+/* 
 nav a:hover {
   color: #ccc;
   transition: 0.25s ease-in-out;
-}
+} */
 
 form div {
   margin: 1em;
@@ -74,15 +78,15 @@ body {
   width: 200px;
 }
 
-.profile h3 {
+/* .profile h3 {
   text-align: center;
   font-family: Baskerville,Times,'Times New Roman',serif;
   font-size: 20px;
   font-variant: small-caps;
   font-weight: bold;
-}
+} */
 
-nav {
+/* nav {
   display: flex;
   align-items: center;
   background-color: #398486;
@@ -94,7 +98,7 @@ nav {
 nav img {
   width: 60px;
   height: 60px;
-}
+} */
 
 main {
   align-items: center;
@@ -130,7 +134,7 @@ form {
   justify-content: center;
 }
 
-button {
+/* button {
   align-items: center;
   border: 0;
   border-radius: 3px;
@@ -148,19 +152,27 @@ button {
   text-transform: uppercase;
   width: 100%;
   max-width:200px
+} */
+button {
+text-decoration: none;
 }
 
-button:hover{
+
+/* button:hover{
   cursor: pointer
 }
+
+
+
+
 
 button:focus{
   border-left: 3px solid skyblue;
   border-right: 3px solid skyblue;
   border-radius: 3px;
-}
+} */
 
-input {
+/* input {
   margin: 15px auto;
   font-size: 16px;
   padding: 10px;
@@ -172,7 +184,7 @@ input {
   background: rgba(20, 20, 20, .2);
   color: black;
   outline: none;
-}
+} */
 
 .submit {
   background: #39866f;
