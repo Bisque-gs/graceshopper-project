@@ -64,6 +64,11 @@ User.authenticate = async function ({ username, password }) {
     error.status = 401
     throw error
   }
+  if (!user.confirmed) {
+    const error = Error("Please confirm your email")
+    error.status = 401
+    throw error
+  }
   return user.generateToken()
 }
 
