@@ -41,9 +41,29 @@ class SingleProduct extends React.Component {
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
     const quantity = this.state.quantity === "" ? 0 : this.state.quantity
-    this.props.addToCart(userId, productId, quantity)
+
+    if (userId) {
+      // signed in user
+      this.props.addToCart(userId, productId, quantity)
+    } else {
+      // guest
+      const cart = JSON.parse(window.localStorage.getItem("cart"))
+      const idInCart = cart.find((x) => x.id == productId)
+      const product = JSON.parse(JSON.stringify(this.props.product))
+      product.quantity = quantity
+
+      const updatedCart = idInCart
+        ? cart.map((x) => {
+            if (x.id == productId)
+              x.quantity = Number(x.quantity) + Number(quantity)
+            return x
+          })
+        : cart.concat(product)
+
+      window.localStorage.setItem("cart", JSON.stringify(updatedCart))
+    }
+
     this.setState({
-      quantity: 0,
       submitted: true,
     })
   }
@@ -59,8 +79,8 @@ class SingleProduct extends React.Component {
           <h3>PRICE: ${(product.price / 100).toFixed(2)} per card</h3>
           <p>{product.quantity} remaining in stock!</p>
           {product.quantity == 0 && (noneInStock = true)}
-          <select name="quantity" id="" onChange={this.handleChange}>
-            {Array(10)
+          <select name="quantity" onChange={this.handleChange}>
+            {Array(product.quantity)
               .fill(0)
               .map((_, i) => {
                 return (
@@ -72,11 +92,7 @@ class SingleProduct extends React.Component {
           </select>
           {this.state.submitted && <p>Item(s) added to cart!</p>}
           <button
-            onClick={
-              auth.id
-                ? this.handleClick
-                : () => console.log("Added to local storage")
-            }
+            onClick={this.handleClick}
             disabled={noneInStock}
             style={{ opacity: noneInStock && 0.5 }}
           >

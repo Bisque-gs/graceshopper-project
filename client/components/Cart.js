@@ -6,120 +6,102 @@ import {
   deleteItemCartThunk,
   updateQuantityThunk,
 } from "../redux/singleUser"
-import { Link } from "react-router-dom"
+import CartUser from "./CartUser"
+import CartGuest from "./CartGuest"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
 //have an option to grab current orders
 //reducer
 class Cart extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      guestCart: window.localStorage.getItem("cart") || "",
+    }
+  }
   componentDidMount() {
     const { id } = this.props.match.params
+    // also gets info for guests
     this.props.getUser(Number(id))
-    this.props.getOrders(Number(id))
+    if (id) {
+      this.props.getOrders(Number(id))
+    } else {
+      this.setState({
+        guestCart: window.localStorage.getItem("cart"),
+      })
+    }
   }
 
-  clickDelete(deleteInfo) {
-    this.props.deleteItemfromCart(deleteInfo)
+  clickDelete = (deleteInfo) => {
+    if (deleteInfo.userId) {
+      this.props.deleteItemfromCart(deleteInfo)
+    } else {
+      const cart = JSON.parse(this.state.guestCart)
+      const updatedCart = cart.filter((x) => x.id != deleteInfo.productId)
+
+      window.localStorage.setItem("cart", JSON.stringify(updatedCart))
+      console.log("guest delete", updatedCart)
+      console.log(window.localStorage.getItem("cart"))
+
+      this.setState({
+        guestCart: JSON.stringify(updatedCart),
+      })
+    }
   }
 
-  incrementItem = (obj) => {
-    this.props.updateQuantity(obj)
+  adjustQuantity = (obj) => {
+    if (obj.userId) {
+      this.props.updateQuantity(obj)
+    } else {
+      const cart = JSON.parse(this.state.guestCart)
+      const updatedCart = cart.reduce((acc, x) => {
+        if (x.id == obj.productId && Number(x.quantity) + obj.quantity >= 0) {
+          x.quantity = Number(x.quantity) + obj.quantity
+        }
+        return acc.concat(x)
+      }, [])
+
+      window.localStorage.setItem("cart", JSON.stringify(updatedCart))
+      // console.log(guestCart)
+
+      this.setState({
+        guestCart: JSON.stringify(updatedCart),
+      })
+      // console.log(this.state.guestCart)
+    }
   }
-  decrementItem = (obj) => {
-    this.props.updateQuantity(obj)
-  }
+
   render() {
     const { userInfo, auth } = this.props
+    // userInfo.cartItems messes up in here
     const user = userInfo.user
-    const cartItems = userInfo.cartItems || []
-    const itemQuantities = userInfo.updatedPrices
-      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-      : []
-    let cartAuthorization = user.id === auth.id
+    let cartItems = userInfo.cartItems || []
+    const isGuest = auth.id ? false : true
+    const cartAuthorization = user.id === auth.id
+    const { id } = this.props.match.params
 
     return (
       <React.Fragment>
         <div>
-          {cartAuthorization || auth.isAdmin ? (
-            <div>
-              <div>
-                {" "}
-                <Link to={`/users/${user.id}/cart/orderhistory`}>
-                  <button type="button">💸ORDER HISTORY💸</button>
-                </Link>
-              </div>
-              <br />
-              <div className="column">
-                This is {user.username}'s cart!
-                <Link to={`/users/${user.id}/cart/checkout`}>
-                  <button type="button">💸CHECKOUT💸</button>
-                </Link>
-              </div>
-              <div className="unit">
-                {cartItems
-                  .sort((a, b) => a.id - b.id)
-                  .map((item, i) => (
-                    <div key={item.id} className={item.pokeType + " profile"}>
-                      <h3>
-                        <Link to={`/products/${item.id}`}>{item.name}</Link>
-                      </h3>
-                      <img src={item.imageUrl} />
-
-                      <div className="column">
-                        <h3>
-                          UNIT PRICE: $
-                          {(itemQuantities[i].price / 10000).toFixed(2)}
-                        </h3>
-                        <p>QUANTITY: {itemQuantities[i].quantity}</p>
-                      </div>
-
-                      <div>
-                        <button
-                          onClick={() =>
-                            this.incrementItem({
-                              userId: user.id,
-                              productId: item.id,
-                              quantity: itemQuantities[i].quantity + 1,
-                            })
-                          }
-                          type="button"
-                        >
-                          ➕
-                        </button>
-                        <button
-                          onClick={() =>
-                            this.decrementItem({
-                              userId: user.id,
-                              productId: item.id,
-                              quantity: itemQuantities[i].quantity - 1,
-                            })
-                          }
-                          type="button"
-                        >
-                          ➖
-                        </button>
-                        <button
-                          onClick={() =>
-                            this.clickDelete({
-                              userId: user.id,
-                              productId: item.id,
-                            })
-                          }
-                          className="cancel"
-                        >
-                          ❌
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+          {isGuest ? (
+            <CartGuest
+              user={user}
+              cartItems={cartItems}
+              adjustQuantity={this.adjustQuantity}
+              clickDelete={this.clickDelete}
+              guestCart={this.state.guestCart}
+            />
           ) : (
-            <div>
-              STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-              SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
-            </div>
+            <CartUser
+              id={id}
+              auth={auth}
+              cartAuthorization={cartAuthorization}
+              userInfo={userInfo}
+              cartItems={cartItems}
+              adjustQuantity={this.adjustQuantity}
+              clickDelete={this.clickDelete}
+            />
           )}
         </div>
       </React.Fragment>

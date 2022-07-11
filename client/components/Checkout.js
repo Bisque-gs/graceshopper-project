@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { fetchUser, fetchUserCart, checkoutThunk } from "../redux/singleUser"
 import { Link } from "react-router-dom"
+import PayPal from "./PayPal"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
@@ -31,6 +32,8 @@ class Checkout extends React.Component {
     let cartAuthorization = user.id === auth.id
     let cartIsEmpty = cartItems.length === 0
     let total = 0
+    console.log(itemQuantities)
+    console.log('cart items', cartItems)
     return (
       <React.Fragment>
         <div className="container">
@@ -78,7 +81,7 @@ class Checkout extends React.Component {
               {userInfo.error && (
                 <p>{userInfo.error}. Please adjust your cart.</p>
               )}
-              <button
+              {/* <button
                 onClick={() =>
                   this.checkout({
                     userId: user.id,
@@ -90,7 +93,19 @@ class Checkout extends React.Component {
                 style={{ opacity: cartIsEmpty && 0.5 }}
               >
                 SUBMIT ORDER
-              </button>
+              </button> */}
+              {cartIsEmpty ? (
+                (cartIsEmpty = true)
+              ) : (
+                <div className="column">
+                  <PayPal
+                    totalPrice={(total / 10000).toFixed(2)}
+                    userId={user.id}
+                    itemQuantities={itemQuantities}
+                    checkout={this.checkout}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div>

@@ -1,50 +1,39 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+// const Sequelize = require("sequelize")
+// const Op = Sequelize.Op
+// const { LocalStorage } = require("node-localstorage")
+// const localStorage = require("../../client/components/AllProducts")
 
 module.exports = router
-//  Here we are "mounted on" (starts with) /api/users
 
-//GET /api/users/:userid/users
-router.get("/:userid/users", async (req, res, next) => {
+router.get("/guest/cart", async (req, res, next) => {
   try {
-    //ADMIN AUTHORIZATION
-    const findOutIfAdmin = await User.findOne({
+    const cartItems = JSON.parse(req.headers.cart)
+    const productIds = cartItems.reduce((acc, x) => {
+      return acc.concat(x.id)
+    }, [])
+    // get correct item prices
+    const productInfo = await Product.findAll({
       where: {
-        id: req.params.userid,
+        id: productIds,
       },
-      // explicitly select only the isAdmin field
-      attributes: ["isAdmin"],
     })
 
-    if (findOutIfAdmin.dataValues.isAdmin) {
-      const users = await User.findAll({
-        // explicitly select only the id and username fields
-        attributes: ["id", "username", "email"],
-      })
-      res.json(users)
-    } else {
-      throw new Error("HEY YOU ARE NOT AN ADMIN NICE TRY POSTMAN MUAHHAHA")
-    }
+    // generate updated cart
+    const updatedCart = cartItems.map((x) => {
+      const matchingItem = productInfo.filter((y) => y.id === x.id)[0]
+      x.price = matchingItem.price
+      return x
+    })
+    // console.log(updatedCart)
+    res.send(updatedCart)
   } catch (err) {
+    console.log(err)
+    // err.message = "Empty cart"
     next(err)
   }
 })
-
-//GET /api/users
-// router.get("/", async (req, res, next) => {
-//   try {
-
-//     const users = await User.findAll({
-//       // explicitly select only the id and username fields - even though
-//       // users' passwords are encrypted, it won't help if we just
-//       // send everything to anyone who asks!
-//       attributes: ["id", "username", "email"],
-//     })
-//     res.json(users)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
 
 //GET /api/users/:userid
 router.get("/:id", async (req, res, next) => {
@@ -107,6 +96,35 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
 
 //GET /api/users/:userid/cart
 router.get("/:id/cart", async (req, res, next) => {
+  try {
+    const userAllOrders = await Order.findAll({
+      where: { userId: req.params.id },
+      include: { model: Product },
+    })
+
+    const currentOrder = userAllOrders.filter((order) => order.isCurrentOrder)
+
+    if (!currentOrder[0]) {
+      res.send(0)
+      throw new Error("This cart is empty.")
+    }
+
+    const cartItems = currentOrder[0].products
+    const orderProducts = cartItems.map((x) => x.orderProducts)
+    const updatedPrices = await Promise.all(
+      orderProducts.map((x, i) => {
+        return x.update({ price: Number(cartItems[i].price) * 100 })
+      })
+    )
+
+    res.send({ userAllOrders, currentOrder, updatedPrices, cartItems })
+  } catch (err) {
+    err.message = "Empty cart"
+    next(err)
+  }
+})
+
+router.get("/guest/cart", async (req, res, next) => {
   try {
     const userAllOrders = await Order.findAll({
       where: { userId: req.params.id },
@@ -201,6 +219,32 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
     await item.destroy()
     res.send(item)
   } catch (error) {
+    next(error)
+  }
+})
+
+// GUEST checkout, doesn't affect Order table
+router.put("/guest/cart/checkout", async (req, res, next) => {
+  try {
+    const items = await Promise.all(
+      req.body.itemQuantities.map((item) => {
+        return Product.findByPk(item.id)
+      })
+    )
+
+    const updatedItems = await Promise.all(
+      items.map((item, i) => {
+        const updated = item.update(
+          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { individualHooks: true }
+        )
+        return updated
+      })
+    )
+
+    res.send(updatedItems)
+  } catch (error) {
+    console.log(error)
     next(error)
   }
 })

@@ -7,6 +7,14 @@ const GET_USER_CART = "GET_USER_CART"
 const DELETE_ITEM_CART = "DELETE_ITEM_CART"
 const UPDATE_QUANITY = "UPDATE_QUANITY"
 const CHECKOUT_ITEMS = "CHECKOUT_ITEMS"
+const GET_GUEST_CART = "GET_GUEST_CART"
+
+const getGuestCart = (ordersInfo) => {
+  return {
+    type: GET_GUEST_CART,
+    ordersInfo,
+  }
+}
 
 const getUser = (user) => {
   return {
@@ -60,21 +68,43 @@ const orderHistory = (orderHistory) => {
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}`)
-      dispatch(getUser(data))
+      // const token = window.localStorage.getItem("token")
+      // const { data } = await axios.get(`/api/users/${id}`)
+      // dispatch(getUser(data))
+      if (!id) {
+        const data = window.localStorage.getItem("cart")
+        // const { data } = await axios.get(`/api/users/guest/`)
+        dispatch(getGuestCart(data))
+      } else {
+        console.log("here")
+        const { data } = await axios.get(`/api/users/${id}`)
+        dispatch(getUser(data))
+      }
     } catch (error) {
       console.log(error)
     }
   }
 }
+
+// might need to remove token here
 export const updateQuantityThunk = ({ userId, productId, quantity }) => {
   return async (dispatch) => {
-    console.log(quantity)
-    const { data: orderUpdated } = await axios.put(
-      `/api/users/${userId}/cart/${productId}`,
-      { quantity }
-    )
-    dispatch(updateQuanity(orderUpdated))
+    // console.log(quantity)
+    // need to add in guest stuff
+    if (!userId) {
+      const cart = window.localStorage.getItem("cart")
+      // adjust cart
+    } else {
+      const token = window.localStorage.getItem("token")
+      const { data: orderUpdated } = await axios.put(
+        `/api/users/${userId}/cart/${productId}`,
+        { quantity },
+        {
+          headers: { authorization: token },
+        }
+      )
+      dispatch(updateQuanity(orderUpdated))
+    }
   }
 }
 
@@ -109,8 +139,20 @@ export const deleteItemCartThunk = ({ userId, productId }) => {
 export const fetchUserCart = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${id}/cart/`)
-      dispatch(getUserCart(data))
+      // if (!id) {
+      //   console.log("first")
+      //   // get cart from localStorage
+      //   const cart = window.localStorage.getItem("cart")
+      //   // update item prices
+      //   const { data } = await axios.get(`/api/users/guest/cart/`, {
+      //     headers: { cart },
+      //   })
+      //   console.log("here", typeof data)
+      //   dispatch(getGuestCart(data))
+      // } else {
+        const { data } = await axios.get(`/api/users/${id}/cart/`)
+        dispatch(getUserCart(data))
+      // }
     } catch (error) {
       dispatch(getUserCart({ error: error.response.data }))
     }
@@ -131,10 +173,18 @@ export const fetchUserOrderHistory = (id) => {
 export const checkoutThunk = ({ userId, itemQuantities }) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
-        itemQuantities,
-      })
-      dispatch(userCheckout(data))
+      console.log(itemQuantities)
+      if (userId) {
+        const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
+          itemQuantities,
+        })
+        dispatch(userCheckout(data))
+      } else {
+        const { data } = await axios.put(`/api/users/guest/cart/checkout`, {
+          itemQuantities,
+        })
+        dispatch(userCheckout(data))
+      }
     } catch (error) {
       console.log(error)
       return dispatch(userCheckout({ error: error.response.data }))
@@ -154,6 +204,7 @@ const defaultState = {
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
+      console.log("GET_SINGLE_USER")
       return { ...state, user: action.user }
     case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }
@@ -191,7 +242,7 @@ export default function singleUserReducer(state = defaultState, action) {
         }),
       }
     case CHECKOUT_ITEMS:
-         return action.order.error
+      return action.order.error
         ? {
             ...state,
             error: action.order.error,
@@ -202,6 +253,8 @@ export default function singleUserReducer(state = defaultState, action) {
             updatedPrices: [],
             error: "",
           }
+    case GET_GUEST_CART:
+      return { ...state, cartItems: JSON.parse(action.ordersInfo) }
     case GET_ORDER_HISTORY:
       return { ...state, orderHistory: action.orderHistory }
 
