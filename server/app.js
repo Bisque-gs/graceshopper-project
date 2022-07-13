@@ -20,7 +20,7 @@ app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.
 
 app.get('/confirmation/:token', async (req, res) => {
   try {
-    const { user: { id } } = jwt.verify(req.params.token, EMAIL_SECRET)
+    const { user: { id } } = jwt.verify(req.params.token, process.env.JWT)
     await User.update({ confirmed: true }, { where: { id } });
   } catch (e) {
     res.send('error', e);

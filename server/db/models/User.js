@@ -43,6 +43,13 @@ const User = db.define("user", {
 
 module.exports = User
 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
 /**
  * instanceMethods
  */
@@ -51,26 +58,31 @@ User.prototype.correctPassword = function (candidatePwd) {
   return bcrypt.compare(candidatePwd, this.password)
 }
 
-User.prototype.generateToken = async function (username) {
-  const user = await User.findOne({ where: { username } })
+User.prototype.generateToken = async function () {
 
-  if (user.confirmed) return jwt.sign({ id: this.id }, process.env.JWT);
+  if (this.confirmed) return jwt.sign({ id: this.id }, process.env.JWT);
   return jwt.sign(
     {
-      user: _.pick(user, 'id')
+      id: this.id
     },
-    EMAIL_SECRET,
+    process.env.JWT,
     {
       expiresIn: '1d'
     },
-    (err, emailToken) => {
+    () => {
       // const url = `https://grace-pokebay.herokuapp.com/confirmation/${emailToken}`;
-      const url = `http://localhost:8080/confirmation/${emailToken}`;
+      const url = `http://localhost:8080/confirmation/${process.env.JWT}`;
       transporter.sendMail({
-        to: user.email,
+        to: this.email,
         subject: 'Confirm your email for PokeBay!',
         html: `Please click the link to confirm your email and start using pokeBay! <a href="${url}">${url}</a>`
-      });
+      }, (err) => {
+        try{
+          console.error("Email has been sent")
+        } catch {
+          console.error(err)
+        }}
+      )
     }
   )
 }
@@ -87,10 +99,26 @@ User.authenticate = async function ({ username, password }) {
   }
   if (!user.confirmed) {
     const error = Error("Please confirm your email")
+    function confirmEmail() {
+      // const url = `https://grace-pokebay.herokuapp.com/confirmation/${emailToken}`;
+      const url = `http://localhost:8080/confirmation/${process.env.JWT}`;
+      transporter.sendMail({
+        to: this.email,
+        subject: 'Confirm your email for PokeBay!',
+        html: `Please click the link to confirm your email and start using pokeBay! <a href="${url}">${url}</a>`
+      }, (err) => {
+        try{
+          console.error("Email has been sent")
+        } catch {
+          console.error(err)
+        }}
+      )
+    }
+    confirmEmail();
     error.status = 401
     throw error
   }
-  return user.generateToken(username)
+  return user.generateToken()
 }
 
 User.findByToken = async function (token) {
