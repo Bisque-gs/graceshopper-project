@@ -43,13 +43,6 @@ const User = db.define("user", {
 
 module.exports = User
 
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GUSER,
-    pass: process.env.GPASS
-  }
-})
 /**
  * instanceMethods
  */
@@ -59,32 +52,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 }
 
 User.prototype.generateToken = async function () {
-
-  if (this.confirmed) return jwt.sign({ id: this.id }, process.env.JWT);
-  return jwt.sign(
-    {
-      id: this.id
-    },
-    process.env.JWT,
-    {
-      expiresIn: '1d'
-    },
-    () => {
-      // const url = `https://grace-pokebay.herokuapp.com/confirmation/${emailToken}`;
-      const url = `http://localhost:8080/confirmation/${process.env.JWT}`;
-      transporter.sendMail({
-        to: this.email,
-        subject: 'Confirm your email for PokeBay!',
-        html: `Please click the link to confirm your email and start using pokeBay! <a href="${url}">${url}</a>`
-      }, (err) => {
-        try{
-          console.error("Email has been sent")
-        } catch {
-          console.error(err)
-        }}
-      )
-    }
-  )
+  return jwt.sign({ id: this.id }, process.env.JWT);
 }
 
 /**
@@ -99,22 +67,6 @@ User.authenticate = async function ({ username, password }) {
   }
   if (!user.confirmed) {
     const error = Error("Please confirm your email")
-    function confirmEmail() {
-      // const url = `https://grace-pokebay.herokuapp.com/confirmation/${emailToken}`;
-      const url = `http://localhost:8080/confirmation/${process.env.JWT}`;
-      transporter.sendMail({
-        to: this.email,
-        subject: 'Confirm your email for PokeBay!',
-        html: `Please click the link to confirm your email and start using pokeBay! <a href="${url}">${url}</a>`
-      }, (err) => {
-        try{
-          console.error("Email has been sent")
-        } catch {
-          console.error(err)
-        }}
-      )
-    }
-    confirmEmail();
     error.status = 401
     throw error
   }
