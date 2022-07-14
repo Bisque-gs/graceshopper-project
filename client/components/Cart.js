@@ -41,8 +41,6 @@ class Cart extends React.Component {
       const updatedCart = cart.filter((x) => x.id != deleteInfo.productId)
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
-      console.log("guest delete", updatedCart)
-      console.log(window.localStorage.getItem("cart"))
 
       this.setState({
         guestCart: JSON.stringify(updatedCart),

@@ -68,15 +68,10 @@ const orderHistory = (orderHistory) => {
 export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
-      // const token = window.localStorage.getItem("token")
-      // const { data } = await axios.get(`/api/users/${id}`)
-      // dispatch(getUser(data))
       if (!id) {
         const data = window.localStorage.getItem("cart")
-        // const { data } = await axios.get(`/api/users/guest/`)
         dispatch(getGuestCart(data))
       } else {
-        console.log("here")
         const { data } = await axios.get(`/api/users/${id}`)
         dispatch(getUser(data))
       }
@@ -109,7 +104,6 @@ export const updateQuantityThunk = ({ userId, productId, quantity }) => {
 }
 
 export const updateSingleUser = ({ id, field }) => {
-  console.log(id, field, "RIGHT HERE")
   return async (dispatch) => {
     try {
       const { data: updated } = await axios.put(`/api/users/${id}`, field)
@@ -147,11 +141,10 @@ export const fetchUserCart = (id) => {
       //   const { data } = await axios.get(`/api/users/guest/cart/`, {
       //     headers: { cart },
       //   })
-      //   console.log("here", typeof data)
       //   dispatch(getGuestCart(data))
       // } else {
-        const { data } = await axios.get(`/api/users/${id}/cart/`)
-        dispatch(getUserCart(data))
+      const { data } = await axios.get(`/api/users/${id}/cart/`)
+      dispatch(getUserCart(data))
       // }
     } catch (error) {
       dispatch(getUserCart({ error: error.response.data }))
@@ -173,7 +166,6 @@ export const fetchUserOrderHistory = (id) => {
 export const checkoutThunk = ({ userId, itemQuantities }) => {
   return async (dispatch) => {
     try {
-      console.log(itemQuantities)
       if (userId) {
         const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
           itemQuantities,
@@ -204,7 +196,6 @@ const defaultState = {
 export default function singleUserReducer(state = defaultState, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
-      console.log("GET_SINGLE_USER")
       return { ...state, user: action.user }
     case UPDATE_SINGLE_USER:
       return { ...state, user: action.user }

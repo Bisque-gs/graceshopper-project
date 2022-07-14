@@ -26,11 +26,9 @@ router.get("/guest/cart", async (req, res, next) => {
       x.price = matchingItem.price
       return x
     })
-    // console.log(updatedCart)
     res.send(updatedCart)
   } catch (err) {
     console.log(err)
-    // err.message = "Empty cart"
     next(err)
   }
 })
@@ -48,7 +46,6 @@ router.get("/:id", async (req, res, next) => {
 //GET THE ORDER HISTORY FOR A USER:
 //ITEM PURCHASED, AND THEIR PRICES AT THE TIME OF PURCHASE
 //BASICALLY SHOULD LOAD UP THE ENTIRE CART
-//NEED EVERY CART EVER FML
 //GET /api/users/:userid/cart/orderhistory
 router.get("/:id/cart/orderhistory", async (req, res, next) => {
   try {
@@ -58,8 +55,6 @@ router.get("/:id/cart/orderhistory", async (req, res, next) => {
         model: Product, // including product also includes OrderProducts
       },
     })
-
-    console.log("USER ALL ORDERS", userAllOrders)
 
     // const currentOrder = userAllOrders.filter((order) => {
     //   return order.dataValues.isCurrentOrder

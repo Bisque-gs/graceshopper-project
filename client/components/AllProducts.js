@@ -27,7 +27,7 @@ export class AllProducts extends React.Component {
 
   handleClick(e) {
     e.preventDefault()
-    console.log(this.props)
+    // console.log(this.props)
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
     this.props.addToCart(userId, productId)
@@ -39,7 +39,7 @@ export class AllProducts extends React.Component {
     })
   }
   render() {
-    console.log("THE TYPE", this.state.selectedType)
+    // console.log("THE TYPE", this.state.selectedType)
     const { auth, products, userInfo } = this.props
 
     if (!localStorage.getItem("cart")) {
@@ -129,7 +129,7 @@ export class AllProducts extends React.Component {
                               const item = products.find(
                                 (item) => item.id === prodId
                               )
-                              console.log(item)
+                              // console.log(item)
                               const res = cart.find(
                                 (element) => element.id === prodId
                               )
@@ -139,7 +139,6 @@ export class AllProducts extends React.Component {
                               } else {
                                 res.quantity++
                               }
-                              console.log(cart)
                               localStorage.setItem("cart", JSON.stringify(cart))
                             })(product.id)
                       }}
