@@ -22,6 +22,7 @@ router.post("/signup", async (req, res, next) => {
   try {
     // prevent users from creating Admin accounts
     req.body.isAdmin = false
+    req.body.confirmed = false
     const user = await User.create(req.body)
     const token = await user.generateToken();
     const url = `http://localhost:8080/confirmation/${token}`;
@@ -32,6 +33,11 @@ router.post("/signup", async (req, res, next) => {
       subject: 'Confirm Email',
       html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
     })
+    if (!user.confirmed) {
+      const error = Error("Success! Please check your email for confirmation! If you don't see it, make sure to check your spam folder!")
+      error.status = 401
+      throw error
+    }
     res.send({ token: token })
   } catch (err) {
     if (err.name === "SequelizeUniqueConstraintError") {
