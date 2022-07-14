@@ -14,16 +14,11 @@ class Checkout extends React.Component {
     window.localStorage.setItem("cart", "[]")
   }
   render() {
-    const { userInfo } = this.props
-    const { user } = userInfo
-    const cartItems = userInfo.cartItems || [] // should we get this from localStorage? userInfo.cartItems seems to be one behind
-    // const itemQuantities = userInfo.updatedPrices
-    //   ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-    //   : []
+    const { userInfo } = this.props // do we need this here?
+    const { user } = userInfo // do we need this here?
+    const cartItems = JSON.parse(window.localStorage.getItem("cart"))
     let cartIsEmpty = cartItems.length === 0
     let total = 0
-    // console.log(itemQuantities)
-    // console.log("cart items", cartItems)
     return (
       <React.Fragment>
         <div className="container">

@@ -2,10 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 import { fetchUserCart, fetchUser } from "../redux/singleUser"
 
-/**
- * COMPONENT
- */
-
 // had to make this functional to use componentDidMount and getCart
 class Home extends React.Component {
   constructor(props) {
@@ -14,7 +10,6 @@ class Home extends React.Component {
 
   componentDidMount() {
     // only if user? we should make sure a guest doesn't go to /home manually in the searchbar
-    // get user here as well? Or does that mess w auth?
     this.props.getCart(this.props.id)
     this.props.getUser(this.props.id)
   }
