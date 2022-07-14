@@ -197,9 +197,9 @@ const Navbar = () => {
               key={"Products"}
               onClick={handleCloseNavMenu}
               sx={{
+               display: { xs: "none", md: "flex" }, mr: 1,
                 my: 2,
                 color: "white",
-                display: "block",
                 fontWeight: 800,
               }}
             >
@@ -237,7 +237,7 @@ const Navbar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-              sx={{ boxShadow: 3 }}
+              sx={{ ml: 4,  boxShadow: 3 }}
             >
               <MenuIcon />
             </IconButton>
@@ -391,7 +391,7 @@ const Navbar = () => {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: "..5rem",
+              letterSpacing: ".5rem",
               color: "inherit",
               textDecoration: "none",
             }}
