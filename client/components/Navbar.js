@@ -212,7 +212,6 @@ const Navbar = () => {
                   display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
                   fontWeight: 700,
-                  letterSpacing: "rem",
                   color: "white",
                   textDecoration: "none",
                   textTransform: "capitalize",
@@ -391,8 +390,6 @@ const Navbar = () => {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".5rem",
-              color: "inherit",
               textDecoration: "none",
             }}
           >
