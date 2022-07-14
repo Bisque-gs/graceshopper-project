@@ -47,7 +47,6 @@ export const fetchProduct = (id) => {
 export const setOrder = (userId, productId, quantity) => {
   return async (dispatch) => {
     try {
-      console.log("userId")
       if (!userId) {
         console.log("here")
       } else {
