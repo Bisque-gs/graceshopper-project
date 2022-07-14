@@ -769,3 +769,57 @@ export default Navbar
 //   )
 // }
 // export default Navbar
+
+
+
+const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
+  <div>
+    <nav>
+      <a href={`/home`}>
+        <img
+          src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
+          alt="logo"
+        />
+      </a>
+      {isLoggedIn ? (
+        <div>
+          {/* The navbar will show these links after you log in */}
+          <Link to="/home">Home</Link>
+          <Link to={`/users/${auth.id}/cart`}>
+            {/* Cart ({user.updatedPrices.length}) */}
+            Cart ({user.updatedPrices ? user.updatedPrices.length : 0})
+          </Link>
+          <Link to="/products">Products</Link>
+          <Link to={`/users/${auth.id}`}>My Profile</Link>
+          {auth.isAdmin ? (
+            <Link to={`/users`}>All Users</Link>
+          ) : (
+            console.log("NOT ADMIN ALL USERS NOT RENDERING ")
+          )}
+          <a href="#" onClick={handleClick}>
+            Logout
+          </a>
+        </div>
+      ) : (
+        <div>
+          {/* The navbar will show these links before you log in */}
+          <Link to="/login">Login</Link>
+          <Link to="/signup">Sign Up</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/users/guest/cart">Cart</Link>
+        </div>
+      )}
+    </nav>
+  </div>
+)
+
+/**
+ * CONTAINER
+ */
+const mapState = (state) => {
+  return {
+    auth: state.auth,
+    isLoggedIn: !!state.auth.id,
+    user: state.user,
+  }
+}

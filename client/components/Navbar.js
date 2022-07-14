@@ -137,15 +137,17 @@ import MenuIcon from "@mui/icons-material/Menu"
 import Container from "@mui/material/Container"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
 import AdbIcon from "@mui/icons-material/Adb"
 import LinkMUI from "@mui/material/Link"
 import { connect, useDispatch, useSelector } from "react-redux"
- import { Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { logout } from "../store"
+import SplitButton from "./Splitbutton"
 
-const pages = [ "Cart", "Products"]
+const pages = ["Cart", "Products"]
 const settings = ["Profile", "Account", "Dashboard", "Logout"]
 
 const Navbar = () => {
@@ -156,10 +158,10 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
-      const handleClick = () => {
-        dispatch(logout())
-        handleCloseNavMenu();
-      }
+  const handleClick = () => {
+    dispatch(logout())
+    handleCloseNavMenu()
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -176,10 +178,9 @@ const Navbar = () => {
     setAnchorElUser(null)
   }
 
-  console.log('yao', auth)
-
+  // To Color AppBar, add sx={{ background: "teal" }}
   return (
-    <AppBar position="static" sx={{ background: "teal" }}>
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
@@ -222,7 +223,13 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+              justifyContent: "left",
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -230,6 +237,7 @@ const Navbar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              sx={{ boxShadow: 3 }}
             >
               <MenuIcon />
             </IconButton>
@@ -251,6 +259,69 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
+              {isLoggedIn ? (
+                <Link to={`/users/${auth.id}/cart`}>
+                  <MenuItem key={"Cart"} onClick={handleCloseNavMenu}>
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        fontFamily: "monospace",
+                        fontWeight: "bold",
+                        color: "black",
+                      }}
+                    >
+                      {"Cart"}
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              ) : (
+                <div>
+                  {/* The navbar will show these links before you log in */}
+                  <Link to={`/signup`}>
+                    <MenuItem key={"Signup"} onClick={handleCloseNavMenu}>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          fontFamily: "monospace",
+                          fontWeight: "bold",
+                          color: "black",
+                        }}
+                      >
+                        {"Signup"}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link to={`/login`}>
+                    <MenuItem key={"Login"} onClick={handleCloseNavMenu}>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          fontFamily: "monospace",
+                          fontWeight: "bold",
+                          color: "black",
+                        }}
+                      >
+                        {"Login"}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link to={`/users/guest/cart`}>
+                    <MenuItem key={"Guest Cart"} onClick={handleCloseNavMenu}>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          fontFamily: "monospace",
+                          fontWeight: "bold",
+                          color: "black",
+                        }}
+                      >
+                        {"Cart"}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                </div>
+              )}
+              {/* 
               <Link to={`/users/${auth.id}/cart`}>
                 <MenuItem key={"Cart"} onClick={handleCloseNavMenu}>
                   <Typography
@@ -264,7 +335,7 @@ const Navbar = () => {
                     {"Cart"}
                   </Typography>
                 </MenuItem>
-              </Link>
+              </Link> */}
               <Link to={`/products`}>
                 <MenuItem key={"Products"} onClick={handleCloseNavMenu}>
                   <Typography
@@ -328,37 +399,60 @@ const Navbar = () => {
             PokeBay
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link to={`/users/${auth.id}/cart`}>
-              <Button
-                key={"Cart"}
-                // href={`/users/${auth.id}/cart`}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  fontWeight: 800,
-                  textDecoration: "none",
-                }}
-              >
-                {"Cart"}
-              </Button>
-            </Link>
-
+            {isLoggedIn ? (
+              <Link to={`/users/${auth.id}/cart`}>
+                <Button
+                  key={"Cart"}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    fontWeight: 800,
+                    textDecoration: "none",
+                    boxShadow: 3,
+                  }}
+                >
+                  {"Cart"}
+                </Button>
+              </Link>
+            ) : (
+              <React.Fragment>
+                {/* The navbar will show these links before you log in */}
+                <SplitButton />
+                <Link to={`/users/guest/cart`}>
+                  <Button
+                    key={"Guest Cart"}
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      m: 2,
+                      color: "white",
+                      display: "block",
+                      fontWeight: 800,
+                      boxShadow: 3,
+                    }}
+                  >
+                    {"Cart"}
+                  </Button>
+                </Link>
+              </React.Fragment>
+            )}
             <Link to={`/products`}>
               <Button
                 key={"Products"}
                 onClick={handleCloseNavMenu}
                 sx={{
-                  my: 2,
+                  m: 2,
                   color: "white",
                   display: "block",
                   fontWeight: 800,
+                  boxShadow: 3,
                 }}
               >
                 {"Products"}
               </Button>
             </Link>
+
             {isLoggedIn && auth.isAdmin && (
               <Link to={`/users`}>
                 <Button
@@ -369,6 +463,7 @@ const Navbar = () => {
                     color: "white",
                     display: "block",
                     fontWeight: 800,
+                    boxShadow: 3,
                   }}
                 >
                   {"All Users"}
@@ -423,6 +518,8 @@ const Navbar = () => {
                       textAlign="center"
                       sx={{
                         color: "black",
+                        fontFamily: "monospace",
+                        fontWeight: "bold",
                       }}
                     >
                       {"Profile"}
@@ -430,7 +527,16 @@ const Navbar = () => {
                   </MenuItem>
                 </Link>
                 <MenuItem key={"Logout"} onClick={handleClick}>
-                  <Typography textAlign="center">{"Logout"}</Typography>
+                  <Typography
+                    textAlign="center"
+                    sx={{
+                      color: "black",
+                      fontFamily: "monospace",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {"Logout"}
+                  </Typography>
                 </MenuItem>
               </Menu>
             </Box>
