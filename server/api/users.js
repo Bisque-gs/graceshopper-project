@@ -268,7 +268,7 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
         return Product.findByPk(item.productId)
       })
     )
-
+    
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
@@ -283,18 +283,21 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
       { isCurrentOrder: false },
       { where: { id: req.body.itemQuantities[0].orderId } }
     )
-    const url = `http://localhost:8080/users/18/cart/orderhistory`;
+
+    const userId = req.params.userId;
+    const user = await User.findByPk(userId)
+    const url = `http://localhost:8080/users/${userId}/cart/orderhistory`;
     const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
-    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // const url = `https://grace-pokebay.herokuapp.com/users/${userId}/cart/orderhistory`;
     transporter.sendMail({
       from: process.env.GUSER,
-      to: "andstatik@gmail.com",
+      to: user.email,
       subject: 'Thank you for buying from PokeBay!',
-      html: `Hi, <br>
-              <p class="column"><img src="${imgUrl}" alt="Thank you image" width="150" height="150" /></p><br>
+      html: `Hi ${user.username}, <br>
+              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
               Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
               <br>
-              If you want to check your order, please visit <a href="${url}">your order history</a> <br>
+              If you want to check your order, please visit <a href="${url}">your order history</a>. <br>
               <br>
               Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
     })
