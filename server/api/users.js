@@ -1,10 +1,17 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+const nodemailer = require("nodemailer");
 // const Sequelize = require("sequelize")
 // const Op = Sequelize.Op
 // const { LocalStorage } = require("node-localstorage")
 // const localStorage = require("../../client/components/AllProducts")
-
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
 module.exports = router
 
 router.get("/guest/cart", async (req, res, next) => {
@@ -276,6 +283,21 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
       { isCurrentOrder: false },
       { where: { id: req.body.itemQuantities[0].orderId } }
     )
+    const url = `http://localhost:8080/users/18/cart/orderhistory`;
+    const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
+    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: "andstatik@gmail.com",
+      subject: 'Thank you for buying from PokeBay!',
+      html: `Hi, <br>
+              <p class="column"><img src="${imgUrl}" alt="Thank you image" width="150" height="150" /></p><br>
+              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
+              <br>
+              If you want to check your order, please visit <a href="${url}">your order history</a> <br>
+              <br>
+              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+    })
     res.send(updatedItems)
   } catch (error) {
     console.log(error)
