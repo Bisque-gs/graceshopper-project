@@ -233,8 +233,11 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 // GUEST checkout, doesn't affect Order table
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
+    const itemQuantities = req.body.itemQuantities.itemQuantities;
+    const guestemail = req.body.itemQuantities.guestemail;
+    const guestname = req.body.itemQuantities.guestname;
     const items = await Promise.all(
-      req.body.itemQuantities.map((item) => {
+      itemQuantities.map((item) => {
         return Product.findByPk(item.id)
       })
     )
@@ -242,7 +245,7 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
-          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { quantity: item.quantity - itemQuantities[i].quantity },
           { individualHooks: true }
         )
         return updated
@@ -252,9 +255,9 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
     const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
     transporter.sendMail({
       from: process.env.GUSER,
-      to: req.body.guestemail,
+      to: guestemail,
       subject: 'Thank you for buying from PokeBay!',
-      html: `Hi ${req.body.guestname},<br>
+      html: `Hi ${guestname},<br>
               <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
               Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
               <br>

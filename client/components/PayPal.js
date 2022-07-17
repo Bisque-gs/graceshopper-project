@@ -31,9 +31,7 @@ export default function Paypal({
           const order = await actions.order.capture()
           checkout({
             userId: userId,
-            itemQuantities,
-            guestemail,
-            guestname
+            itemQuantities : { itemQuantities, guestemail, guestname},
           })
           console.log(order)
         },
