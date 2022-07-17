@@ -181,7 +181,7 @@ export const checkoutThunk = ({ userId, itemQuantities }) => {
         dispatch(userCheckout(data))
       } else {
         const { data } = await axios.put(`/api/users/guest/cart/checkout`, {
-          itemQuantities,
+          itemQuantities, guestemail, guestname,
         })
         dispatch(userCheckout(data))
       }

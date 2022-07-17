@@ -9,6 +9,23 @@ import PayPal from "./PayPal"
 //have an option to grab current orders
 //reducer
 class Checkout extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      guestname: "",
+      guestemail: ""
+    }
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(evt) {
+    console.log(this.state.guestemail)
+    console.log(this.state.guestname)
+    this.setState({
+      [evt.target.name]: evt.target.value,
+    })
+  }
+
   checkout = (orderobj) => {
     this.props.checkout(orderobj)
     window.localStorage.setItem("cart", '[]')
@@ -70,13 +87,21 @@ class Checkout extends React.Component {
               <p>{userInfo.error}. Please adjust your cart.</p>
             )}
             {!cartIsEmpty && (
-              <div className="column">
-                <PayPal
-                  totalPrice={(total / 100).toFixed(2)}
-                  userId={user.id}
-                  itemQuantities={cartItems}
-                  checkout={this.checkout}
-                />
+              <div className="container">
+                  <p>❃ If you would like to get the order confirmation,</p>
+                  <p>   then please fill out the following:</p>
+                  <label htmlFor='guestname'>Name:</label>
+                  <input name="guestname" value={this.state.guestname} onChange={this.handleChange} />
+                  <label htmlFor='guestemail'>Email:</label>
+                  <input name="guestemail" value={this.state.guestemail} onChange={this.handleChange} />
+                  <PayPal
+                    totalPrice={(total / 100).toFixed(2)}
+                    userId={user.id}
+                    itemQuantities={cartItems}
+                    guestemail={this.state.guestemail}
+                    guestname={this.state.guestname}
+                    checkout={this.checkout}
+                  />
               </div>
             )}
           </div>

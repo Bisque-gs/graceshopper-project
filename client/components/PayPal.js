@@ -5,6 +5,8 @@ export default function Paypal({
   userId,
   itemQuantities,
   checkout,
+  guestemail,
+  guestname
 }) {
   const paypal = useRef()
 
@@ -30,6 +32,8 @@ export default function Paypal({
           checkout({
             userId: userId,
             itemQuantities,
+            guestemail,
+            guestname
           })
           console.log(order)
         },

@@ -248,7 +248,18 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
         return updated
       })
     )
-
+    
+    const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: req.body.guestemail,
+      subject: 'Thank you for buying from PokeBay!',
+      html: `Hi ${req.body.guestname},<br>
+              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
+              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
+              <br>
+              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+    })
     res.send(updatedItems)
   } catch (error) {
     console.log(error)

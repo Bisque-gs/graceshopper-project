@@ -27,7 +27,7 @@ export class AllProducts extends React.Component {
 
   handleClick(e) {
     e.preventDefault()
-    console.log(this.props)
+    // console.log(this.props)
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
     this.props.addToCart(userId, productId)
