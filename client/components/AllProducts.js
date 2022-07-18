@@ -217,7 +217,6 @@ function Copyright() {
   )
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 const theme = createTheme()
 
@@ -258,6 +257,10 @@ export default function AllProducts(props) {
 
   const addProduct = (product) => {
     dispatch(addProductThunk(product))
+  }
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
   return (
@@ -354,12 +357,13 @@ export default function AllProducts(props) {
                   }
                 })
                 .map((product) => (
-                  <Grid item key={product.id} xs={12} sm={6} md={4}>
+                  <Grid item key={product.id} xs={12} sm={5} md={3}>
                     <Card
                       sx={{
                         height: "100%",
                         display: "flex",
                         flexDirection: "column",
+                        flexBasis: "20%",
                       }}
                     >
                       <a href={`/products/${product.id}`}>
@@ -379,7 +383,7 @@ export default function AllProducts(props) {
                       <CardContent sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant="h5" component="h2">
                           <Link to={`/products/${product.id}`}>
-                            {product.name}
+                            {capitalizeFirstLetter(product.name)}
                           </Link>
                         </Typography>
                         <Typography>
@@ -475,7 +479,8 @@ export default function AllProducts(props) {
           color="text.secondary"
           component="p"
         >
-          Made with love from the Developers operating out of the pseudonym Bisque
+          Made with love from the Developers operating out of the pseudonym
+          Bisque
         </Typography>
         <Copyright />
       </Box>
