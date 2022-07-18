@@ -209,7 +209,7 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary" align="center">
       {"Copyright © "}
       {/* <Link color="inherit" href="https://mui.com/"> */}
-        Your Website
+      https://grace-pokebay.herokuapp.com/home
       {/* </Link>{" "} */}
       {new Date().getFullYear()}
       {"."}
@@ -340,7 +340,7 @@ export default function AllProducts(props) {
             </Stack>
           </Container>
         </Box> */}
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 8 }} maxWidth="xl">
           {/* End hero unit */}
           {products.length === 0 ? (
             <p>No products</p>
@@ -355,7 +355,6 @@ export default function AllProducts(props) {
                 })
                 .map((product) => (
                   <Grid item key={product.id} xs={12} sm={6} md={4}>
-                    <Link to={`/products/${product.id}`}>{product.name}</Link>
                     <Card
                       sx={{
                         height: "100%",
@@ -366,17 +365,22 @@ export default function AllProducts(props) {
                       <a href={`/products/${product.id}`}>
                         <CardMedia
                           component="img"
-                          sx={{
-                            // 16:9
-                            pt: "56.25%",
-                          }}
+                          sx={
+                            {
+                              // 16:9
+                              // pt: "56.25%",
+                              // pt: "20%",
+                            }
+                          }
                           image={product.imageUrl}
                           alt="random"
                         />
                       </a>
                       <CardContent sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant="h5" component="h2">
-                          Heading
+                          <Link to={`/products/${product.id}`}>
+                            {product.name}
+                          </Link>
                         </Typography>
                         <Typography>
                           This is a media card. You can use this section to
@@ -463,7 +467,7 @@ export default function AllProducts(props) {
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Pokebay
         </Typography>
         <Typography
           variant="subtitle1"
@@ -471,7 +475,7 @@ export default function AllProducts(props) {
           color="text.secondary"
           component="p"
         >
-          Something here to give the footer a purpose!
+          Made with love from the Developers operating out of the pseudonym Bisque
         </Typography>
         <Copyright />
       </Box>
