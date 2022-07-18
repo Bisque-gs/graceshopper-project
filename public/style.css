@@ -55,6 +55,10 @@ body {
   background-size: contain;
   height: 150px;
 }
+header {
+/* width: 500px; */
+height: 70px
+}
 
 .row {
   display: flex;

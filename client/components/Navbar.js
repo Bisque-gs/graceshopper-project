@@ -180,8 +180,8 @@ const Navbar = () => {
 
   // To Color AppBar, add sx={{ background: "teal" }}
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="static" width="500" height="400">
+      <Container maxWidth="xl" width="800" >
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Link to="/home">
@@ -197,7 +197,8 @@ const Navbar = () => {
               key={"Products"}
               onClick={handleCloseNavMenu}
               sx={{
-               display: { xs: "none", md: "flex" }, mr: 1,
+                display: { xs: "none", md: "flex" },
+                mr: 1,
                 my: 2,
                 color: "white",
                 fontWeight: 800,
@@ -236,7 +237,7 @@ const Navbar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-              sx={{ ml: 4,  boxShadow: 3 }}
+              sx={{ ml: 4, boxShadow: 3 }}
             >
               <MenuIcon />
             </IconButton>
