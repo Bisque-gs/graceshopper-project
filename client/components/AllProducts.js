@@ -202,6 +202,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link, useParams } from "react-router-dom"
 import AddProduct from "./AddProduct"
+import IconButton from "@mui/material/IconButton"
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+
+// or
+
 
 
 function Copyright() {
@@ -267,42 +273,44 @@ export default function AllProducts(props) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <br />
-      <div className="column">
-        Products:
-        {isAddVisible ? (
-          <AddProduct
-            addProduct={addProduct}
-            isAddVisible={isAddVisibleToggle}
-          />
-        ) : auth.isAdmin ? (
-          <button type="button" onClick={() => setIsAddVisible(true)}>
-            Add Product
-          </button>
-        ) : (
-          console.log("You're not admin")
-        )}
-      </div>
-      <select id="choose-type" name="selectList" onChange={handleChange}>
-        <option value="">Pick a Type!</option>
-        <option value="grass">grass</option>
-        <option value="fire">fire</option>
-        <option value="bug">bug</option>
-        <option value="flying">flying</option>
-        <option value="poison">poison</option>
-        <option value="normal">normal</option>
-        <option value="electric">electric</option>
-        <option value="water">water</option>
-        <option value="ground">ground</option>
-      </select>
       {/* Maybe Put a Search Bar on this AppBar? */}
-      {/* <AppBar position="relative">
+      <AppBar position="relative" sx={{ bgcolor: "white" }} className="column">
+        <Box>
+          {isAddVisible ? (
+            <AddProduct
+              addProduct={addProduct}
+              isAddVisible={isAddVisibleToggle}
+            />
+          ) : auth.isAdmin ? (
+            <button
+              type="button"
+              onClick={() => setIsAddVisible(true)}
+              color="#ffffff"
+            >
+              Add Product
+            </button>
+          ) : (
+            console.log("You're not admin")
+          )}
+        </Box>
+        <Box>
+          <select id="choose-type" name="selectList" onChange={handleChange}>
+            <option value="">Pick a Type!</option>
+            <option value="grass">grass</option>
+            <option value="fire">fire</option>
+            <option value="bug">bug</option>
+            <option value="flying">flying</option>
+            <option value="poison">poison</option>
+            <option value="normal">normal</option>
+            <option value="electric">electric</option>
+            <option value="water">water</option>
+            <option value="ground">ground</option>
+          </select>
+        </Box>
         <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
+          <Typography variant="h6" color="inherit" noWrap></Typography>
         </Toolbar>
-      </AppBar> */}
+      </AppBar>
       <main>
         {/* Hero unit */}
         {/* <Box
@@ -398,7 +406,9 @@ export default function AllProducts(props) {
                             auth.id // logged in user
                               ? dispatch(setOrder(auth.id, product.id, 1)) &&
                                 Toastify({
-                                  text: `${product.name} was successfully added to cart`,
+                                  text: `${capitalizeFirstLetter(
+                                    product.name
+                                  )} was successfully added to cart`,
                                   duration: 3000,
                                   destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
                                   newWindow: true,
@@ -435,15 +445,23 @@ export default function AllProducts(props) {
                                 })(product.id)
                           }}
                         >
-                          Add to Cart
+                          <IconButton
+                            color="primary"
+                            aria-label="add to shopping cart"
+                          >
+                            <AddShoppingCartIcon />
+                          </IconButton>
                         </Button>
+
                         {auth.isAdmin && (
                           <Button
                             size="small"
                             onClick={() => {
                               dispatch(deleteProductThunk(product.id))
                               Toastify({
-                                text: `${product.name} was successfully removed`,
+                                text: `${capitalizeFirstLetter(
+                                  product.name
+                                )} was successfully removed`,
                                 duration: 3000,
                                 close: true,
                                 gravity: "top", // `top` or `bottom`
@@ -457,7 +475,12 @@ export default function AllProducts(props) {
                               }).showToast()
                             }}
                           >
-                            Delete
+                            <IconButton
+                              color="primary"
+                              aria-label="delete the product"
+                            >
+                              <DeleteForeverIcon />
+                            </IconButton>
                           </Button>
                         )}
                       </CardActions>
