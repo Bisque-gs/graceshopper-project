@@ -274,7 +274,7 @@ export default function AllProducts(props) {
       <CssBaseline />
       <br />
       {/* Maybe Put a Search Bar on this AppBar? */}
-      <AppBar position="relative" sx={{ bgcolor: "white" }} className="column">
+      <AppBar position="relative" sx={{ bgcolor: "#fff"}} className="column">
         <Box>
           {isAddVisible ? (
             <AddProduct
@@ -365,126 +365,164 @@ export default function AllProducts(props) {
                   }
                 })
                 .map((product) => (
-                  <Grid item key={product.id} xs={12} sm={5} md={3}>
-                    <Card
-                      sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        flexBasis: "20%",
-                      }}
-                    >
-                      <a href={`/products/${product.id}`}>
-                        <CardMedia
-                          component="img"
-                          sx={
-                            {
-                              // 16:9
-                              // pt: "56.25%",
-                              // pt: "20%",
+                  <Grid
+                    item
+                    key={product.id}
+                    xs={12}
+                    sm={5}
+                    md={3}
+                    alignItems="center"
+                    justify="center"
+                  >
+                    <Box xs={{ justifyContent: "center" }}>
+                      <Card
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          flexBasis: "20%",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Link to={`/products/${product.id}`}>
+                          <CardMedia
+                            component="img"
+                            sx={
+                              {
+                                // 16:9
+                                // pt: "56.25%",
+                                // pt: "20%",
+                              }
                             }
-                          }
-                          image={product.imageUrl}
-                          alt="random"
-                        />
-                      </a>
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          <Link to={`/products/${product.id}`}>
-                            {capitalizeFirstLetter(product.name)}
-                          </Link>
-                        </Typography>
-                        <Typography>
-                          This is a media card. You can use this section to
-                          describe the content.
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          onClick={() => {
-                            auth.id // logged in user
-                              ? dispatch(setOrder(auth.id, product.id, 1)) &&
+                            image={product.imageUrl}
+                            alt="random"
+                          />
+                        </Link>
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <CardContent
+                            sx={{ flexGrow: 1, justifyContent: "center" }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                fontFamily="monospace"
+                              >
+                                <Link to={`/products/${product.id}`}>
+                                  {capitalizeFirstLetter(product.name)}
+                                </Link>
+                              </Typography>
+                            </div>
+                            <Typography align="center">
+                              This is a media card. You can use this section to
+                              describe the content.
+                            </Typography>
+                          </CardContent>
+                        </div>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            onClick={() => {
+                              auth.id // logged in user
+                                ? dispatch(setOrder(auth.id, product.id, 1)) &&
+                                  Toastify({
+                                    text: `${capitalizeFirstLetter(
+                                      product.name
+                                    )} was successfully added to cart`,
+                                    duration: 3000,
+                                    destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "top", // `top` or `bottom`
+                                    position: "right", // `left`, `center` or `right`
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                      background:
+                                        "linear-gradient(to right, #00b09b, #96c93d)",
+                                    },
+                                    onClick: function () {}, // Callback after click
+                                  }).showToast()
+                                : (function addItemToLS(prodId) {
+                                    // guest
+                                    const item = products.find(
+                                      (item) => item.id === prodId
+                                    )
+                                    console.log(item)
+                                    const res = cart.find(
+                                      (element) => element.id === prodId
+                                    )
+                                    if (cart.length === 0 || !res) {
+                                      item.quantity = 1
+                                      cart.push(item)
+                                    } else {
+                                      res.quantity++
+                                    }
+                                    console.log(cart)
+                                    localStorage.setItem(
+                                      "cart",
+                                      JSON.stringify(cart)
+                                    )
+                                  })(product.id)
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {" "}
+                            </div>
+
+                            <IconButton
+                              color="primary"
+                              aria-label="add to shopping cart"
+                            >
+                              <AddShoppingCartIcon />
+                            </IconButton>
+                          </Button>
+
+                          {auth.isAdmin && (
+                            <Button
+                              size="small"
+                              onClick={() => {
+                                dispatch(deleteProductThunk(product.id))
                                 Toastify({
                                   text: `${capitalizeFirstLetter(
                                     product.name
-                                  )} was successfully added to cart`,
+                                  )} was successfully removed`,
                                   duration: 3000,
-                                  destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
-                                  newWindow: true,
                                   close: true,
                                   gravity: "top", // `top` or `bottom`
                                   position: "right", // `left`, `center` or `right`
                                   stopOnFocus: true, // Prevents dismissing of toast on hover
                                   style: {
                                     background:
-                                      "linear-gradient(to right, #00b09b, #96c93d)",
+                                      "linear-gradient(to right, #00b09b, #863939)",
                                   },
                                   onClick: function () {}, // Callback after click
                                 }).showToast()
-                              : (function addItemToLS(prodId) {
-                                  // guest
-                                  const item = products.find(
-                                    (item) => item.id === prodId
-                                  )
-                                  console.log(item)
-                                  const res = cart.find(
-                                    (element) => element.id === prodId
-                                  )
-                                  if (cart.length === 0 || !res) {
-                                    item.quantity = 1
-                                    cart.push(item)
-                                  } else {
-                                    res.quantity++
-                                  }
-                                  console.log(cart)
-                                  localStorage.setItem(
-                                    "cart",
-                                    JSON.stringify(cart)
-                                  )
-                                })(product.id)
-                          }}
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="add to shopping cart"
-                          >
-                            <AddShoppingCartIcon />
-                          </IconButton>
-                        </Button>
-
-                        {auth.isAdmin && (
-                          <Button
-                            size="small"
-                            onClick={() => {
-                              dispatch(deleteProductThunk(product.id))
-                              Toastify({
-                                text: `${capitalizeFirstLetter(
-                                  product.name
-                                )} was successfully removed`,
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                  background:
-                                    "linear-gradient(to right, #00b09b, #863939)",
-                                },
-                                onClick: function () {}, // Callback after click
-                              }).showToast()
-                            }}
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="delete the product"
+                              }}
                             >
-                              <DeleteForeverIcon />
-                            </IconButton>
-                          </Button>
-                        )}
-                      </CardActions>
-                    </Card>
+                              <IconButton
+                                color="primary"
+                                aria-label="delete the product"
+                              >
+                                <DeleteForeverIcon />
+                              </IconButton>
+                            </Button>
+                          )}
+                        </CardActions>
+                      </Card>
+                    </Box>
                   </Grid>
                 ))}
             </Grid>
