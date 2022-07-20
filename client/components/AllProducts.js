@@ -274,7 +274,7 @@ export default function AllProducts(props) {
       <CssBaseline />
       <br />
       {/* Maybe Put a Search Bar on this AppBar? */}
-      <AppBar position="relative" sx={{ bgcolor: "#fff"}} className="column">
+      <AppBar position="relative" sx={{ bgcolor: "#fff" }} className="column">
         <Box>
           {isAddVisible ? (
             <AddProduct
@@ -415,8 +415,13 @@ export default function AllProducts(props) {
                                 variant="h5"
                                 component="h2"
                                 fontFamily="monospace"
+                                color="black"
+                                textDecoration="none"
                               >
-                                <Link to={`/products/${product.id}`}>
+                                <Link
+                                  to={`/products/${product.id}`}
+                                  style={{ color:"black", fontWeight:"bold" }}
+                                >
                                   {capitalizeFirstLetter(product.name)}
                                 </Link>
                               </Typography>
@@ -485,6 +490,10 @@ export default function AllProducts(props) {
                             <IconButton
                               color="primary"
                               aria-label="add to shopping cart"
+                              sx={{
+                                mr: 8,
+                                ml: 5,
+                              }}
                             >
                               <AddShoppingCartIcon />
                             </IconButton>
@@ -515,6 +524,7 @@ export default function AllProducts(props) {
                               <IconButton
                                 color="primary"
                                 aria-label="delete the product"
+                                sx={{ ml: 8, mr: 5 }}
                               >
                                 <DeleteForeverIcon />
                               </IconButton>
