@@ -122,7 +122,7 @@ export default function AddProduct(props) {
                   required
                   fullWidth
                   id="quantity"
-                  label="quantity"
+                  label="Quantity"
                   name="quantity"
                   value={pokeInfo.quantity}
                   onChange={handleChange}

@@ -288,17 +288,14 @@ export default function AllProducts(props) {
             setTrigger={setButtonPopup}
             addProduct={addProduct}
             isAddVisible={isAddVisibleToggle}
-          >
-            {" "}
-            <h3>My Popup</h3>
-          </AddProductPopUp>
+          />
           {/* {isAddVisible && buttonPopup ? (
             <AddProduct
               addProduct={addProduct}
               isAddVisible={isAddVisibleToggle}
             />
           ) : */}
-            { auth.isAdmin ? (
+          {auth.isAdmin ? (
             // <button
             //   type="button"
             //   onClick={() => setIsAddVisible(true)}
@@ -498,25 +495,19 @@ export default function AllProducts(props) {
                                   })(product.id)
                             }}
                           >
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                            >
-                              {" "}
-                            </div>
-
-                            <IconButton
-                              color="primary"
-                              aria-label="add to shopping cart"
-                              sx={{
-                                mr: 8,
-                                ml: 5,
-                              }}
-                            >
-                              <AddShoppingCartIcon />
-                            </IconButton>
+                            {!buttonPopup &&
+                              <IconButton
+                                color="primary"
+                                aria-label="add to shopping cart"
+                                sx={{
+                                  mr: 8,
+                                  ml: 5,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <AddShoppingCartIcon />
+                              </IconButton>
+                            }
                           </Button>
 
                           {auth.isAdmin && (
@@ -541,13 +532,15 @@ export default function AllProducts(props) {
                                 }).showToast()
                               }}
                             >
-                              <IconButton
-                                color="primary"
-                                aria-label="delete the product"
-                                sx={{ ml: 8, mr: 5 }}
-                              >
-                                <DeleteForeverIcon />
-                              </IconButton>
+                              {!buttonPopup &&
+                                <IconButton
+                                  color="primary"
+                                  aria-label="delete the product"
+                                  sx={{ ml: 8, mr: 5, zIndex: 1 }}
+                                >
+                                  <DeleteForeverIcon />
+                                </IconButton>
+                              }
                             </Button>
                           )}
                         </CardActions>
