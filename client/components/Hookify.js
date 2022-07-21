@@ -1,45 +1,57 @@
-import React from 'react'
+import React from "react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+export default function AddProduct(props) {
+  const [pokeInfo, setPokeInfo] = useState({
+    name: "",
+    quantity: "",
+    price: "",
+    pokeType: "",
+  })
 
-export default function AddProduct() {
-    [name, setName] = useState("");
-    [quantity, setQuantity] = useState("");
-    [price, setPrice] = useState("");
-    [pokeType, setPokeType] = useState("");
-    
-    
-
-  const handleSubmit = (evt) =>  {
+  const handleSubmit = (evt) => {
     evt.preventDefault()
-    this.props.addProduct({ ...this.state })
-    this.props.isAddVisible()
+    // this.props.addProduct({ ...this.state })
+      setPokeInfo({
+          name: "",
+          quantity: "",
+          price: "",
+          pokeType: "",
+      });
+    props.isAddVisible()
   }
 
-    
   const handleChange = (event) => {
-    this.setState({
+    setPokeInfo({
+      ...pokeInfo,
       [event.target.name]: event.target.value,
     })
   }
 
   const handleCancel = () => {
-    this.props.isAddVisible()
+    props.isAddVisible()
   }
-    
 
   return (
-    <form onSubmit={this.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <h4>Please input new product information below:</h4>
       <label>Name:</label>
-      <input name="name" value={name} onChange={handleChange} />
+      <input name="name" value={pokeInfo.name} onChange={handleChange} />
       <label>Quantity:</label>
-      <input name="quantity" value={quantity} onChange={handleChange} />
+      <input
+        name="quantity"
+        value={pokeInfo.quantity}
+        onChange={handleChange}
+      />
       <label>Price (in cents):</label>
-      <input name="price" value={price} onChange={handleChange} />
+      <input name="price" value={pokeInfo.price} onChange={handleChange} />
       <label>Type:</label>
-      <input name="pokeType" value={pokeType} onChange={handleChange} />
+      <input
+        name="pokeType"
+        value={pokeInfo.pokeType}
+        onChange={handleChange}
+      />
       <button className="submit" type="submit">
         Submit
       </button>

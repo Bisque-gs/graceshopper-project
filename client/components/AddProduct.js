@@ -25,7 +25,7 @@ export class AddProduct extends React.Component {
     })
   }
 
-  handleCancel = () => {
+  handleCancel ()  {
     this.props.isAddVisible()
   }
 
