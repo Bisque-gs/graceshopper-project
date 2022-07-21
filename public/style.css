@@ -253,3 +253,40 @@ button:focus{
   background:#ee0;
   border: 1px solid black;
 }
+
+
+/* Popup styling  */
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.popup-inner {
+  position: relative;
+  padding: 32px;
+  width: 60%;
+  max-width: 100%;
+  background-color: #FFF;
+}
+
+.popup-inner .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+
+
+h3 {
+  color: #252525;
+}

@@ -205,6 +205,7 @@ import AddProduct from "./AddProduct"
 import IconButton from "@mui/material/IconButton"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import AddProductPopUp from "./AddProductPopUp"
 
 // or
 
@@ -229,6 +230,7 @@ const theme = createTheme()
 export default function AllProducts(props) {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [selectedType, setSelectedType] = useState("")
+  const [buttonPopup, setButtonPopup] = useState(false)
   const auth = useSelector((state) => state.auth)
   const products = useSelector((state) => state.products)
   const dispatch = useDispatch()
@@ -269,6 +271,11 @@ export default function AllProducts(props) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
+  const addProductVisible = () => {
+    setIsAddVisible(true);
+    setButtonPopup(true);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -276,19 +283,26 @@ export default function AllProducts(props) {
       {/* Maybe Put a Search Bar on this AppBar? */}
       <AppBar position="relative" sx={{ bgcolor: "#fff" }} className="column">
         <Box>
-          {isAddVisible ? (
+          <AddProductPopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
+            {" "}
+            <h3>My Popup</h3>
+          </AddProductPopUp>
+          {isAddVisible && buttonPopup ? (
             <AddProduct
               addProduct={addProduct}
               isAddVisible={isAddVisibleToggle}
             />
           ) : auth.isAdmin ? (
-            <button
-              type="button"
-              onClick={() => setIsAddVisible(true)}
-              color="#ffffff"
-            >
+            // <button
+            //   type="button"
+            //   onClick={() => setIsAddVisible(true)}
+            //   color="#ffffff"
+            // >
+            //   Add Product
+            //   </button>
+            <Button variant="contained" onClick={() => addProductVisible()}>
               Add Product
-            </button>
+            </Button>
           ) : (
             console.log("You're not admin")
           )}
@@ -420,7 +434,7 @@ export default function AllProducts(props) {
                               >
                                 <Link
                                   to={`/products/${product.id}`}
-                                  style={{ color:"black", fontWeight:"bold" }}
+                                  style={{ color: "black", fontWeight: "bold" }}
                                 >
                                   {capitalizeFirstLetter(product.name)}
                                 </Link>
