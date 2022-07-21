@@ -35,6 +35,7 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function SignUp() {
+    
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -42,6 +43,9 @@ export default function SignUp() {
       email: data.get("email"),
       password: data.get("password"),
     })
+      
+      
+      
   }
 
   return (
