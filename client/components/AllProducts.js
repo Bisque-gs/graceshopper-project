@@ -303,7 +303,18 @@ export default function AllProducts(props) {
             // >
             //   Add Product
             //   </button>
-            <Button variant="contained" onClick={() => addProductVisible()}>
+            <Button
+              variant="contained"
+              onClick={() => addProductVisible()}
+              sx={{
+                fontFamily: "monospace",
+                fontWeight: 700,
+                color: "white",
+                textDecoration: "none",
+                textTransform: "capitalize",
+                backgroundColor: "#6C8E70",
+              }}
+            >
               Add Product
             </Button>
           ) : (
@@ -495,7 +506,7 @@ export default function AllProducts(props) {
                                   })(product.id)
                             }}
                           >
-                            {!buttonPopup &&
+                            {!buttonPopup && (
                               <IconButton
                                 color="primary"
                                 aria-label="add to shopping cart"
@@ -507,7 +518,7 @@ export default function AllProducts(props) {
                               >
                                 <AddShoppingCartIcon />
                               </IconButton>
-                            }
+                            )}
                           </Button>
 
                           {auth.isAdmin && (
@@ -532,7 +543,7 @@ export default function AllProducts(props) {
                                 }).showToast()
                               }}
                             >
-                              {!buttonPopup &&
+                              {!buttonPopup && (
                                 <IconButton
                                   color="primary"
                                   aria-label="delete the product"
@@ -540,7 +551,7 @@ export default function AllProducts(props) {
                                 >
                                   <DeleteForeverIcon />
                                 </IconButton>
-                              }
+                              )}
                             </Button>
                           )}
                         </CardActions>
