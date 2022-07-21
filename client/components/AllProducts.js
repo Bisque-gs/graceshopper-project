@@ -283,7 +283,12 @@ export default function AllProducts(props) {
       {/* Maybe Put a Search Bar on this AppBar? */}
       <AppBar position="relative" sx={{ bgcolor: "#fff" }} className="column">
         <Box>
-          <AddProductPopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
+          <AddProductPopUp
+            trigger={buttonPopup}
+            setTrigger={setButtonPopup}
+            addProduct={addProduct}
+            isAddVisible={isAddVisibleToggle}
+          >
             {" "}
             <h3>My Popup</h3>
           </AddProductPopUp>
