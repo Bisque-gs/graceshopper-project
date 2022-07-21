@@ -206,6 +206,7 @@ import IconButton from "@mui/material/IconButton"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import AddProductPopUp from "./AddProductsPopUp"
+import CustomizedMenus from "./DropDownTypeButtonMUI"
 
 // or
 
@@ -322,7 +323,7 @@ export default function AllProducts(props) {
           )}
         </Box>
         <Box>
-          <select id="choose-type" name="selectList" onChange={handleChange}>
+          {/* <select id="choose-type" name="selectList" onChange={handleChange}>
             <option value="">Pick a Type!</option>
             <option value="grass">grass</option>
             <option value="fire">fire</option>
@@ -333,7 +334,8 @@ export default function AllProducts(props) {
             <option value="electric">electric</option>
             <option value="water">water</option>
             <option value="ground">ground</option>
-          </select>
+          </select> */}
+          <CustomizedMenus/>
         </Box>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap></Typography>
