@@ -292,12 +292,13 @@ export default function AllProducts(props) {
             {" "}
             <h3>My Popup</h3>
           </AddProductPopUp>
-          {isAddVisible && buttonPopup ? (
+          {/* {isAddVisible && buttonPopup ? (
             <AddProduct
               addProduct={addProduct}
               isAddVisible={isAddVisibleToggle}
             />
-          ) : auth.isAdmin ? (
+          ) : */}
+            { auth.isAdmin ? (
             // <button
             //   type="button"
             //   onClick={() => setIsAddVisible(true)}
