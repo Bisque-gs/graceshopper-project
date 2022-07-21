@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import AddProduct from './AddProduct';
+import SignUp from './AddProductMUI';
 
 const AddProductPopUp = (props) => {
 
@@ -9,10 +10,11 @@ const AddProductPopUp = (props) => {
     return props.trigger ? (
       <div className="popup">
         <div className="popup-inner">
-          <AddProduct
+          {/* <AddProduct
             addProduct={props.addProduct}
             isAddVisible={props.isAddVisibleToggle}
-          />
+          /> */}
+          <SignUp/>
           <button
             className="close-btn"
             onClick={() => {

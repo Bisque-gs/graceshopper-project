@@ -205,7 +205,7 @@ import AddProduct from "./AddProduct"
 import IconButton from "@mui/material/IconButton"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import AddProductPopUp from "./AddProductPopUp"
+import AddProductPopUp from "./AddProductsPopUp"
 
 // or
 
