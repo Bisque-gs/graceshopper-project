@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import SignUp from './AddProductMUI';
+import AddProduct from './AddProductMUI';
 
 const AddProductPopUp = (props) => {
 
@@ -13,7 +14,7 @@ const AddProductPopUp = (props) => {
             addProduct={props.addProduct}
             isAddVisible={props.isAddVisibleToggle}
           /> */}
-          {/* <AddProduct /> */}
+          <AddProduct addProduct={props.addProduct} />
           <button
             className="close-btn"
             onClick={() => {

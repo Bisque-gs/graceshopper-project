@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import AddIcon from "@mui/icons-material/Add"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 function Copyright(props) {
   return (
@@ -34,19 +36,48 @@ function Copyright(props) {
 
 const theme = createTheme()
 
-export default function SignUp() {
+export default function AddProduct(props) {
+
+      const [pokeInfo, setPokeInfo] = useState({
+        name: "",
+        quantity: "",
+        price: "",
+        pokeType: "",
+      })
+
     
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    })
-      
-      
-      
-  }
+        const handleSubmit = (evt) => {
+            evt.preventDefault()
+            console.log()
+          props.addProduct({ ...pokeInfo })
+          setPokeInfo({
+            name: "",
+            quantity: "",
+            price: "",
+            pokeType: "",
+          })
+          props.isAddVisible()
+        }
+
+//   const handleSubmit = (event) => {
+//     event.preventDefault()
+//     const data = new FormData(event.currentTarget)
+//     console.log({
+//       email: data.get("email"),
+//       password: data.get("password"),
+//     })
+//   }
+    
+    const handleChange = (event) => {
+      setPokeInfo({
+        ...pokeInfo,
+        [event.target.name]: event.target.value,
+      })
+    }
+
+    const handleCancel = () => {
+      props.isAddVisible()
+    }
 
   return (
     <ThemeProvider theme={theme}>
@@ -82,6 +113,8 @@ export default function SignUp() {
                   id="name"
                   label="Name"
                   autoFocus
+                  value={pokeInfo.name}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -89,30 +122,32 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="quantity"
-                  label="Quantity"
-                  name="Quantity"
-                  autoComplete="family-name"
+                  label="quantity"
+                  name="quantity"
+                  value={pokeInfo.quantity}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="Price"
+                  id="price"
                   label="Price (in cents):"
-                  name="Price"
-                  autoComplete="Price"
+                  name="price"
+                  value={pokeInfo.price}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="Type"
+                  name="pokeType"
                   label="Type"
-                  type="Type"
                   id="Type"
-                  autoComplete="Type"
+                  value={pokeInfo.pokeType}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,7 +176,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
     </ThemeProvider>
   )
