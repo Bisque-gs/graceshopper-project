@@ -233,15 +233,12 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 // GUEST checkout, doesn't affect Order table
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
-    const itemQuantities = req.body.itemQuantities.itemQuantities;
-    const guestemail = req.body.itemQuantities.guestemail;
-    const guestname = req.body.itemQuantities.guestname;
+    const { itemQuantities, guestname, guestemail } = req.body;
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.id)
       })
     )
-
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
@@ -277,8 +274,9 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
+    const itemQuantities = req.body.itemQuantities;
     const items = await Promise.all(
-      req.body.itemQuantities.map((item) => {
+      itemQuantities.map((item) => {
         return Product.findByPk(item.productId)
       })
     )
@@ -286,7 +284,7 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
-          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { quantity: item.quantity - itemQuantities[i].quantity },
           { individualHooks: true }
         )
         return updated
@@ -295,7 +293,7 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
 
     await Order.update(
       { isCurrentOrder: false },
-      { where: { id: req.body.itemQuantities[0].orderId } }
+      { where: { id: itemQuantities[0].orderId } }
     )
 
     const userId = req.params.userId;

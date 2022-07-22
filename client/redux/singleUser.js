@@ -170,10 +170,11 @@ export const fetchUserOrderHistory = (id) => {
   }
 }
 
-export const checkoutThunk = ({ userId, itemQuantities }) => {
+export const checkoutThunk = (payload) => {
+  const { guestName, guestEmail, itemQuantities } = payload.checkoutInfo;
+  const { userId } = payload;
   return async (dispatch) => {
     try {
-      // console.log(itemQuantities)
       if (userId) {
         const { data } = await axios.put(`/api/users/${userId}/cart/checkout`, {
           itemQuantities,
@@ -181,10 +182,9 @@ export const checkoutThunk = ({ userId, itemQuantities }) => {
         dispatch(userCheckout(data))
       } else {
         const { data } = await axios.put(`/api/users/guest/cart/checkout`, {
-          itemQuantities,
+          itemQuantities, guestName, guestEmail
         })
-        console.log(data)
-
+        console.log("thunk", data)
         dispatch(userCheckout(data))
       }
     } catch (error) {

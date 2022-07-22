@@ -5,8 +5,8 @@ export default function Paypal({
   userId,
   itemQuantities,
   checkout,
-  guestemail,
-  guestname
+  guestName,
+  guestEmail
 }) {
   const paypal = useRef()
 
@@ -31,9 +31,9 @@ export default function Paypal({
           const order = await actions.order.capture()
           checkout({
             userId: userId,
-            itemQuantities : { itemQuantities, guestemail, guestname},
+            checkoutInfo: {itemQuantities, guestEmail, guestName}
           })
-          console.log(order)
+          // console.log(order)
         },
         onError: (err) => {
           console.log(err)
