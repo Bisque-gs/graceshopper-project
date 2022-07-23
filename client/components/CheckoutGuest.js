@@ -39,6 +39,8 @@ class Checkout extends React.Component {
 
   showPayPalToggle(name, email) {
     this.setState({ showPayPal: true, guestName: name, guestEmail: email })
+    console.log("gN showPPT", this.state.guestName)
+    console.log("gE showPPT", this.state.guestEmail)
   }
 
   handleChange(evt) {
@@ -62,8 +64,8 @@ class Checkout extends React.Component {
       : []
     let cartIsEmpty = cartItems.length === 0
     let total = 0
-    console.log(itemQuantities)
-    console.log("cart items", cartItems)
+    // console.log(itemQuantities)
+    // console.log("cart items", cartItems)
     return (
       <React.Fragment>
         <div className="container">

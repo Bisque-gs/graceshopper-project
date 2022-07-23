@@ -29,6 +29,7 @@ export default function Paypal({
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture()
+          console.log("gN gE PP", guestName, guestEmail)
           checkout({
             userId: userId,
             checkoutInfo: {itemQuantities, guestEmail, guestName}

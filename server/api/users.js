@@ -233,7 +233,8 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 // GUEST checkout, doesn't affect Order table
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
-    const { itemQuantities, guestname, guestemail } = req.body;
+    const { itemQuantities, guestName, guestEmail } = req.body;
+    console.log("gN gE exp", guestName, guestEmail)
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.id)
@@ -252,9 +253,9 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
     const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
     transporter.sendMail({
       from: process.env.GUSER,
-      to: guestemail,
+      to: guestEmail,
       subject: 'Thank you for buying from PokeBay!',
-      html: `Hi ${guestname},<br>
+      html: `Hi ${guestName},<br>
               <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
               Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
               <br>

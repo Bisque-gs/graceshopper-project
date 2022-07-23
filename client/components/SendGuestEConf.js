@@ -15,6 +15,8 @@ export class SendGuestEConf extends React.Component {
     event.preventDefault();
     const guestName = this.state.guestName;
     const guestEmail = this.state.guestEmail;
+    console.log("gN econf", guestName);
+    console.log("gE econf", guestEmail);
     this.props.showPayPalToggle(guestName, guestEmail);
     this.props.isEmailConfVisible();
     this.props.isPaid();
