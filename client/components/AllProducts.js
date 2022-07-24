@@ -1,9 +1,15 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchProducts, deleteProductThunk } from "../redux/products"
+import {
+  fetchProducts,
+  deleteProductThunk,
+  fetchSearchProducts,
+} from "../redux/products"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
 import AddProduct from "./AddProduct"
+import Search from "./Search"
+
 import { addItemToLS } from "../localStorageMethods"
 
 export class AllProducts extends React.Component {
@@ -12,9 +18,12 @@ export class AllProducts extends React.Component {
     this.state = {
       isAddVisible: false,
       selectedType: "",
+      search: "",
+      products: [],
     }
     this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.setSearch = this.setSearch.bind(this)
   }
 
   componentDidMount() {
@@ -38,15 +47,26 @@ export class AllProducts extends React.Component {
       selectedType: evt.target.value,
     })
   }
+
+  setSearch(val) {
+    this.setState({
+      search: val,
+    })
+    console.log("before", this.props, "---", this.state)
+    this.props.searchProducts(val)
+    console.log("after", this.props, "---", this.state)
+  }
+
   render() {
-    // console.log("THE TYPE", this.state.selectedType)
     const { auth, products, userInfo } = this.props
+    console.log(this.props)
 
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", "[]")
     }
     let cart = JSON.parse(localStorage.getItem("cart"))
     let type = this.state.selectedType
+    console.log(this.state.products)
 
     return (
       <div>
@@ -69,6 +89,7 @@ export class AllProducts extends React.Component {
             console.log("You're not admin")
           )}
         </div>
+        <Search search={this.state.search} setSearch={this.setSearch} />
         <select id="choose-type" name="selectList" onChange={this.handleChange}>
           <option value="">Pick a Type!</option>
           <option value="grass">grass</option>
@@ -185,6 +206,7 @@ const mapState = (state) => {
   return {
     products: state.products,
     auth: state.auth,
+    results: state.results,
   }
 }
 
@@ -195,6 +217,9 @@ const mapDispatch = (dispatch) => {
     addProduct: (product) => dispatch(addProductThunk(product)),
     deleteProduct: (productId) => {
       dispatch(deleteProductThunk(productId))
+    },
+    searchProducts: (val) => {
+      dispatch(fetchSearchProducts(val))
     },
   }
 }

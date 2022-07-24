@@ -1,13 +1,31 @@
 const router = require("express").Router()
 const { Product, User } = require("../db")
+const { Op } = require("sequelize")
 module.exports = router
 
 // These routes are only accessible to an admin
 
+// GET /api/protected/users/:userid/users/search
+// search
+router.get("/users/:userid/users/search", async (req, res, next) => {
+  try {
+    //ADMIN AUTHORIZATION (NOT NECESSARY! We should already be protected via token)
+    const users = await User.findAll({
+      where: {
+        username: { [Op.substring]: req.headers.search },
+      },
+      attributes: ["id", "username", "email"],
+    })
+    res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //GET /api/protected/users/:userid/users
 router.get("/users/:userid/users", async (req, res, next) => {
   try {
-    //ADMIN AUTHORIZATION
+    //ADMIN AUTHORIZATION (NECESSARY? We should be protecting via token)
     const findOutIfAdmin = await User.findOne({
       where: {
         id: req.params.userid,
@@ -18,7 +36,6 @@ router.get("/users/:userid/users", async (req, res, next) => {
 
     if (findOutIfAdmin.dataValues.isAdmin) {
       const users = await User.findAll({
-        // explicitly select only the id and username fields
         attributes: ["id", "username", "email"],
       })
       res.json(users)

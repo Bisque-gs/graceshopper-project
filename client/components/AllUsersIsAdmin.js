@@ -1,28 +1,36 @@
-import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { fetchUsers } from "../redux/admin"
+import React, { useEffect, useState } from "react"
+import { fetchUsers, fetchUserSearch } from "../redux/admin"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import Search from "./Search"
 
 const AllUsersIsAdmin = () => {
   //REPLACES MAPSTATE TO PROPS
   const allUsers = useSelector((state) => state.allUsers)
   const auth = useSelector((state) => state.auth)
 
+  const [search, setSearch] = useState("")
+
   // useEffect() ==> REPLACES COMPONENT DID MOUNT
   //useDispatch() ==> REPLACES MAP DISPATCH TO PROPS
-  //THE EMPTY ARRAY OF DEPENDENCIES ENSURES THAT THE useEffect ONLY HAPPENS
-  //ONCE, AFTER THE INITIAL RENDER
+
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchUsers(auth.id))
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchUserSearch(auth.id, search))
+    console.log(allUsers)
+  }, [search])
 
   return (
     <div>
       {auth.isAdmin ? (
         <div>
           <div className="column">Users:</div>
+          <Search setSearch={setSearch} />
           <div className="unit">
             {allUsers.length === 0 ? (
               <p>No Users</p>
@@ -31,14 +39,12 @@ const AllUsersIsAdmin = () => {
                 return (
                   <div key={user.id}>
                     <Link to={`/users/${auth.id}/admin/${user.id}`}>
-                    {/* <Link to={`/users/${user.id}`}> */}
                       <div className="profile">
                         <h3>{user.id}</h3>
                         <h3>{user.username}</h3>
                         <h3>{user.email}</h3>
                       </div>
-                      {/* </Link> */}
-                      </Link>
+                    </Link>
                   </div>
                 )
               })
