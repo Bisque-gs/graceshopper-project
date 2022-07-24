@@ -240,6 +240,7 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
         return Product.findByPk(item.id)
       })
     )
+    console.log(items)
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
