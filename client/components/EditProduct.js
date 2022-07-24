@@ -17,9 +17,22 @@ export class EditProduct extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    // console.log("yao ming", { ...this.props.product, ...this.state })
     this.props.updateProduct({ ...this.props.product, ...this.state })
     this.props.isEditVisible()
+    Toastify({
+      text: `${this.props.product.name} was successfully modified`,
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background:
+          "linear-gradient(to right, #00b09b, #ffff00)",
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast()
   }
 
   handleChange(event) {
