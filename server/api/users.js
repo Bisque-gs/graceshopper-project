@@ -234,13 +234,12 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
     const { itemQuantities, guestName, guestEmail } = req.body;
-    console.log("gN gE exp", guestName, guestEmail)
+    // console.log("gN gE exp", guestName, guestEmail)
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.id)
       })
     )
-    console.log(items)
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
