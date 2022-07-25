@@ -1,10 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchUserCart } from "../redux/singleUser"
-
-/**
- * COMPONENT
- */
+import { fetchUserCart, fetchUser } from "../redux/singleUser"
 
 // had to make this functional to use componentDidMount and getCart
 class Home extends React.Component {
@@ -13,7 +9,9 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    // only if user? we should make sure a guest doesn't go to /home manually in the searchbar
     this.props.getCart(this.props.id)
+    this.props.getUser(this.props.id)
   }
 
   render() {
@@ -38,6 +36,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getCart: (id) => dispatch(fetchUserCart(id)),
+    getUser: (id) => dispatch(fetchUser(id)),
   }
 }
 

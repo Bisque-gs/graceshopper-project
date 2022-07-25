@@ -8,6 +8,9 @@ import { authenticate } from "../store"
  */
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props
+  if (!localStorage.getItem("cart")) {
+    localStorage.setItem("cart", "[]")
+  }
 
   return (
     <div className="column">

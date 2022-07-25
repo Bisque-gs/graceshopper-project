@@ -59,6 +59,7 @@ class Checkout extends React.Component {
     const isPaid = this.state.isPaid
     const showPayPal = this.state.showPayPal
     const cartItems = userInfo.cartItems || []
+    //const cartItems = JSON.parse(window.localStorage.getItem("cart"))
     const itemQuantities = userInfo.updatedPrices
       ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
       : []

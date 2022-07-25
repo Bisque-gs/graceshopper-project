@@ -38,6 +38,21 @@ class EditUserProfile extends React.Component {
       },
     })
     this.setState({ submitted: true })
+    Toastify({
+      text: `${this.state.username}'s profile was successfully modified`,
+      duration: 3000,
+      destination: `https://grace-pokebay.herokuapp.com/users/${this.props.match.params.id}`,
+      newWindow: true,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background:
+          "linear-gradient(to right, #00b09b, #96c93d)",
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast()
   }
 
   render() {
@@ -72,11 +87,9 @@ class EditUserProfile extends React.Component {
             value={password}
             placeholder={passwordStart}
           />
-          {this.props.user.user.error ? (
+          {this.props.user.user.error &&
             <p>{this.props.user.user.error.response.data}</p>
-          ) : (
-            this.state.submitted && <p>Successfully updated!</p>
-          )}
+          }
           <button type="submit">Update</button>
         </form>
       </div>
