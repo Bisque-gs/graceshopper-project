@@ -2,7 +2,6 @@ const Sequelize = require("sequelize")
 const db = require("../db")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-// const axios = require("axios");
 
 const SALT_ROUNDS = 5
 
@@ -34,6 +33,10 @@ const User = db.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  confirmed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 })
 
 module.exports = User
@@ -46,8 +49,8 @@ User.prototype.correctPassword = function (candidatePwd) {
   return bcrypt.compare(candidatePwd, this.password)
 }
 
-User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT)
+User.prototype.generateToken = async function () {
+  return jwt.sign({ id: this.id }, process.env.JWT);
 }
 
 /**
@@ -57,6 +60,11 @@ User.authenticate = async function ({ username, password }) {
   const user = await this.findOne({ where: { username } })
   if (!user || !(await user.correctPassword(password))) {
     const error = Error("Incorrect username/password")
+    error.status = 401
+    throw error
+  }
+  if (!user.confirmed) {
+    const error = Error("Please confirm your email")
     error.status = 401
     throw error
   }

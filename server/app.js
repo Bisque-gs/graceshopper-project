@@ -1,6 +1,8 @@
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
+const { User } = require('./db')
+const jwt = require("jsonwebtoken")
 const app = express()
 module.exports = app
 
@@ -12,6 +14,17 @@ app.use(express.json())
 
 // auth and api routes
 app.use('/auth', require('./auth'))
+
+app.get('/confirmation/:token', async (req, res) => {
+  try {
+    const { id } = await jwt.verify(req.params.token, process.env.JWT)
+    await User.update({ confirmed: true }, { where: { id } });
+  } catch (e) {
+    res.send('error', e);
+  }
+  return res.redirect('http://localhost:8080/login')
+})
+
 app.use('/api', require('./api'))
 
 app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));

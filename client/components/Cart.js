@@ -34,7 +34,8 @@ class Cart extends React.Component {
   }
 
   clickDelete = (deleteInfo) => {
-    if (deleteInfo.userId) {
+    const { id } = this.props.match.params
+    if (id) {
       this.props.deleteItemfromCart(deleteInfo)
     } else {
       const cart = JSON.parse(this.state.guestCart)
@@ -49,7 +50,9 @@ class Cart extends React.Component {
   }
 
   adjustQuantity = (obj) => {
-    if (obj.userId) {
+    const { id } = this.props.match.params
+
+    if (id) {
       this.props.updateQuantity(obj)
     } else {
       const cart = JSON.parse(this.state.guestCart)

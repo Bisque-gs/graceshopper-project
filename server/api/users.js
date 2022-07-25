@@ -1,10 +1,17 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
+const nodemailer = require("nodemailer");
 // const Sequelize = require("sequelize")
 // const Op = Sequelize.Op
 // const { LocalStorage } = require("node-localstorage")
 // const localStorage = require("../../client/components/AllProducts")
-
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
 module.exports = router
 
 router.get("/guest/cart", async (req, res, next) => {
@@ -221,22 +228,34 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 // GUEST checkout, doesn't affect Order table
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
+    const { itemQuantities, guestName, guestEmail } = req.body;
+    // console.log("gN gE exp", guestName, guestEmail)
     const items = await Promise.all(
-      req.body.itemQuantities.map((item) => {
+      itemQuantities.map((item) => {
         return Product.findByPk(item.id)
       })
     )
-
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
-          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { quantity: item.quantity - itemQuantities[i].quantity },
           { individualHooks: true }
         )
         return updated
       })
     )
-
+    
+    const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: guestEmail,
+      subject: 'Thank you for buying from PokeBay!',
+      html: `Hi ${guestName},<br>
+              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
+              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
+              <br>
+              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+    })
     res.send(updatedItems)
   } catch (error) {
     console.log(error)
@@ -251,16 +270,17 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
+    const itemQuantities = req.body.itemQuantities;
     const items = await Promise.all(
-      req.body.itemQuantities.map((item) => {
+      itemQuantities.map((item) => {
         return Product.findByPk(item.productId)
       })
     )
-
+    
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
-          { quantity: item.quantity - req.body.itemQuantities[i].quantity },
+          { quantity: item.quantity - itemQuantities[i].quantity },
           { individualHooks: true }
         )
         return updated
@@ -269,8 +289,26 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
 
     await Order.update(
       { isCurrentOrder: false },
-      { where: { id: req.body.itemQuantities[0].orderId } }
+      { where: { id: itemQuantities[0].orderId } }
     )
+
+    const userId = req.params.userId;
+    const user = await User.findByPk(userId)
+    const url = `http://localhost:8080/users/${userId}/cart/orderhistory`;
+    const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
+    // const url = `https://grace-pokebay.herokuapp.com/users/${userId}/cart/orderhistory`;
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: user.email,
+      subject: 'Thank you for buying from PokeBay!',
+      html: `Hi ${user.username}, <br>
+              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
+              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
+              <br>
+              If you want to check your order, please visit <a href="${url}">your order history</a>. <br>
+              <br>
+              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+    })
     res.send(updatedItems)
   } catch (error) {
     console.log(error)
