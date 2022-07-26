@@ -234,7 +234,26 @@ router.delete("/:userId/cart/:itemId", async (req, res, next) => {
 router.put("/guest/cart/checkout", async (req, res, next) => {
   try {
     const { itemQuantities, guestName, guestEmail } = req.body;
-    // console.log("gN gE exp", guestName, guestEmail)
+    let iNames = [];
+    let iQuant = [];
+    let iImgs = [];
+    let iPrice = [];
+    let iSubT = [];
+    itemQuantities.map((item, i) => {
+      iNames.push(item.name);
+      iQuant.push(item.quantity);
+      iImgs.push(item.imageUrl);
+      iPrice.push(item.price / 100);
+      iSubT.push(item.quantity * (item.price / 100));
+    })
+    let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
+    console.log("iNames", iNames)
+    console.log("iPrice", iPrice)
+    console.log("iQuant", iQuant)
+    console.log("iImgs", iImgs)
+    console.log("iSubT", iSubT)
+    console.log("iTotal", iTotal)
+
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.id)
