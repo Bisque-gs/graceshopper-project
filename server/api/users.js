@@ -271,7 +271,14 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
       subject: 'Thank you for buying from PokeBay!',
       html: `Hi ${guestName},<br>
               <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
-              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
+              Thank you for your order! We are processing to get it delivered to you ASAP! <br>
+              <br>
+              Order Details:<br>
+              Pokemons: ${iNames}<br>
+              Quantities: ${iQuant}<br>
+              Individual Prices: ${iPrice}<br>
+              Subtotal Prices for each: ${iSubT}<br>
+              Grand Total: ${iTotal}<br>
               <br>
               Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
     })
