@@ -127,7 +127,7 @@ export class AllProducts extends React.Component {
                               const item = products.find(
                                 (item) => item.id === prodId
                               )
-                              console.log(item)
+                              // console.log(item)
                               const res = cart.find(
                                 (element) => element.id === prodId
                               )
@@ -137,8 +137,22 @@ export class AllProducts extends React.Component {
                               } else {
                                 res.quantity++
                               }
-                              console.log(cart)
                               localStorage.setItem("cart", JSON.stringify(cart))
+                              Toastify({
+                                text: `${product.name} was successfully added to cart`,
+                                duration: 3000,
+                                destination: `https://grace-pokebay.herokuapp.com/users/guest/cart`,
+                                newWindow: true,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "right", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                  background:
+                                    "linear-gradient(to right, #00b09b, #96c93d)",
+                                },
+                                onClick: function () {}, // Callback after click
+                              }).showToast()
                             })(product.id)
                       }}
                     >

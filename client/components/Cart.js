@@ -14,22 +14,63 @@ import CartGuest from "./CartGuest"
 //have an option to grab current orders
 //reducer
 class Cart extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      guestCart: window.localStorage.getItem("cart") || "",
+    }
+  }
   componentDidMount() {
     const { id } = this.props.match.params
     // also gets info for guests
     this.props.getUser(Number(id))
     if (id) {
       this.props.getOrders(Number(id))
+    } else {
+      this.setState({
+        guestCart: window.localStorage.getItem("cart"),
+      })
     }
   }
 
   clickDelete = (deleteInfo) => {
-    this.props.deleteItemfromCart(deleteInfo)
+    const { id } = this.props.match.params
+    if (id) {
+      this.props.deleteItemfromCart(deleteInfo)
+    } else {
+      const cart = JSON.parse(this.state.guestCart)
+      const updatedCart = cart.filter((x) => x.id != deleteInfo.productId)
+
+      window.localStorage.setItem("cart", JSON.stringify(updatedCart))
+
+      this.setState({
+        guestCart: JSON.stringify(updatedCart),
+      })
+    }
   }
 
   adjustQuantity = (obj) => {
-    // for guest, obj.id === undefined
-    this.props.updateQuantity(obj)
+    const { id } = this.props.match.params
+
+    if (id) {
+      this.props.updateQuantity(obj)
+    } else {
+      const cart = JSON.parse(this.state.guestCart)
+      const updatedCart = cart.reduce((acc, x) => {
+        if (x.id == obj.productId && Number(x.quantity) + obj.quantity >= 0) {
+          x.quantity = Number(x.quantity) + obj.quantity
+        }
+        return acc.concat(x)
+      }, [])
+
+      window.localStorage.setItem("cart", JSON.stringify(updatedCart))
+      // console.log(guestCart)
+
+      this.setState({
+        guestCart: JSON.stringify(updatedCart),
+      })
+      // console.log(this.state.guestCart)
+    }
   }
 
   render() {
@@ -46,11 +87,11 @@ class Cart extends React.Component {
         <div>
           {isGuest ? (
             <CartGuest
-              auth={auth}
               user={user}
               cartItems={cartItems}
               adjustQuantity={this.adjustQuantity}
               clickDelete={this.clickDelete}
+              guestCart={this.state.guestCart}
             />
           ) : (
             <CartUser

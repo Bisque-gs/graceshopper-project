@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 
 function CartGuest(props) {
-  const { user, cartItems, adjustQuantity, clickDelete, auth } = props
-  console.log(auth)
+  const { user, adjustQuantity, clickDelete, guestCart } = props
+  const cartItems = JSON.parse(guestCart) || []
 
   return (
     <div>
@@ -17,7 +17,7 @@ function CartGuest(props) {
       <div className="unit">
         {cartItems
           .sort((a, b) => a.id - b.id)
-          .map((item, i) => (
+          .map((item) => (
             <div key={item.id} className={item.pokeType + " profile"}>
               <h3>
                 <Link to={`/products/${item.id}`}>{item.name}</Link>
@@ -35,7 +35,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
-                      quantity: item.quantity + 1,
+                      quantity: 1, // add 1 to total
                     })
                   }
                   type="button"
@@ -47,7 +47,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
-                      quantity: item.quantity - 1,
+                      quantity: -1, // add -1 to total
                     })
                   }
                   type="button"
