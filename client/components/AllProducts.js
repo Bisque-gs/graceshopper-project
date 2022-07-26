@@ -39,7 +39,7 @@ export class AllProducts extends React.Component {
     })
   }
   render() {
-    console.log("THE TYPE", this.state.selectedType)
+    // console.log("THE TYPE", this.state.selectedType)
     const { auth, products, userInfo } = this.props
 
     if (!localStorage.getItem("cart")) {
@@ -58,15 +58,13 @@ export class AllProducts extends React.Component {
               addProduct={this.props.addProduct}
               isAddVisible={this.isAddVisibleToggle}
             />
-          ) : auth.isAdmin ? (
+          ) : auth.isAdmin && (
             <button
               type="button"
               onClick={() => this.setState({ isAddVisible: true })}
             >
               Add Product
             </button>
-          ) : (
-            console.log("You're not admin")
           )}
         </div>
         <select id="choose-type" name="selectList" onChange={this.handleChange}>
@@ -146,7 +144,7 @@ export class AllProducts extends React.Component {
                     >
                       Add to cart
                     </button>
-                    {auth.isAdmin ? (
+                    {auth.isAdmin && (
                       <button
                         className="cancel"
                         type="button"
@@ -169,8 +167,6 @@ export class AllProducts extends React.Component {
                       >
                         Delete
                       </button>
-                    ) : (
-                      console.log("You're not admin")
                     )}
                   </div>
                 )
