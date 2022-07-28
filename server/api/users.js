@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
 const nodemailer = require("nodemailer");
+const emailGuest= require("../../script/emailGuest")
 // const Sequelize = require("sequelize")
 // const Op = Sequelize.Op
 // const { LocalStorage } = require("node-localstorage")
@@ -12,6 +13,7 @@ let transporter = nodemailer.createTransport({
     pass: process.env.GPASS
   }
 })
+
 module.exports = router
 
 router.get("/guest/cart", async (req, res, next) => {
@@ -264,23 +266,25 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
       })
     )
     
+    let emailGuestHTML = emailGuest();
     const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
     transporter.sendMail({
       from: process.env.GUSER,
       to: guestEmail,
       subject: 'Thank you for buying from PokeBay!',
-      html: `Hi ${guestName},<br>
-              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
-              Thank you for your order! We are processing to get it delivered to you ASAP! <br>
-              <br>
-              Order Details:<br>
-              Pokemons: ${iNames}<br>
-              Quantities: ${iQuant}<br>
-              Individual Prices: ${iPrice}<br>
-              Subtotal Prices for each: ${iSubT}<br>
-              Grand Total: ${iTotal}<br>
-              <br>
-              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+      // html: `Hi ${guestName},<br>
+      //         <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
+      //         Thank you for your order! We are processing to get it delivered to you ASAP! <br>
+      //         <br>
+      //         Order Details:<br>
+      //         Pokemons: ${iNames}<br>
+      //         Quantities: ${iQuant}<br>
+      //         Individual Prices: ${iPrice}<br>
+      //         Subtotal Prices for each: ${iSubT}<br>
+      //         Grand Total: ${iTotal}<br>
+      //         <br>
+      //         Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+      html: emailGuestHTML
     })
     res.send(updatedItems)
   } catch (error) {
