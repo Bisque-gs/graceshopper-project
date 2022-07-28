@@ -4,6 +4,8 @@ import { Link } from "react-router-dom"
 import { fetchUsers } from "../redux/admin"
 import { fetchProducts } from "../redux/products"
 import useOnClickOutside from "./hooks/useOnClickOutside"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 
 const Search = (props) => {
   // do we need a search results page? Right now the plan is for it to be click-only
@@ -19,28 +21,12 @@ const Search = (props) => {
   const [showInput, setShowInput] = useState(false)
 
   useOnClickOutside(wrapperRef, () => {
-    // if (isInputActive) {
-    //   if (inputValue.length) {
-    //     if (props.isProject) {
-    //       props.onSetText(inputValue)
-    //       dispatch(updateProject(props.projectId, inputValue))
-    //     } else {
-    //       props.onSetText(inputValue)
-    //       dispatch(
-    //         updateListThunk(auth.id, props.projectId, {
-    //           columnName: inputValue,
-    //         })
-    //       )
-    //     }
-    //   }
     setSearch("")
     setShowInput(false)
-    // }
   })
 
   const handleChange = (e) => {
     setSearch(e.target.value)
-    console.log(search)
   }
 
   const handleClick = (e) => {
@@ -78,9 +64,8 @@ const Search = (props) => {
   let suggestionsListComponent
   search &&
     (suggestionsListComponent = (
-      // products is working, users is one behind
       <ul className="suggestions">
-        {console.log(results)}
+        {/* {console.log(results)} */}
         {results.products.length &&
           results.products.map((x, index) => {
             return (
@@ -123,66 +108,36 @@ const Search = (props) => {
         )}
       </ul>
     ))
-  // : (suggestionsListComponent = (
-  //     <div className="no-suggestions">
-  //       <em>No suggestions available.</em>
-  //     </div>
-  //   ))
 
   return (
-    <div>
-      {/* <button onClick={handleClick}>{showInput ? "Hide" : "Search"}</button> */}
-
+    <div className="searchWrapper">
       {showInput ? (
-        <div>
-          <button onClick={handleClick}>Hide</button>
-          <span ref={wrapperRef}>
-            <form className="searchBar">
-              <input
-                value={search}
-                className="searchInput"
-                onChange={handleChange}
-                placeholder="Search"
-              />
-              {suggestionsListComponent}
-            </form>
-          </span>
-        </div>
+        <span ref={wrapperRef}>
+          <form className="searchBar">
+            <input
+              autoFocus
+              value={search}
+              className="searchInput"
+              onChange={handleChange}
+              placeholder="Search"
+            />
+            {suggestionsListComponent}
+          </form>
+        </span>
       ) : (
-        <button onClick={handleClick}>Search</button>
+        <button
+          onClick={handleClick}
+          style={{ background: "#3aa", margin: "0" }}
+        >
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            style={{ marginRight: "5px" }}
+          />
+          Search
+        </button>
       )}
     </div>
   )
 }
 
 export default Search
-
-// const mapLogin = (state) => {
-//   return {
-//     name: "login",
-//     displayName: "Login",
-//     error: state.auth.error,
-//   }
-// }
-
-// const mapSignup = (state) => {
-//   return {
-//     name: "signup",
-//     displayName: "Sign Up",
-//     error: state.auth.error,
-//   }
-// }
-
-// const mapDispatch = (dispatch) => {
-//   return {
-//     handleSubmit(evt) {
-//       evt.preventDefault()
-//       const formName = evt.target.name
-//       const userName = evt.target.username.value
-//       const password = evt.target.password.value
-//       const email = evt.target.email ? evt.target.email.value : null
-
-//       dispatch(authenticate(userName, password, email, formName))
-//     },
-//   }
-// }
