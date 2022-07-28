@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import SignUp from './AddProductMUI';
 import AddProduct from './AddProductMUI';
+import Button from "@mui/material/Button"
 
 const AddProductPopUp = (props) => {
 
@@ -15,15 +16,28 @@ const AddProductPopUp = (props) => {
             isAddVisible={props.isAddVisibleToggle}
           /> */}
           <AddProduct addProduct={props.addProduct} />
-          <button
+          <Button
             className="close-btn"
             onClick={() => {
               props.setTrigger(false)
             }}
+            sx={{
+              fontFamily: "monospace",
+              fontWeight: 700,
+              // color: "white",
+              textDecoration: "none",
+              textTransform: "capitalize",
+              backgroundColor: "#1976d2",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#344966",
+                color: "#white",
+              },
+            }}
           >
             {" "}
             close{" "}
-          </button>
+          </Button>
           {props.children}
         </div>
       </div>
