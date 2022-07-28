@@ -48,18 +48,10 @@ const Search = (props) => {
     setShowInput(!showInput)
   }
 
-  //   const handleSearch = (e) => {
-  //     ///// !!!!! DANGER: SANITIZE INPUTS !!!!! /////
-  //     const clicked = e.target.innerText
-  //     const clickedArr = clicked.split(" ")
-  //     const isProduct = clickedArr[0] === "Product:" ? true : false
-  //     const goTo = isProduct
-  //       ? results.products.find((x) => x.name === clickedArr[1])
-  //       : results.users.find((x) => x.username === clickedArr[1])
-  //     // console.log(goTo)
-  //     // now I want to go to either SingleUser or SingleProduct with goTo.id
-  //     setSearchId(goTo.id)
-  //   }
+  const handleSearch = () => {
+    setSearch("")
+    setShowInput(false)
+  }
 
   useEffect(() => {
     if (showInput) {
@@ -98,7 +90,7 @@ const Search = (props) => {
                   "search-suggestion"
                 }
                 key={index}
-                // onClick={handleSearch}
+                onClick={handleSearch}
               >
                 <Link to={`/products/${x.id}`}>
                   <em>Product: </em>
@@ -118,7 +110,7 @@ const Search = (props) => {
                     "search-suggestion"
                   }
                   key={index}
-                  // onClick={handleSearch}
+                  onClick={handleSearch}
                 >
                   <Link to={`/users/${auth.id}/admin/${x.id}`}>
                     <em>User: </em>
