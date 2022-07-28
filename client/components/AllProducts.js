@@ -335,7 +335,7 @@ export default function AllProducts(props) {
             <option value="water">water</option>
             <option value="ground">ground</option>
           </select> */}
-          <CustomizedMenus/>
+          <CustomizedMenus handleChange={handleChange} />
         </Box>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap></Typography>

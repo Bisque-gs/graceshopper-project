@@ -62,15 +62,23 @@ const StyledMenu = styled((props) => (
   },
 }))
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus(props) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
+  const handleClose = (evt) => {
     setAnchorEl(null)
+    console.log("yee", evt.target)
+    props.handleChange(evt.target.value)
   }
+
+  const selectAType = (evt) => {
+    console.log('ebk',  evt)
+    props.handleChange(evt)
+  }
+
 
   return (
     <div>
@@ -95,7 +103,7 @@ export default function CustomizedMenus() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} value= "grass" onChange={selectAType} disableRipple>
           <GrassIcon />
           Grass
         </MenuItem>
