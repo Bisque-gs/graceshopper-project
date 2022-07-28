@@ -71,7 +71,11 @@ export default function CustomizedMenus(props) {
   }
   const handleClose = (evt) => {
     setAnchorEl(null)
-    const { myValue } = evt.currentTarget.dataset
+    
+    
+    let { myValue } = evt.currentTarget.dataset
+    if (myValue === undefined) myValue = "";
+    console.log('why' , myValue)
     props.handleChange(myValue)
   }
 
