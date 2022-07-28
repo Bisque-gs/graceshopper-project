@@ -235,76 +235,91 @@ const users = [
     username: "mark",
     password: "jemison",
     email: "mark@mail.com",
+    confirmed: true
   },
   {
     username: "anton",
     password: "leroy",
     email: "anton@mail.com",
+    confirmed: true
   },
   {
     username: "igor",
     password: "dima",
     email: "igor@mail.com",
+    confirmed: true
   },
   {
     username: "vasya",
     password: "petya",
     email: "vasya@mail.com",
+    confirmed: true
   },
   {
     username: "grisha",
     password: "yeger",
     email: "grisha@mail.com",
+    confirmed: true
   },
   {
     username: "oniichan",
     password: "yametekudasai",
     email: "oniichan@mail.com",
+    confirmed: true
   },
   {
     username: "hello",
     password: "goodbye",
     email: "hello@mail.com",
+    confirmed: true
   },
   {
     username: "turtle",
     password: "nourturtle",
     email: "turtle@mail.com",
+    confirmed: true
   },
   {
     username: "yareyare",
     password: "daze",
     email: "yareyare@mail.com",
+    confirmed: true
   },
   {
     username: "platinum",
     password: "zaworudo",
     email: "platinum@mail.com",
+    confirmed: true
   },
   {
     username: "leslie",
     password: "john",
     email: "leslie@mail.com",
+    confirmed: true
   },
   {
     username: "masha",
     password: "parasha",
     email: "masha@mail.com",
+    confirmed: true
   },
   {
     username: "yaebal",
     password: "tvoirot",
     email: "yaebal@mail.com",
+    confirmed: true
   },
   {
     username: "cream",
     password: "icing",
     email: "cream@mail.com",
+    confirmed: true
   },
   {
     username: "sweet",
     password: "sour",
     email: "sweet@mail.com",
+    confirmed: true
   },
 ]
 
@@ -328,12 +343,14 @@ const seed = async () => {
       password: "password123",
       email: "spencer69@email.com",
       isAdmin: true,
+      confirmed: true
     })
 
     const user2 = await User.create({
       username: "brian69",
       password: "hello1234",
       email: "brian69@email.com",
+      confirmed: true
     })
 
     const product1 = await Product.create({

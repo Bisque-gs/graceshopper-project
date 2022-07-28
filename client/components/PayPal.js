@@ -5,6 +5,8 @@ export default function Paypal({
   userId,
   itemQuantities,
   checkout,
+  guestName,
+  guestEmail
 }) {
   const paypal = useRef()
 
@@ -27,11 +29,12 @@ export default function Paypal({
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture()
+          console.log("gN gE PP", guestName, guestEmail)
           checkout({
             userId: userId,
-            itemQuantities,
+            checkoutInfo: {itemQuantities, guestEmail, guestName}
           })
-          console.log(order)
+          // console.log(order)
         },
         onError: (err) => {
           console.log(err)

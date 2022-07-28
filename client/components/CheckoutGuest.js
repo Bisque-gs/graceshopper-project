@@ -1,14 +1,54 @@
 import React from "react"
 import { connect } from "react-redux"
-import { fetchUser, fetchUserCart, checkoutThunk } from "../redux/singleUser"
+import {
+  fetchUser,
+  fetchUserCart,
+  checkoutThunk,
+} from "../redux/singleUser"
 import { Link } from "react-router-dom"
 import PayPal from "./PayPal"
+import SendGuestEConf from "./SendGuestEConf"
 
 //We will grab a user orders from singleUser redux store
 // Have an option to grab all orders
 //have an option to grab current orders
 //reducer
 class Checkout extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      isEmailConfVisible: false,
+      isPaid: false,
+      showPayPal: false,
+      guestName: "",
+      guestEmail: "",
+    }
+    this.isEmailConfVisibleToggle = this.isEmailConfVisibleToggle.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.isPaidToggle = this.isPaidToggle.bind(this)
+    this.showPayPalToggle = this.showPayPalToggle.bind(this)
+  }
+
+  isEmailConfVisibleToggle() {
+    this.setState({ isEmailConfVisible: false })
+  }
+
+  isPaidToggle() {
+    this.setState({ isPaid: true })
+  }
+
+  showPayPalToggle(name, email) {
+    this.setState({ showPayPal: true, guestName: name, guestEmail: email })
+    console.log("gN showPPT", this.state.guestName)
+    console.log("gE showPPT", this.state.guestEmail)
+  }
+
+  handleChange(evt) {
+    this.setState({
+      [evt.target.name]: evt.target.value,
+    })
+  }
+
   checkout = (orderobj) => {
     this.props.checkout(orderobj)
     window.localStorage.setItem("cart", "[]")
@@ -16,10 +56,13 @@ class Checkout extends React.Component {
   render() {
     const { userInfo } = this.props
     const { user } = userInfo
-    const cartItems = userInfo.cartItems || [] // should we get this from localStorage? userInfo.cartItems seems to be one behind
-    // const itemQuantities = userInfo.updatedPrices
-    //   ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
-    //   : []
+    const isPaid = this.state.isPaid
+    const showPayPal = this.state.showPayPal
+    const cartItems = userInfo.cartItems || []
+    //const cartItems = JSON.parse(window.localStorage.getItem("cart"))
+    const itemQuantities = userInfo.updatedPrices
+      ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
+      : []
     let cartIsEmpty = cartItems.length === 0
     let total = 0
     // console.log(itemQuantities)
@@ -59,16 +102,35 @@ class Checkout extends React.Component {
             {userInfo.error && (
               <p>{userInfo.error}. Please adjust your cart.</p>
             )}
-            {!cartIsEmpty && (
-              <div className="column">
+            <div className="column">
+              {!cartIsEmpty && !isPaid && (
+                <button
+                  type="button"
+                  onClick={() => this.setState({ isEmailConfVisible: true })}
+                >
+                  Finalize the order
+                </button>
+              )}
+              {this.state.isEmailConfVisible && (
+                <SendGuestEConf
+                  itemQuantities={cartItems}
+                  checkout={this.checkout}
+                  isPaid={this.isPaidToggle}
+                  showPayPalToggle={this.showPayPalToggle}
+                  isEmailConfVisible={this.isEmailConfVisibleToggle}
+                />
+              )}
+              {!cartIsEmpty && showPayPal && (
                 <PayPal
                   totalPrice={(total / 100).toFixed(2)}
                   userId={user.id}
                   itemQuantities={cartItems}
+                  guestEmail={this.state.guestEmail}
+                  guestName={this.state.guestName}
                   checkout={this.checkout}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <div className="spacer"></div>
         </div>

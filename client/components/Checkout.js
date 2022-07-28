@@ -32,8 +32,8 @@ class Checkout extends React.Component {
     let cartAuthorization = user.id === auth.id
     let cartIsEmpty = cartItems.length === 0
     let total = 0
-    console.log(itemQuantities)
-    console.log('cart items', cartItems)
+    // console.log(itemQuantities)
+    // console.log('cart items', cartItems)
     return (
       <React.Fragment>
         <div className="container">

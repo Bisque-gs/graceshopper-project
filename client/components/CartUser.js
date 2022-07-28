@@ -1,11 +1,5 @@
 import React from "react"
 import { Link } from "react-router-dom"
-// import {
-//   fetchUser,
-//   // fetchUserCart,
-//   // deleteItemCartThunk,
-//   // updateQuantityThunk,
-// } from "../redux/singleUser"
 
 function CartUser(props) {
   const {
@@ -17,7 +11,6 @@ function CartUser(props) {
     clickDelete,
   } = props
   const { user } = userInfo
-  console.log(props)
   const itemQuantities = userInfo.updatedPrices
     ? userInfo.updatedPrices.sort((a, b) => a.productId - b.productId) || []
     : [] // helps with rendering?

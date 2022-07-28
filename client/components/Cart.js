@@ -34,15 +34,14 @@ class Cart extends React.Component {
   }
 
   clickDelete = (deleteInfo) => {
-    if (deleteInfo.userId) {
+    const { id } = this.props.match.params
+    if (id) {
       this.props.deleteItemfromCart(deleteInfo)
     } else {
       const cart = JSON.parse(this.state.guestCart)
       const updatedCart = cart.filter((x) => x.id != deleteInfo.productId)
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
-      console.log("guest delete", updatedCart)
-      console.log(window.localStorage.getItem("cart"))
 
       this.setState({
         guestCart: JSON.stringify(updatedCart),
@@ -51,7 +50,9 @@ class Cart extends React.Component {
   }
 
   adjustQuantity = (obj) => {
-    if (obj.userId) {
+    const { id } = this.props.match.params
+
+    if (id) {
       this.props.updateQuantity(obj)
     } else {
       const cart = JSON.parse(this.state.guestCart)

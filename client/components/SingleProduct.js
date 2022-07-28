@@ -12,7 +12,6 @@ class SingleProduct extends React.Component {
     super(props)
     this.state = {
       quantity: "",
-      submitted: false,
       isEditVisible: false,
     }
     this.handleClick = this.handleClick.bind(this)
@@ -32,7 +31,6 @@ class SingleProduct extends React.Component {
     e.preventDefault()
     this.setState({
       quantity: e.target.value,
-      submitted: false,
     })
   }
 
@@ -62,10 +60,6 @@ class SingleProduct extends React.Component {
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
     }
-
-    this.setState({
-      submitted: true,
-    })
   }
 
   render() {
@@ -90,9 +84,23 @@ class SingleProduct extends React.Component {
                 )
               })}
           </select>
-          {this.state.submitted && <p>Item(s) added to cart!</p>}
           <button
-            onClick={this.handleClick}
+            onClick={() => {
+              this.handleClick;
+              Toastify({
+                text: `${product.name} was successfully added to cart`,
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background:
+                    "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function () {}, // Callback after click
+              }).showToast()}
+            }
             disabled={noneInStock}
             style={{ opacity: noneInStock && 0.5 }}
           >
