@@ -1,15 +1,9 @@
 import React from "react"
 import { connect } from "react-redux"
-import {
-  fetchProducts,
-  deleteProductThunk,
-  fetchSearchProducts,
-} from "../redux/products"
+import { fetchProducts, deleteProductThunk } from "../redux/products"
 import { setOrder, addProductThunk } from "../redux/singleProduct"
 import { Link } from "react-router-dom"
 import AddProduct from "./AddProduct"
-import Search from "./Search"
-
 import { addItemToLS } from "../localStorageMethods"
 
 export class AllProducts extends React.Component {
@@ -18,16 +12,18 @@ export class AllProducts extends React.Component {
     this.state = {
       isAddVisible: false,
       selectedType: "",
-      search: "",
       products: [],
     }
     this.isAddVisibleToggle = this.isAddVisibleToggle.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.setSearch = this.setSearch.bind(this)
+    this.handleSearchChange = this.handleSearchChange.bind(this)
   }
 
   componentDidMount() {
     this.props.getProducts()
+    this.setState({
+      products: this.props.products,
+    })
   }
 
   isAddVisibleToggle() {
@@ -36,7 +32,6 @@ export class AllProducts extends React.Component {
 
   handleClick(e) {
     e.preventDefault()
-    // console.log(this.props)
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
     this.props.addToCart(userId, productId)
@@ -48,28 +43,27 @@ export class AllProducts extends React.Component {
     })
   }
 
-  setSearch(val) {
-    this.setState({
-      search: val,
+  handleSearchChange(e) {
+    const val = e.target.value
+    const products = this.props.products.filter((x) => {
+      return val.split("").every((y) => x.name.includes(y))
     })
-    console.log("before", this.props, "---", this.state)
-    this.props.searchProducts(val)
-    console.log("after", this.props, "---", this.state)
+    this.setState({
+      products,
+    })
   }
 
   render() {
-    const { auth, products, userInfo } = this.props
-    console.log(this.props)
+    const { auth, products } = this.props
 
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", "[]")
     }
     let cart = JSON.parse(localStorage.getItem("cart"))
     let type = this.state.selectedType
-    console.log(this.state.products)
 
     return (
-      <div>
+      <div className="container">
         <br />
         <div className="column">
           Products:
@@ -89,24 +83,35 @@ export class AllProducts extends React.Component {
             console.log("You're not admin")
           )}
         </div>
-        <Search search={this.state.search} setSearch={this.setSearch} />
-        <select id="choose-type" name="selectList" onChange={this.handleChange}>
-          <option value="">Pick a Type!</option>
-          <option value="grass">grass</option>
-          <option value="fire">fire</option>
-          <option value="bug">bug</option>
-          <option value="flying">flying</option>
-          <option value="poison">poison</option>
-          <option value="normal">normal</option>
-          <option value="electric">electric</option>
-          <option value="water">water</option>
-          <option value="ground">ground</option>
-        </select>
+        <input
+          value={this.state.search}
+          className="searchInput"
+          onChange={this.handleSearchChange}
+          placeholder="Search products"
+        />
+        <div>
+          <select
+            id="choose-type"
+            name="selectList"
+            onChange={this.handleChange}
+          >
+            <option value="">Pick a Type!</option>
+            <option value="grass">grass</option>
+            <option value="fire">fire</option>
+            <option value="bug">bug</option>
+            <option value="flying">flying</option>
+            <option value="poison">poison</option>
+            <option value="normal">normal</option>
+            <option value="electric">electric</option>
+            <option value="water">water</option>
+            <option value="ground">ground</option>
+          </select>
+        </div>
         <div className="unit">
-          {products.length === 0 ? (
+          {this.state.products.length === 0 ? (
             <p>No products</p>
           ) : (
-            products
+            this.state.products
               .sort((a, b) => a.id - b.id)
               .filter((product) => {
                 if (product.pokeType === type || type === "") {
@@ -148,6 +153,7 @@ export class AllProducts extends React.Component {
                           : (function addItemToLS(prodId) {
                               // guest
                               const item = products.find(
+                                // here
                                 (item) => item.id === prodId
                               )
                               // console.log(item)
@@ -221,7 +227,6 @@ const mapState = (state) => {
   return {
     products: state.products,
     auth: state.auth,
-    results: state.results,
   }
 }
 
@@ -232,9 +237,6 @@ const mapDispatch = (dispatch) => {
     addProduct: (product) => dispatch(addProductThunk(product)),
     deleteProduct: (productId) => {
       dispatch(deleteProductThunk(productId))
-    },
-    searchProducts: (val) => {
-      dispatch(fetchSearchProducts(val))
     },
   }
 }

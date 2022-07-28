@@ -236,3 +236,44 @@ input {
   background:#ee0;
   border: 1px solid black;
 }
+
+.searchBar{
+  display: inline-block;
+  /* position:absolute; */
+  color: orange;
+}
+
+.searchInput{
+  /* margin: auto 0; */
+  /* display: block; */
+  position: static;
+
+}
+
+.hidden{
+  display: none
+}
+
+.suggestions {
+  display: block;
+  /* position: relative; */
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  /* top: 0; */
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+}
+
+.search-suggestion{
+  width: 250px;
+  background:#ddd;
+
+}
+
+.no-suggestions{
+  position: block;
+  opacity: .5;
+}

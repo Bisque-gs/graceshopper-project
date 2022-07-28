@@ -10,10 +10,10 @@ const getUsers = (users) => {
   }
 }
 
-const searchUsers = (users) => {
+const searchUsers = (results) => {
   return {
     type: SEARCH_USERS,
-    users,
+    results,
   }
 }
 
@@ -24,8 +24,8 @@ export const fetchUsers = (id) => {
       const { data } = await axios.get(`/api/protected/users/${id}/users`, {
         headers: { authorization: token },
       })
-      console.log(data)
-      dispatch(searchUsers(data))
+      // console.log(data)
+      dispatch(getUsers(data))
     } catch (error) {
       console.error(error)
     }
@@ -42,7 +42,6 @@ export const fetchUserSearch = (id, search) => {
           headers: { authorization: token, search },
         }
       )
-      console.log(data)
       dispatch(searchUsers(data))
     } catch (error) {
       console.error(error)
@@ -57,7 +56,7 @@ export default function adminUserReducer(state = initialState, action) {
     case GET_USERS:
       return [...action.users]
     case SEARCH_USERS:
-      return [...action.users]
+      return [...action.results]
     default:
       return state
   }
