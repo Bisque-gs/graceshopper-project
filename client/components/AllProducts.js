@@ -253,8 +253,8 @@ export default function AllProducts(props) {
     dispatch(addProductThunk(userId, id))
   }
 
-  const handleChange = (evt) => {
-    setSelectedType(evt.target.value)
+  const handleChange = (val) => {
+    setSelectedType(val)
   }
 
   if (!localStorage.getItem("cart")) {

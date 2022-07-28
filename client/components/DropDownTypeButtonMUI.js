@@ -18,6 +18,7 @@ import ShieldIcon from "@mui/icons-material/Shield"
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt"
 import WavesIcon from "@mui/icons-material/Waves"
 import LandscapeIcon from "@mui/icons-material/Landscape"
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive"
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -70,15 +71,14 @@ export default function CustomizedMenus(props) {
   }
   const handleClose = (evt) => {
     setAnchorEl(null)
-    console.log("yee", evt.target)
-    props.handleChange(evt.target.value)
+    const { myValue } = evt.currentTarget.dataset
+    props.handleChange(myValue)
   }
 
   const selectAType = (evt) => {
-    console.log('ebk',  evt)
+    console.log("ebk", evt)
     props.handleChange(evt)
   }
-
 
   return (
     <div>
@@ -103,41 +103,50 @@ export default function CustomizedMenus(props) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} value= "grass" onChange={selectAType} disableRipple>
+        <MenuItem
+          onClick={handleClose}
+          data-my-value="grass"
+          onChange={selectAType}
+          disableRipple
+        >
           <GrassIcon />
           Grass
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="fire" disableRipple>
           <LocalFireDepartmentIcon />
           Fire
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="bug" disableRipple>
           <BugReportIcon />
           Bug
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="flying" disableRipple>
           <AirplanemodeActiveIcon />
           Flying
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="poison" disableRipple>
           <ScienceIcon />
           Poison
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="normal" disableRipple>
           <ShieldIcon />
           Normal
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="electric" disableRipple>
           <ElectricBoltIcon />
           Electric
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="water" disableRipple>
           <WavesIcon />
           Water
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleClose} data-my-value="ground" disableRipple>
           <LandscapeIcon />
           Ground
+        </MenuItem>
+        <MenuItem onClick={handleClose} data-my-value="" disableRipple>
+          <AllInclusiveIcon />
+          All
         </MenuItem>
       </StyledMenu>
     </div>
