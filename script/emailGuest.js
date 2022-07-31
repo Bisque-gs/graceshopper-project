@@ -113,7 +113,7 @@ function emailGuest() {
                         <td style="padding: 0 62px 10px">
                             <a href="https://grace-pokebay.herokuapp.com/"
                             ><img
-                                src="https://ibb.co/kXmS2c8"
+                                src="https://i.ibb.co/3cRCmhN/logo.png"
                                 alt="logo"
                                 width="100"
                                 title="PokEbay"
@@ -126,31 +126,31 @@ function emailGuest() {
                         <td style="padding: 10px 72px">
                             <a href="#"
                             ><img
-                                src="https://ibb.co/2nKN8qM"
+                                src="https://i.ibb.co/f10v8MN/black-facebook.png"
                                 alt=""
                                 width="30"
                             /></a>
                             <a href="#"
                             ><img
-                                src="https://ibb.co/M1WCQQh"
+                                src="https://i.ibb.co/B6dCFFP/black-twitter.png"
                                 alt=""
                                 width="30"
                             /></a>
                             <a href="#"
                             ><img
-                                src="https://ibb.co/72K7vj2"
+                                src="https://i.ibb.co/ChQxBmh/black-youtube.png"
                                 alt=""
                                 width="30"
                             /></a>
                             <a href="#"
                             ><img
-                                src="https://ibb.co/v1bVPbq"
+                                src="https://i.ibb.co/tBSQsSK/black-linkedin.png"
                                 alt=""
                                 width="30"
                             /></a>
                             <a href="#"
                             ><img
-                                src="https://ibb.co/StY0Tvq"
+                                src="https://i.ibb.co/jy0GK47/black-instagram.png"
                                 alt=""
                                 width="30"
                             /></a>
@@ -169,7 +169,7 @@ function emailGuest() {
             <td>
                 <a href="#"
                 ><img
-                    src="https://ibb.co/9TB7SQS"
+                    src="https://i.ibb.co/VSbs5f5/banner.jpg"
                     width="600"
                     style="max-width: 100%"
                     alt=""
@@ -192,7 +192,7 @@ function emailGuest() {
                                 <td>
                                 <a href="#"
                                     ><img
-                                    src="https://ibb.co/jTxkH1Y"
+                                    src="https://i.ibb.co/bPy578V/email.png"
                                     width="130"
                                     style="max-width: 130px"
                                     alt=""
@@ -219,7 +219,7 @@ function emailGuest() {
                                 <td>
                                 <a href="#"
                                     ><img
-                                    src="https://ibb.co/BByMvtz"
+                                    src="https://i.ibb.co/2dv4Ryn/settings.png"
                                     width="130"
                                     style="max-width: 130px"
                                     alt=""
@@ -246,7 +246,7 @@ function emailGuest() {
                                 <td>
                                 <a href="#"
                                     ><img
-                                    src="https://ibb.co/84CdrYf"
+                                    src="https://i.ibb.co/qFSWNJc/home.png"
                                     width="130"
                                     style="max-width: 130px"
                                     alt=""
@@ -286,7 +286,7 @@ function emailGuest() {
                                 <td>
                                 <a href="#"
                                     ><img
-                                    src="https://ibb.co/jT9Kndm"
+                                    src="https://i.ibb.co/zrWcq1p/keyboard.jpg"
                                     width="260"
                                     style="max-width: 260px"
                                     alt=""
@@ -358,7 +358,7 @@ function emailGuest() {
                     style="text-align: center; padding: 45px 20px; color: #ffffff"
                     >
                     <a href="#"
-                        ><img src="https://ibb.co/kXmS2c8" width="180"
+                        ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
                     /></a>
                     <p style="padding: 10px">Modern HTML Email</p>
                     <p style="padding: 10px">
@@ -366,31 +366,31 @@ function emailGuest() {
                     </p>
                     <a href="#"
                         ><img
-                        src="https://ibb.co/B4NGMMn"
+                        src="https://i.ibb.co/0BtKbbs/white-facebook.png"
                         alt=""
                         width="30"
                     /></a>
                     <a href="#"
                         ><img
-                        src="https://ibb.co/bRhvhdZ"
+                        src="https://i.ibb.co/5xDjDcy/white-twitter.png"
                         alt=""
                         width="30"
                     /></a>
                     <a href="#"
                         ><img
-                        src="https://ibb.co/yhV2Y3Q"
+                        src="https://i.ibb.co/5Y2Zn7R/white-youtube.png"
                         alt=""
                         width="30"
                     /></a>
                     <a href="#"
                         ><img
-                        src="https://ibb.co/DRdSr8M"
+                        src="https://i.ibb.co/JsZM3yp/white-linkedin.png"
                         alt=""
                         width="30"
                     /></a>
                     <a href="#"
                         ><img
-                        src="https://ibb.co/BCZ5TJX"
+                        src="https://i.ibb.co/ZM8pcrn/white-instagram.png"
                         alt=""
                         width="30"
                     /></a>
