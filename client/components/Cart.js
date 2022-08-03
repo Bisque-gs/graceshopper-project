@@ -42,7 +42,20 @@ class Cart extends React.Component {
       const updatedCart = cart.filter((x) => x.id != deleteInfo.productId)
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
-
+      Toastify({
+        text: `${deleteInfo.productName} has been removed from your cart`,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background:
+            "linear-gradient(to right, #4040ce, #c63d3d)",
+        },
+        onClick: function () {}, // Callback after click
+      }).showToast()
       this.setState({
         guestCart: JSON.stringify(updatedCart),
       })
@@ -64,7 +77,21 @@ class Cart extends React.Component {
       }, [])
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
-      // console.log(guestCart)
+      
+      Toastify({
+        text: `${obj.productName}'s quantity has been successfully updated`,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background:
+            "linear-gradient(to right, #4040ce, #c6b03d)",
+        },
+        onClick: function () {}, // Callback after click
+      }).showToast()
 
       this.setState({
         guestCart: JSON.stringify(updatedCart),

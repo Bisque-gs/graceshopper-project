@@ -35,6 +35,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
+                      productName: item.name,
                       quantity: 1, // add 1 to total
                     })
                   }
@@ -47,6 +48,7 @@ function CartGuest(props) {
                     adjustQuantity({
                       userId: user.id,
                       productId: item.id,
+                      productName: item.name,
                       quantity: -1, // add -1 to total
                     })
                   }
@@ -59,6 +61,7 @@ function CartGuest(props) {
                     clickDelete({
                       userId: user.id,
                       productId: item.id,
+                      productName: item.name
                     })
                   }
                   className="cancel"
