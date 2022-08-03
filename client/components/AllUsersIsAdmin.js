@@ -20,7 +20,7 @@ const AllUsersIsAdmin = () => {
 
   return (
     <div>
-      {auth.isAdmin ? (
+      {auth.isAdmin && (
         <div>
           <div className="column">Users:</div>
           <div className="unit">
@@ -45,12 +45,6 @@ const AllUsersIsAdmin = () => {
             )}
           </div>
         </div>
-      ) : (
-        <h2>
-          {" "}
-          STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-          SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
-        </h2>
       )}
     </div>
   )

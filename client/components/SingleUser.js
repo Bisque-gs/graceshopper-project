@@ -15,17 +15,10 @@ class SingleUser extends React.Component {
     let cartAuthorization = user.id === auth.id
     return (
       <React.Fragment>
-        {cartAuthorization ? (
+        {cartAuthorization && (
           <div>
             <div>Single user {user.username} here</div>
             <Link to={`/users/${user.id}/edituser`}>Edit My Profile</Link>
-          </div>
-        ) : (
-          <div>
-            <h3>
-              STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-              SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
-            </h3>
           </div>
         )}
       </React.Fragment>
