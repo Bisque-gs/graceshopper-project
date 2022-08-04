@@ -29,7 +29,7 @@ export class EditProduct extends React.Component {
       stopOnFocus: true, // Prevents dismissing of toast on hover
       style: {
         background:
-          "linear-gradient(to right, #00b09b, #ffff00)",
+          "linear-gradient(to right, #4040ce, #ffff00)",
       },
       onClick: function () {}, // Callback after click
     }).showToast()

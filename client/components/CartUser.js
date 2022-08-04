@@ -17,7 +17,7 @@ function CartUser(props) {
 
   return (
     <div>
-      {cartAuthorization || auth.isAdmin ? ( // this won't work for non-admins right now
+      {(cartAuthorization || auth.isAdmin) && ( // this won't work for non-admins right now
         <div>
           <div>
             This is {user.username}'s cart!
@@ -58,6 +58,7 @@ function CartUser(props) {
                         adjustQuantity({
                           userId: user.id,
                           productId: item.id,
+                          productName: item.name,
                           quantity: itemQuantities[i].quantity + 1,
                         })
                       }
@@ -70,6 +71,7 @@ function CartUser(props) {
                         adjustQuantity({
                           userId: user.id,
                           productId: item.id,
+                          productName: item.name,
                           quantity: itemQuantities[i].quantity - 1,
                         })
                       }
@@ -82,6 +84,7 @@ function CartUser(props) {
                         clickDelete({
                           userId: user.id,
                           productId: item.id,
+                          productName: item.name,
                         })
                       }
                       className="cancel"
@@ -92,11 +95,6 @@ function CartUser(props) {
                 </div>
               ))}
           </div>
-        </div>
-      ) : (
-        <div>
-          STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-          SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT
         </div>
       )}
     </div>

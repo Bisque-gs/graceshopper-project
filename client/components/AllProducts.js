@@ -72,15 +72,13 @@ export class AllProducts extends React.Component {
               addProduct={this.props.addProduct}
               isAddVisible={this.isAddVisibleToggle}
             />
-          ) : auth.isAdmin ? (
+          ) : auth.isAdmin && (
             <button
               type="button"
               onClick={() => this.setState({ isAddVisible: true })}
             >
               Add Product
             </button>
-          ) : (
-            console.log("You're not admin")
           )}
         </div>
         <input
@@ -146,7 +144,7 @@ export class AllProducts extends React.Component {
                               stopOnFocus: true, // Prevents dismissing of toast on hover
                               style: {
                                 background:
-                                  "linear-gradient(to right, #00b09b, #96c93d)",
+                                  "linear-gradient(to right, #4040ce, #96c93d)",
                               },
                               onClick: function () {}, // Callback after click
                             }).showToast()
@@ -178,7 +176,7 @@ export class AllProducts extends React.Component {
                                 stopOnFocus: true, // Prevents dismissing of toast on hover
                                 style: {
                                   background:
-                                    "linear-gradient(to right, #00b09b, #96c93d)",
+                                    "linear-gradient(to right, #4040ce, #96c93d)",
                                 },
                                 onClick: function () {}, // Callback after click
                               }).showToast()
@@ -187,7 +185,7 @@ export class AllProducts extends React.Component {
                     >
                       Add to cart
                     </button>
-                    {auth.isAdmin ? (
+                    {auth.isAdmin && (
                       <button
                         className="cancel"
                         type="button"
@@ -202,7 +200,7 @@ export class AllProducts extends React.Component {
                             stopOnFocus: true, // Prevents dismissing of toast on hover
                             style: {
                               background:
-                                "linear-gradient(to right, #00b09b, #863939)",
+                                "linear-gradient(to right, #4040ce, #863939)",
                             },
                             onClick: function () {}, // Callback after click
                           }).showToast()
@@ -210,8 +208,6 @@ export class AllProducts extends React.Component {
                       >
                         Delete
                       </button>
-                    ) : (
-                      console.log("You're not admin")
                     )}
                   </div>
                 )

@@ -15,14 +15,9 @@ const ViewUserAdmin = (props) => {
 
   return (
     <React.Fragment>
-      {auth.isAdmin ? (
+      {auth.isAdmin && (
         <div>
           <div>Single user {user.user.username} here</div>
-        </div>
-      ) : (
-        <div>
-          STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-          SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
         </div>
       )}
     </React.Fragment>
