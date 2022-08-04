@@ -20,17 +20,19 @@ const readCardData = () => {
 
  //Lets just grab the names 
 
+ //not everyone has the averageSellPrice
 const pokeArr = alotOfPoke.data.map((input) => {
   let cardData = {
     name: input.name,
-    images: input.images,
-    cardmarket: input.cardmarket,
-    type: input.types
+    imageUrl: input.images.small,
+    quantity: input.set.printedTotal,
+    price: Math.floor((input.cardmarket.prices.averageSellPrice * 100)),
+    pokeType: input.types.join(","),
   }
   return cardData
 })
  
-)
+console.log(pokeArr);
 
 
 
@@ -359,12 +361,13 @@ const seed = async () => {
     await db.sync({ force: true })
 
     await Promise.all(
-      products.map((product) => {
+      pokeArr.map((product) => {
         return Product.create(product)
       })
     )
     await Promise.all(
       users.map((user) => {
+        console.log('hi')
         return User.create(user)
       })
     )
