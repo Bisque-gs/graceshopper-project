@@ -237,6 +237,13 @@ input {
   border: 1px solid black;
 }
 
+/******* Search styling *******/
+
+.productSearch, .userSearch{
+  max-width: 200px;
+  color: black
+}
+
 .hidden{
   display: none
 }
@@ -275,11 +282,26 @@ input {
   width: calc(300px + 1rem);
 }
 
+.suggestions > a {
+  width: 200px;
+  height: 50px;
+  margin: 0;
+  padding:0;
+}
+
 .search-suggestion{
   max-width: inherit;
   background:#bbb;
   font-size: .8em;
+  height: inherit;
+  cursor: pointer;
+}
+
+.search-suggestion > a{
+  width: 200px;
   height: 50px;
+  margin: 0;
+  padding:0;
   cursor: pointer;
 }
 

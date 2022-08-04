@@ -43,7 +43,7 @@ const AllUsersIsAdmin = () => {
           <input
             action=""
             value={search}
-            className={"searchInput"}
+            className="userSearch"
             onChange={handleChange}
             placeholder="Search users"
           />

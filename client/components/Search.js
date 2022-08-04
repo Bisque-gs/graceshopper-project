@@ -69,22 +69,20 @@ const Search = (props) => {
         {results.products.length &&
           results.products.map((x, index) => {
             return (
-              <li
-                className={
-                  // index === activeSuggestion ? "suggestion-active" : ""
-                  "search-suggestion"
-                }
-                key={index}
-                onClick={handleSearch}
-              >
-                <Link to={`/products/${x.id}`}>
+              <Link to={`/products/${x.id}`} key={index} onClick={handleSearch}>
+                <li
+                  className={
+                    // index === activeSuggestion ? "suggestion-active" : ""
+                    "search-suggestion"
+                  }
+                >
                   <em>Product: </em>
                   {x.name}
-                </Link>
-              </li>
+                </li>
+              </Link>
             )
           })}
-        {results.users.length && (
+        {results.users.length && auth.isAdmin && (
           <span>
             <hr />
             {results.users.map((x, index) => {

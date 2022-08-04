@@ -85,7 +85,7 @@ export class AllProducts extends React.Component {
         </div>
         <input
           value={this.state.search}
-          className="searchInput"
+          className="productSearch"
           onChange={this.handleSearchChange}
           placeholder="Search products"
         />
