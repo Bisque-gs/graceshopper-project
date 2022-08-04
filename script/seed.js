@@ -3,6 +3,37 @@ const { Product, User, Order } = require("../server/db/")
 // const axios = require("axios") // use if you want to seed on localhost
 // const { faker } = require("@faker-js/faker") // use if you want to seed on localhost
 
+
+const cardData = require("./file.json");
+// console.log('hototototo' , cardData)
+const readCardData = () => {
+  try {
+    const cardObj = JSON.parse(JSON.stringify(cardData))
+    //console.log("The Card Data is:", cardObj) // => "The Card Data is: Infinity Loop Drive"
+    return cardObj;
+  } catch (err) {
+    console.log("Error parsing JSON string:", err);
+  }
+};
+
+ const alotOfPoke = readCardData();
+
+ //Lets just grab the names 
+
+const pokeArr = alotOfPoke.data.map((input) => {
+  let cardData = {
+    name: input.name,
+    images: input.images,
+    cardmarket: input.cardmarket,
+    type: input.types
+  }
+  return cardData
+})
+ 
+)
+
+
+
 const products = [
   {
     name: "bulbasaur",
