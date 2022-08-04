@@ -236,3 +236,80 @@ input {
   background:#ee0;
   border: 1px solid black;
 }
+
+/******* Search styling *******/
+
+.productSearch, .userSearch{
+  max-width: 200px;
+  color: black
+}
+
+.hidden{
+  display: none
+}
+
+.searchWrapper{
+  width:200px;
+  margin: 0;
+}
+
+.searchBar{
+  display: flex;
+  color: orange;
+  max-width: 200px;
+  position: absolute;
+}
+
+.searchInput{
+  margin: 0;
+  display: block;
+  position: absolute;
+  height:50px;
+}
+
+.suggestions {
+  margin: auto 0;
+  display: block;
+  position: absolute;
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  top: 25px;
+  max-height: 143px;
+  max-width: 200px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+}
+
+.suggestions > a {
+  width: 200px;
+  height: 50px;
+  margin: 0;
+  padding:0;
+}
+
+.search-suggestion{
+  max-width: inherit;
+  background:#bbb;
+  font-size: .8em;
+  height: inherit;
+  cursor: pointer;
+}
+
+.search-suggestion > a{
+  width: 200px;
+  height: 50px;
+  margin: 0;
+  padding:0;
+  cursor: pointer;
+}
+
+.search-suggestion:hover{
+  background:#999;
+}
+
+.no-suggestions{
+  position: block;
+  opacity: .5;
+}

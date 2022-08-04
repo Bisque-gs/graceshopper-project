@@ -1,5 +1,4 @@
-import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import React, { useEffect, useState } from "react"
 import { fetchUsers } from "../redux/admin"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -9,36 +8,59 @@ const AllUsersIsAdmin = () => {
   const allUsers = useSelector((state) => state.allUsers)
   const auth = useSelector((state) => state.auth)
 
+  const [search, setSearch] = useState("")
+  const [results, setResults] = useState([])
+
   // useEffect() ==> REPLACES COMPONENT DID MOUNT
   //useDispatch() ==> REPLACES MAP DISPATCH TO PROPS
-  //THE EMPTY ARRAY OF DEPENDENCIES ENSURES THAT THE useEffect ONLY HAPPENS
-  //ONCE, AFTER THE INITIAL RENDER
+
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchUsers(auth.id))
+    setResults(allUsers)
   }, [])
+
+  useEffect(() => {
+    const selected = allUsers.filter((x) => {
+      // results containing all search characters
+      return search.split("").every((y) => x.username.includes(y))
+      // results containing search characters in order
+      // return x.username.split(search).length > 1
+    })
+    setResults(selected)
+  }, [search])
+
+  const handleChange = (e) => {
+    setSearch(e.target.value)
+  }
 
   return (
     <div>
       {auth.isAdmin && (
-        <div>
+        <div className="container">
           <div className="column">Users:</div>
+          <input
+            action=""
+            value={search}
+            className="userSearch"
+            onChange={handleChange}
+            placeholder="Search users"
+          />
           <div className="unit">
-            {allUsers.length === 0 ? (
+            {results.length === 0 ? (
               <p>No Users</p>
             ) : (
-              allUsers.map((user) => {
+              results.map((user) => {
                 return (
                   <div key={user.id}>
                     <Link to={`/users/${auth.id}/admin/${user.id}`}>
-                    {/* <Link to={`/users/${user.id}`}> */}
                       <div className="profile">
                         <h3>{user.id}</h3>
                         <h3>{user.username}</h3>
                         <h3>{user.email}</h3>
                       </div>
-                      {/* </Link> */}
-                      </Link>
+                    </Link>
                   </div>
                 )
               })
