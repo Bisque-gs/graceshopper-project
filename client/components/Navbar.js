@@ -1,48 +1,62 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { logout } from "../store"
+import Search from "./Search"
 
-const Navbar = ({ handleClick, isLoggedIn, user, auth }) => (
-  <div>
-    <nav>
-      <a href={`/home`}>
-        <img
-          src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
-          alt="logo"
-        />
-      </a>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <Link to={`/users/${auth.id}/cart`}>
-            {/* Cart ({user.updatedPrices.length}) */}
-            Cart ({user.updatedPrices ? user.updatedPrices.length : 0})
-          </Link>
-          <Link to="/products">Products</Link>
-          <Link to={`/users/${auth.id}`}>My Profile</Link>
-          {auth.isAdmin ? (
-            <Link to={`/users`}>All Users</Link>
-          ) : (
-            console.log("NOT ADMIN ALL USERS NOT RENDERING ")
-          )}
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/products">Products</Link>
-          <Link to="/users/guest/cart">Cart</Link>
-        </div>
-      )}
-    </nav>
-  </div>
-)
+const Navbar = ({ handleClick, isLoggedIn, user, auth }) => {
+  return (
+    <div>
+      <nav>
+        <a href={`/home`}>
+          <img
+            src="https://gamingymas.files.wordpress.com/2016/05/logo-pokemon.png"
+            alt="logo"
+          />
+        </a>
+        <Search auth={auth} />
+
+        {/* <iframe
+          src="https://www.google.com/webhp?igu=1&gws_rd=ssl"
+          width="640"
+          height="480"
+          frameborder="0"
+        >
+          Your browser does not support <code>iframe</code>s. Please consider
+          using a <a href="http://browsehappy.com/">modern</a> browser.
+        </iframe> */}
+        {isLoggedIn ? (
+          <div>
+            {/* The navbar will show these links after you log in */}
+            <Link to="/home">Home</Link>
+            <Link to={`/users/${auth.id}/cart`}>
+              {/* Cart ({user.updatedPrices.length}) */}
+              Cart ({user.updatedPrices ? user.updatedPrices.length : 0})
+            </Link>
+            <Link to="/products">Products</Link>
+            <Link to={`/users/${auth.id}`}>My Profile</Link>
+            {auth.isAdmin ? (
+              <Link to={`/users`}>All Users</Link>
+            ) : (
+              console.log("NOT ADMIN ALL USERS NOT RENDERING ")
+            )}
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </div>
+        ) : (
+          <div>
+            {/* The navbar will show these links before you log in */}
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Sign Up</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/users/guest/cart">Cart</Link>
+          </div>
+        )}
+      </nav>
+    </div>
+  )
+}
 
 /**
  * CONTAINER
@@ -52,6 +66,8 @@ const mapState = (state) => {
     auth: state.auth,
     isLoggedIn: !!state.auth.id,
     user: state.user,
+    products: state.products,
+    users: state.allUsers,
   }
 }
 
@@ -59,6 +75,9 @@ const mapDispatch = (dispatch) => {
   return {
     handleClick() {
       dispatch(logout())
+    },
+    fetchUserSearch() {
+      dispatch
     },
   }
 }
