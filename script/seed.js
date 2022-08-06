@@ -21,13 +21,18 @@ const readCardData = () => {
  //Lets just grab the names 
 
  //not everyone has the averageSellPrice
-const pokeArr = alotOfPoke.data.map((input) => {
+const pokeArr = alotOfPoke.data.filter((pokemon) => {
+  if (pokemon.flavorText) return pokemon; 
+})
+  .map((input) => {
   let cardData = {
     name: input.name,
     imageUrl: input.images.small,
     quantity: input.set.printedTotal,
-    price: Math.floor((input.cardmarket.prices.averageSellPrice * 100)),
+    // price: Math.floor((input.cardmarket.prices.averageSellPrice * 100)),
+    price: Math.floor(input.cardmarket.prices.trendPrice * 100),
     pokeType: input.types.join(","),
+    description: input.flavorText
   }
   return cardData
 })

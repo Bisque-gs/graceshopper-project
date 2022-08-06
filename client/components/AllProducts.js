@@ -562,8 +562,7 @@ export default function AllProducts(props) {
                               </Typography>
                             </div>
                             <Typography align="center">
-                              This is a media card. You can use this section to
-                              describe the content.
+                           {product.description}
                             </Typography>
                           </CardContent>
                         </div>

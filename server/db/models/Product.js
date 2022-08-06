@@ -63,6 +63,12 @@ const Product = db.define("product", {
     type: Sequelize.STRING,
     defaultValue: "normal",
   },
+  description: {
+    type: Sequelize.STRING,
+    validate: {
+      notEmpty: true,
+    }
+},
 })
 
 Product.beforeValidate((product) => {
