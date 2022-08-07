@@ -1,6 +1,41 @@
 function emailGuest(itemInfo) {
-    console.log(itemInfo)
+    // console.log(itemInfo)
     const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal } = itemInfo;
+    let itemTable = iNames
+        .map((item, i) => (
+          `<table class="column">
+            <tr>
+                <td class="padding">
+                    <table class="content">
+                        <tr>
+                            <td>
+                                <p style="
+                                    text-align: center;
+                                    font-family: Baskerville, Times,'Times New Roman',serif;
+                                    font-size: 20px;
+                                    font-variant: small-caps;
+                                    font-weight: bold;
+                                ">`+item+`</p>
+                                <img src=`+iImgs[i]+` width="130" style="max-width: 130px" alt=`+item+`/>
+                                <h4>UNIT PRICE: $`+iPrice[i]+`</h4>
+                                <p>QUANTITY: `+iQuant[i]+`</p>
+                                <h4>SUBPRICE: $`+iSubT[i]+`</h4>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+          </table>`
+        ));
+    let totalTable = `
+        <table class="content">
+            <tr>
+                <td>
+                    <h3>TOTAL PRICE: $${iTotal}</h3>
+                </td>
+            </tr>
+        </table>
+    `;
     return `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -74,6 +109,19 @@ function emailGuest(itemInfo) {
         line-height: 20px;
         padding: 0 5px;
     }
+    .unit {
+        height: 100%;
+        width: 100%;
+        color: #252525;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .unit .profile {
+        margin: 40px;
+        height: 100%;
+        width: 200px;
+      }
     .two-columns.last {
         padding: 15px 0;
     }
@@ -182,7 +230,7 @@ function emailGuest(itemInfo) {
     <tr class="thankyou">
     <td>
       <p style="font-weight: bold; font-size: 17px">
-        Your order has been confirmed! Thank you! ${iTotal}
+        Your order has been confirmed!
       </p>
         <img
           src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
@@ -200,87 +248,8 @@ function emailGuest(itemInfo) {
         <table width="100%">
         <tr>
             <td class="three-columns">
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/bPy578V/email.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            Ecommerce
-                        </p>
-                        <p>Ecommerce paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/2dv4Ryn/settings.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            Web Design
-                        </p>
-                        <p>Web Design paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/qFSWNJc/home.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            HTML Email
-                        </p>
-                        <p>HTML Email paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
+            ${itemTable}
+            ${totalTable}
             </td>
         </tr>
         </table>
