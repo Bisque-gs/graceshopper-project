@@ -34,12 +34,9 @@
         font-family: sans-serif;
         color: #171a1b;
     }
-    .thankyou {
-      margin: auto;
-      display: block;
-      font-size: 15px;
-      line-height: 20px;
-      padding: 0 5px;
+    .banner a{
+      display: flex;
+      justify-content: center;
     }
     .two-columns {
         text-align: center;
@@ -175,17 +172,20 @@
 
     <!-- BANNER IMAGE -->
 
-    <tr class="thankyou">
-    <td>
-      <p style="font-weight: bold; font-size: 17px">
+    <tr>
+    <td class="banner">
+      <p style="font-weight: bold; font-size: 17px; text-align: center;">
         Your order has been confirmed! Thank you!
       </p>
-        <img
+      <a href="https://grace-pokebay.herokuapp.com/"
+      >
+          <img
           src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
           width="300"
           style="max-width: 100%"
           alt="Thank you!"
-        />
+          />
+      </a>
     </td>
     </tr>
 
@@ -196,6 +196,9 @@
         <table width="100%">
         <tr>
             <td class="three-columns">
+              <p style="font-weight: bold; font-size: 17px">
+                Your order contain the following item(s):
+              </p>
             <table class="column">
                 <tr>
                 <td class="padding">

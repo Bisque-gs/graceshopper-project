@@ -30,8 +30,8 @@ function emailGuest(itemInfo) {
     let totalTable = `
         <table class="content">
             <tr>
-                <td>
-                    <h3>TOTAL PRICE: $${iTotal}</h3>
+                <td class="thankyou">
+                    <h3>TOTAL PRICE: $${(iTotal).toFixed(2)}</h3>
                 </td>
             </tr>
         </table>
@@ -72,13 +72,6 @@ function emailGuest(itemInfo) {
         border-spacing: 0;
         font-family: sans-serif;
         color: #171a1b;
-    }
-    .thankyou {
-      margin: auto;
-      display: block;
-      font-size: 15px;
-      line-height: 20px;
-      padding: 0 5px;
     }
     .two-columns {
         text-align: center;
@@ -229,15 +222,20 @@ function emailGuest(itemInfo) {
 
     <tr class="thankyou">
     <td>
-      <p style="font-weight: bold; font-size: 17px">
+      <p style="font-weight: bold; font-size: 17px; text-align: center;">
         Your order has been confirmed!
       </p>
-        <img
-          src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
-          width="300"
-          style="max-width: 100%"
-          alt="Thank you!"
-        />
+        <a href="https://grace-pokebay.herokuapp.com/"
+        >
+            <img
+            src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
+            width="300"
+            style="max-width: 100%; 
+                margin: auto;
+                display: block;"
+            alt="Thank you!"
+            />
+        </a>
     </td>
     </tr>
 
@@ -248,8 +246,11 @@ function emailGuest(itemInfo) {
         <table width="100%">
         <tr>
             <td class="three-columns">
-            ${itemTable}
-            ${totalTable}
+                <p style="font-weight: bold; font-size: 17px">
+                    Your order contains the following item(s):
+                </p>
+                ${itemTable}
+                ${totalTable}
             </td>
         </tr>
         </table>
@@ -271,7 +272,7 @@ function emailGuest(itemInfo) {
                         <td>
                         <a href="#"
                             ><img
-                            src="https://i.ibb.co/zrWcq1p/keyboard.jpg"
+                            src="https://cdn3.iconfinder.com/data/icons/card-games-colored/48/Games_CardGames_Artboard_23-512.png"
                             width="260"
                             style="max-width: 260px"
                             alt=""
@@ -289,12 +290,12 @@ function emailGuest(itemInfo) {
                     <tr>
                         <td>
                         <p style="font-weight: bold; font-size: 18px">
-                            Create Custom Designs
+                            View Order History
                         </p>
                         <p style="padding-bottom: 16px">
-                            Create Custom Designs Paragraph
+                            *Available for members only
                         </p>
-                        <a href="#" class="button">Read More</a>
+                        <a href="#" class="button">View</a>
                         </td>
                     </tr>
                     </table>
@@ -315,7 +316,7 @@ function emailGuest(itemInfo) {
         <tr>
             <td style="text-align: center; padding: 15px">
             <p style="font-size: 20px; font-weight: bold">
-                HTML Email Template
+                Not a member yet?
             </p>
             <p
                 style="
@@ -324,9 +325,9 @@ function emailGuest(itemInfo) {
                 padding: 5px 0 15px;
                 "
             >
-                Email Template Paragraph
+                Become a member for free, using the button below!
             </p>
-            <a href="#" class="button-dark">View</a>
+            <a href="https://grace-pokebay.herokuapp.com/signup" class="button-dark">Sign-Up</a>
             </td>
         </tr>
         </table>
@@ -345,7 +346,7 @@ function emailGuest(itemInfo) {
             <a href="#"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
             /></a>
-            <p style="padding: 10px">Modern HTML Email</p>
+            <p style="padding: 10px">PokeBay</p>
             <p style="padding: 10px">
                 123 Street Road, City, State 55555
             </p>
