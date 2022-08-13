@@ -237,7 +237,7 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
     let iImgs = [];
     let iPrice = [];
     let iSubT = [];
-    itemQuantities.map((item, i) => {
+    itemQuantities.map((item) => {
       iNames.push(item.name);
       iQuant.push(item.quantity);
       iImgs.push(item.imageUrl);
@@ -245,12 +245,6 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
       iSubT.push(item.quantity * (item.price / 100));
     })
     let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
-    console.log("iNames", iNames)
-    console.log("iPrice", iPrice)
-    console.log("iQuant", iQuant)
-    console.log("iImgs", iImgs)
-    console.log("iSubT", iSubT)
-    console.log("iTotal", iTotal)
 
     const items = await Promise.all(
       itemQuantities.map((item) => {
@@ -288,8 +282,8 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-    const { itemQuantities } = req.body;
-    console.log(itemQuantities)
+    const { itemQuantities, cartItems } = req.body;
+    console.log(cartItems)
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.productId)
@@ -300,20 +294,16 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
     let iImgs = [];
     let iPrice = [];
     let iSubT = [];
-    itemQuantities.map((item, i) => {
+    cartItems.map((item) => {
       iNames.push(item.name);
-      iQuant.push(item.quantity);
       iImgs.push(item.imageUrl);
+    })
+    itemQuantities.map((item) => {
+      iQuant.push(item.quantity);
       iPrice.push(item.price / 10000);
       iSubT.push(item.quantity * (item.price / 10000));
     })
     let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
-    console.log("iNames", iNames)
-    console.log("iPrice", iPrice)
-    console.log("iQuant", iQuant)
-    console.log("iImgs", iImgs)
-    console.log("iSubT", iSubT)
-    console.log("iTotal", iTotal)
 
     const updatedItems = await Promise.all(
       items.map((item, i) => {

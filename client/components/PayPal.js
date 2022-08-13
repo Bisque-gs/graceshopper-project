@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react"
 export default function Paypal({
   totalPrice,
   userId,
+  cartItems,
   itemQuantities,
   checkout,
   guestName,
@@ -32,7 +33,7 @@ export default function Paypal({
           console.log("gN gE PP", guestName, guestEmail)
           checkout({
             userId: userId,
-            checkoutInfo: {itemQuantities, guestEmail, guestName}
+            checkoutInfo: {itemQuantities, guestEmail, guestName, cartItems}
           })
           // console.log(order)
         },

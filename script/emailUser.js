@@ -18,7 +18,7 @@ function emailUser(itemInfo) {
                                 <img src=`+iImgs[i]+` width="130" style="max-width: 130px" alt=`+item+`/>
                                 <h4>UNIT PRICE: $`+iPrice[i]+`</h4>
                                 <p>QUANTITY: `+iQuant[i]+`</p>
-                                <h4>SUBPRICE: $`+iSubT[i]+`</h4>
+                                <h4>SUBPRICE: $`+(iSubT[i]).toFixed(2)+`</h4>
                             </td>
                         </tr>
                     </table>
@@ -310,7 +310,7 @@ function emailUser(itemInfo) {
     <!-- FOOTER SECTION -->
 
     <tr>
-    <td style="background-color: #ffffff">
+    <td style="background-color: #0078e0">
         <table width="100%">
         <tr>
             <td

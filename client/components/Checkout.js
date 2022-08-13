@@ -101,6 +101,7 @@ class Checkout extends React.Component {
                   <PayPal
                     totalPrice={(total / 10000).toFixed(2)}
                     userId={user.id}
+                    cartItems={cartItems}
                     itemQuantities={itemQuantities}
                     checkout={this.checkout}
                   />
