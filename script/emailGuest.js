@@ -260,7 +260,7 @@ function emailGuest(itemInfo) {
     <!-- TITLE, TEXT & BUTTON -->
 
     <tr>
-    <td style="padding: 15px 0 50px">
+    <td style="padding: 15px 0 50px; background-color: #99cfff"">
         <table width="100%">
         <tr>
             <td style="text-align: center; padding: 15px">

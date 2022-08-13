@@ -310,7 +310,7 @@ function emailUser(itemInfo) {
     <!-- FOOTER SECTION -->
 
     <tr>
-    <td style="background-color: #0078e0">
+    <td style="background-color: #99cfff">
         <table width="100%">
         <tr>
             <td

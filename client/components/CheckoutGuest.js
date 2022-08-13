@@ -73,7 +73,7 @@ class Checkout extends React.Component {
           <div>
             <br />
             <div className="column">
-              <h2>Guest's CHECKOUT CONFIRMATION PAGE</h2>
+              <h2>Thank you for your order!</h2>
             </div>
             <div className="unit">
               {cartItems
