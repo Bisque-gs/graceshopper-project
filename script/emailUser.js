@@ -1,6 +1,5 @@
-function emailGuest(itemInfo) {
-    // console.log(itemInfo)
-    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal } = itemInfo;
+function emailUser(itemInfo) {
+    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal, histUrl } = itemInfo;
     let itemTable = iNames
         .map((item, i) => (
           `<table class="column">
@@ -257,26 +256,51 @@ function emailGuest(itemInfo) {
     </td>
     </tr>
 
-    <!-- TITLE, TEXT & BUTTON -->
+    <!-- TWO COLUMN SECTION -->
 
     <tr>
-    <td style="padding: 15px 0 50px">
+    <td style="background-color: #271538; color: #ffffff">
         <table width="100%">
         <tr>
-            <td style="text-align: center; padding: 15px">
-            <p style="font-size: 20px; font-weight: bold">
-                Not a member yet?
-            </p>
-            <p
-                style="
-                line-height: 23px;
-                font-size: 15px;
-                padding: 5px 0 15px;
-                "
-            >
-                Become a member for free, using the button below!
-            </p>
-            <a href="https://grace-pokebay.herokuapp.com/signup" class="button-dark">Sign-Up</a>
+            <td class="two-columns last">
+            <table class="column">
+                <tr>
+                <td class="padding">
+                    <table class="content">
+                    <tr>
+                        <td>
+                        <a href="#"
+                            ><img
+                            src="https://cdn3.iconfinder.com/data/icons/card-games-colored/48/Games_CardGames_Artboard_23-512.png"
+                            width="260"
+                            style="max-width: 260px"
+                            alt="view history pokemon icon"
+                        /></a>
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+                </tr>
+            </table>
+            <table class="column">
+                <tr>
+                <td class="padding">
+                    <table class="content">
+                    <tr>
+                        <td>
+                        <p style="font-weight: bold; font-size: 18px">
+                            View Order History
+                        </p>
+                        <p style="padding-bottom: 16px">
+                            *Available for members only
+                        </p>
+                        <a href="${histUrl}" class="button">View</a>
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+                </tr>
+            </table>
             </td>
         </tr>
         </table>
@@ -342,4 +366,4 @@ function emailGuest(itemInfo) {
 `
 }
 
-module.exports = emailGuest;
+module.exports = emailUser;

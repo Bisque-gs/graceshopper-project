@@ -1,7 +1,8 @@
 const router = require("express").Router()
 const { User, Order, OrderProducts, Product } = require("../db")
 const nodemailer = require("nodemailer");
-const emailGuest= require("../../script/emailGuest")
+const emailGuest= require("../../script/emailGuest");
+const emailUser = require("../../script/emailUser");
 // const Sequelize = require("sequelize")
 // const Op = Sequelize.Op
 // const { LocalStorage } = require("node-localstorage")
@@ -287,13 +288,32 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
 //PUT /api/users/:userid
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
-    const itemQuantities = req.body.itemQuantities;
+    const { itemQuantities } = req.body;
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.productId)
       })
     )
-    
+    let iNames = [];
+    let iQuant = [];
+    let iImgs = [];
+    let iPrice = [];
+    let iSubT = [];
+    itemQuantities.map((item, i) => {
+      iNames.push(item.name);
+      iQuant.push(item.quantity);
+      iImgs.push(item.imageUrl);
+      iPrice.push(item.price / 100);
+      iSubT.push(item.quantity * (item.price / 100));
+    })
+    let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
+    console.log("iNames", iNames)
+    console.log("iPrice", iPrice)
+    console.log("iQuant", iQuant)
+    console.log("iImgs", iImgs)
+    console.log("iSubT", iSubT)
+    console.log("iTotal", iTotal)
+
     const updatedItems = await Promise.all(
       items.map((item, i) => {
         const updated = item.update(
@@ -311,20 +331,14 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
 
     const userId = req.params.userId;
     const user = await User.findByPk(userId)
-    const url = `http://localhost:8080/users/${userId}/cart/orderhistory`;
-    const imgUrl = "https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png";
-    // const url = `https://grace-pokebay.herokuapp.com/users/${userId}/cart/orderhistory`;
+    const histUrl = `http://localhost:8080/users/${userId}/cart/orderhistory`;
+    // const histUrl = `https://grace-pokebay.herokuapp.com/users/${userId}/cart/orderhistory`;
+    let emailUserHTML = emailUser({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal, histUrl });
     transporter.sendMail({
       from: process.env.GUSER,
       to: user.email,
-      subject: 'Thank you for buying from PokeBay!',
-      html: `Hi ${user.username}, <br>
-              <img src="${imgUrl}" alt="Thank you image" width="150" height="150" /><br>
-              Thank you for your order! We will begin processing to get it delivered to you ASAP! <br>
-              <br>
-              If you want to check your order, please visit <a href="${url}">your order history</a>. <br>
-              <br>
-              Thank you for shopping with us! If you have any comments, please address your inquiries to our <a href="gs.pokebay@gmail.com">email</a>!`,
+      subject: `Thank you for buying from PokeBay, ${user.username}!`,
+      html: emailUserHTML
     })
     res.send(updatedItems)
   } catch (error) {
