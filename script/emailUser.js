@@ -310,11 +310,11 @@ function emailUser(itemInfo) {
     <!-- FOOTER SECTION -->
 
     <tr>
-    <td style="background-color: #271538">
+    <td style="background-color: #ffffff">
         <table width="100%">
         <tr>
             <td
-            style="text-align: center; padding: 45px 20px; color: #ffffff"
+            style="text-align: center; padding: 45px 20px; color: #000000"
             >
             <a href="#"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"

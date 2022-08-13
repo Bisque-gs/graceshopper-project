@@ -289,6 +289,7 @@ router.put("/guest/cart/checkout", async (req, res, next) => {
 router.put("/:userId/cart/checkout", async (req, res, next) => {
   try {
     const { itemQuantities } = req.body;
+    console.log(itemQuantities)
     const items = await Promise.all(
       itemQuantities.map((item) => {
         return Product.findByPk(item.productId)
@@ -303,8 +304,8 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
       iNames.push(item.name);
       iQuant.push(item.quantity);
       iImgs.push(item.imageUrl);
-      iPrice.push(item.price / 100);
-      iSubT.push(item.quantity * (item.price / 100));
+      iPrice.push(item.price / 10000);
+      iSubT.push(item.quantity * (item.price / 10000));
     })
     let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
     console.log("iNames", iNames)
