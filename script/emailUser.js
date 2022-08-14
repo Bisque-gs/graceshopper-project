@@ -286,15 +286,25 @@ function emailUser(itemInfo) {
                 <tr>
                 <td class="padding">
                     <table class="content">
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 18px">
+                    <tr style="display: flex; margin: auto;">
+                        <td style="width:100%; text-align:center">
+                        <p style="font-weight:bold; font-size:18px">
                             View Order History
                         </p>
-                        <p style="padding-bottom: 16px">
+                        <p style="font-size:14px">
                             *Available for members only
                         </p>
-                        <a href="${histUrl}" class="button">View</a>
+                        <button href="${histUrl}" 
+                          style="background-color: #fc9700;
+                            color: #271538;
+                            text-decoration: none;
+                            padding: 8px 15px;
+                            border-radius: 5px;
+                            font-weight: bold;
+                            border-color: #271538;
+                          ">
+                            View
+                        </button>
                         </td>
                     </tr>
                     </table>
