@@ -316,7 +316,7 @@ function emailUser(itemInfo) {
             <td
             style="text-align: center; padding: 45px 20px; color: #000000"
             >
-            <a href="#"
+            <a href="https://grace-pokebay.herokuapp.com/"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
             /></a>
             <p style="padding: 10px">PokeBay</p>

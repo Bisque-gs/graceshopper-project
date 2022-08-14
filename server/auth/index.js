@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const { User } = require("../db")
 const nodemailer = require("nodemailer");
+const emailVerify = require("../../script/emailVerify");
 module.exports = router
 
 router.post("/login", async (req, res, next) => {
@@ -27,11 +28,12 @@ router.post("/signup", async (req, res, next) => {
     const token = await user.generateToken();
     const url = `http://localhost:8080/confirmation/${token}`;
     // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    let emailVerifyHTML = emailVerify(url);
     transporter.sendMail({
       from: process.env.GUSER,
       to: user.email,
-      subject: 'Confirm Email',
-      html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+      subject: `Verify your email for PokEbay, ${user.username}!`,
+      html: emailVerifyHTML,
     })
     if (!user.confirmed) {
       const error = Error("Success! Please check your email for confirmation! If you don't see it, make sure to check your spam folder!")

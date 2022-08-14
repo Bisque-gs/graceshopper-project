@@ -1,41 +1,4 @@
-function emailGuest(itemInfo) {
-    // console.log(itemInfo)
-    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal } = itemInfo;
-    let itemTable = iNames
-        .map((item, i) => (
-          `<table class="column">
-            <tr>
-                <td class="padding">
-                    <table class="content">
-                        <tr>
-                            <td>
-                                <p style="
-                                    text-align: center;
-                                    font-family: Baskerville, Times,'Times New Roman',serif;
-                                    font-size: 20px;
-                                    font-variant: small-caps;
-                                    font-weight: bold;
-                                ">`+item+`</p>
-                                <img src=`+iImgs[i]+` width="130" style="max-width: 130px" alt=`+item+`/>
-                                <h4>UNIT PRICE: $`+iPrice[i]+`</h4>
-                                <p>QUANTITY: `+iQuant[i]+`</p>
-                                <h4>SUBPRICE: $`+iSubT[i]+`</h4>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-          </table>`
-        ));
-    let totalTable = `
-        <table class="content">
-            <tr>
-                <td class="thankyou">
-                    <h3>TOTAL PRICE: $${(iTotal).toFixed(2)}</h3>
-                </td>
-            </tr>
-        </table>
-    `;
+function emailVerify(url) {
     return `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -222,64 +185,14 @@ function emailGuest(itemInfo) {
 
     <tr class="thankyou">
     <td>
-      <p style="font-weight: bold; font-size: 17px; text-align: center;">
-        Your order has been confirmed!
+      <p style="font-weight: bold; font-size: 26px; text-align: center;">
+        Verify you email address!
       </p>
-        <a href="https://grace-pokebay.herokuapp.com/"
-        >
-            <img
-            src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
-            width="300"
-            style="max-width: 100%; 
-                margin: auto;
-                display: block;"
-            alt="Thank you!"
-            />
-        </a>
-    </td>
-    </tr>
-
-    <!-- THREE COLUMN SECTION -->
-
-    <tr>
-    <td>
-        <table width="100%">
-        <tr>
-            <td class="three-columns">
-                <p style="font-weight: bold; font-size: 17px">
-                    Your order contains the following item(s):
-                </p>
-                ${itemTable}
-                ${totalTable}
-            </td>
-        </tr>
-        </table>
-    </td>
-    </tr>
-
-    <!-- TITLE, TEXT & BUTTON -->
-
-    <tr>
-    <td style="padding: 15px 0 50px; background-color: #99cfff"">
-        <table width="100%">
-        <tr>
-            <td style="text-align: center; padding: 15px">
-            <p style="font-size: 20px; font-weight: bold">
-                Not a member yet?
-            </p>
-            <p
-                style="
-                line-height: 23px;
-                font-size: 15px;
-                padding: 5px 0 15px;
-                "
-            >
-                Become a member for free, using the button below!
-            </p>
-            <a href="https://grace-pokebay.herokuapp.com/signup" class="button-dark">Sign-Up</a>
-            </td>
-        </tr>
-        </table>
+      <p style="text-align: center;">
+        This email address was recently used to log into PokEbay application. If this was you, please verify your email address by clicking the following link:
+        <a href="${url}" class="button">Verify</a>
+        If this was not you, you can safely delete this email.
+      </p>
     </td>
     </tr>
 
@@ -290,7 +203,7 @@ function emailGuest(itemInfo) {
         <table width="100%">
         <tr>
             <td
-            style="text-align: center; padding: 45px 20px; color: #ffffff"
+            style="text-align: center; padding: 45px 20px; color: #000000"
             >
             <a href="https://grace-pokebay.herokuapp.com/"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
@@ -342,4 +255,4 @@ function emailGuest(itemInfo) {
 `
 }
 
-module.exports = emailGuest;
+module.exports = emailVerify;
