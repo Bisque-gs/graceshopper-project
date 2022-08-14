@@ -162,8 +162,8 @@ function emailGuest(itemInfo) {
     <td style="padding: 14px 0 4px">
         <table width="100%">
         <tr>
-            <td class="two-columns">
-            <table class="column">
+        <td style="text-align: center; font-size: 0;">
+        <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 0 62px 10px">
                     <a href="https://grace-pokebay.herokuapp.com/"
@@ -176,7 +176,7 @@ function emailGuest(itemInfo) {
                 </td>
                 </tr>
             </table>
-            <table class="column">
+            <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 10px 72px">
                     <a href="#"
@@ -220,12 +220,12 @@ function emailGuest(itemInfo) {
 
     <!-- BANNER IMAGE -->
 
-    <tr class="thankyou">
-    <td>
-      <p style="font-weight: bold; font-size: 17px; text-align: center;">
+    <tr class="thankyou" style="display: flex; margin: auto;">
+    <td style="width:100%; text-align:center">
+      <p style="font-weight: bold; font-size: 26px;">
         Your order has been confirmed!
       </p>
-        <a href="https://grace-pokebay.herokuapp.com/"
+        <a href="https://grace-pokebay.herokuapp.com/" class="button" style="background-color: #ffffff;"
         >
             <img
             src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"

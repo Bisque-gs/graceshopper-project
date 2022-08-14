@@ -36,70 +36,9 @@ function emailVerify(url) {
         font-family: sans-serif;
         color: #171a1b;
     }
-    .two-columns {
-        text-align: center;
-        font-size: 0;
-    }
-    .two-columns .column {
-        width: 100%;
-        max-width: 300px;
-        display: inline-block;
-        vertical-align: top;
-    }
-    .three-columns {
-        text-align: center;
-        font-size: 0;
-        padding: 15px 0 25px;
-    }
-    .three-columns .column {
-        width: 100%;
-        max-width: 200px;
-        display: inline-block;
-        vertical-align: top;
-    }
-    .three-columns .padding {
-        padding: 15px;
-    }
-    .three-columns .content {
-        font-size: 15px;
-        line-height: 20px;
-        padding: 0 5px;
-    }
-    .unit {
-        height: 100%;
-        width: 100%;
-        color: #252525;
-        display: flex;
-        flex-wrap: wrap;
-      }
-      
-      .unit .profile {
-        margin: 40px;
-        height: 100%;
-        width: 200px;
-      }
-    .two-columns.last {
-        padding: 15px 0;
-    }
-    .two-columns.padding {
-        padding: 20px;
-    }
-    .two-columns.content {
-        font-size: 15px;
-        line-height: 20px;
-        text-align: left;
-    }
     .button {
         background-color: #fc9700;
         color: #171a1b;
-        text-decoration: none;
-        padding: 12px 20px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    .button-dark {
-        background-color: #271538;
-        color: #ffffff;
         text-decoration: none;
         padding: 12px 20px;
         border-radius: 5px;
@@ -125,8 +64,8 @@ function emailVerify(url) {
     <td style="padding: 14px 0 4px">
         <table width="100%">
         <tr>
-            <td class="two-columns">
-            <table class="column">
+            <td style="text-align: center; font-size: 0;">
+            <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 0 62px 10px">
                     <a href="https://grace-pokebay.herokuapp.com/"
@@ -139,7 +78,7 @@ function emailVerify(url) {
                 </td>
                 </tr>
             </table>
-            <table class="column">
+            <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 10px 72px">
                     <a href="#"
@@ -181,16 +120,18 @@ function emailVerify(url) {
     </td>
     </tr>
 
-    <!-- BANNER IMAGE -->
+    <!-- CONFIRM -->
 
     <tr class="thankyou">
-    <td>
-      <p style="font-weight: bold; font-size: 26px; text-align: center;">
+    <td style="padding: 0px 50px; text-align:center">
+      <p style="font-weight: bold; font-size: 26px;">
         Verify you email address!
       </p>
-      <p style="text-align: center;">
+      <p style="padding: 0px 50px">
         This email address was recently used to log into PokEbay application. If this was you, please verify your email address by clicking the following link:
-        <a href="${url}" class="button">Verify</a>
+      </p>
+      <a href="${url}" class="button">Verify</a>
+      <p>
         If this was not you, you can safely delete this email.
       </p>
     </td>
@@ -203,7 +144,7 @@ function emailVerify(url) {
         <table width="100%">
         <tr>
             <td
-            style="text-align: center; padding: 45px 20px; color: #000000"
+            style="text-align: center; padding: 45px 20px; color: #ffffff"
             >
             <a href="https://grace-pokebay.herokuapp.com/"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
