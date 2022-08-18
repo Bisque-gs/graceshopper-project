@@ -207,6 +207,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import AddProductPopUp from "./AddProductsPopUp"
 import CustomizedMenus from "./DropDownTypeButtonMUI"
+import BasicPagination from "./Pagination"
 
 // or
 
@@ -229,9 +230,10 @@ function Copyright() {
 const theme = createTheme()
 
 export default function AllProducts(props) {
-  const [isAddVisible, setIsAddVisible] = useState(false)
-  const [selectedType, setSelectedType] = useState("")
-  const [buttonPopup, setButtonPopup] = useState(false)
+  const [isAddVisible, setIsAddVisible] = useState(false);
+;  const [selectedType, setSelectedType] = useState("");
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const auth = useSelector((state) => state.auth)
   const products = useSelector((state) => state.products)
   const dispatch = useDispatch()
@@ -284,6 +286,19 @@ export default function AllProducts(props) {
     setIsAddVisible(true);
     setButtonPopup(true);
   }
+
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const pageCount = Math.ceil(products.length / PER_PAGE);
+
+  const handlePageclick = ({ selected: selectedPage }) => {
+    console.log("selectedPage", selectedPage);
+    setCurrentPage(selectedPage);
+  };
+
+  const currentPageData = products
+    .slice(offset, offset + PER_PAGE);
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -436,87 +451,87 @@ export default function AllProducts(props) {
                           flexDirection: "column",
                           flexBasis: "20%",
                           justifyContent: "center",
-                    // <h3>
-                    //   <Link to={`/products/${product.id}`}>{product.name}</Link>
-                    // </h3>
-                    // <a href={`/products/${product.id}`}>
-                    //   <img src={product.imageUrl} />
-                    // </a>
-                    // <button
-                    //   type="button"
-                    //   onClick={() => {
-                    //     auth.id // logged in user
-                    //       ? this.props.addToCart(auth.id, product.id) &&
-                    //         Toastify({
-                    //           text: `${product.name} was successfully added to cart`,
-                    //           duration: 3000,
-                    //           destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
-                    //           newWindow: true,
-                    //           close: true,
-                    //           gravity: "top", // `top` or `bottom`
-                    //           position: "right", // `left`, `center` or `right`
-                    //           stopOnFocus: true, // Prevents dismissing of toast on hover
-                    //           style: {
-                    //             background:
-                    //               "linear-gradient(to right, #00b09b, #96c93d)",
-                    //           },
-                    //           onClick: function () {}, // Callback after click
-                    //         }).showToast()
-                    //       : (function addItemToLS(prodId) {
-                    //           // guest
-                    //           const item = products.find(
-                    //             (item) => item.id === prodId
-                    //           )
-                    //           // console.log(item)
-                    //           const res = cart.find(
-                    //             (element) => element.id === prodId
-                    //           )
-                    //           if (cart.length === 0 || !res) {
-                    //             item.quantity = 1
-                    //             cart.push(item)
-                    //           } else {
-                    //             res.quantity++
-                    //           }
-                    //           localStorage.setItem("cart", JSON.stringify(cart))
-                    //           Toastify({
-                    //             text: `${product.name} was successfully added to cart`,
-                    //             duration: 3000,
-                    //             destination: `https://grace-pokebay.herokuapp.com/users/guest/cart`,
-                    //             newWindow: true,
-                    //             close: true,
-                    //             gravity: "top", // `top` or `bottom`
-                    //             position: "right", // `left`, `center` or `right`
-                    //             stopOnFocus: true, // Prevents dismissing of toast on hover
-                    //             style: {
-                    //               background:
-                    //                 "linear-gradient(to right, #00b09b, #96c93d)",
-                    //             },
-                    //             onClick: function () {}, // Callback after click
-                    //           }).showToast()
-                    //         })(product.id)
-                    //   }}
-                    // >
-                    //   Add to cart
-                    // </button>
-                    // {auth.isAdmin ? (
-                    //   <button
-                    //     className="cancel"
-                    //     type="button"
-                    //     onClick={() => {
-                    //       this.props.deleteProduct(product.id)
-                    //       Toastify({
-                    //         text: `${product.name} was successfully removed`,
-                    //         duration: 3000,
-                    //         close: true,
-                    //         gravity: "top", // `top` or `bottom`
-                    //         position: "right", // `left`, `center` or `right`
-                    //         stopOnFocus: true, // Prevents dismissing of toast on hover
-                    //         style: {
-                    //           background:
-                    //             "linear-gradient(to right, #00b09b, #863939)",
-                    //         },
-                    //         onClick: function () {}, // Callback after click
-                    //       }).showToast()
+                          // <h3>
+                          //   <Link to={`/products/${product.id}`}>{product.name}</Link>
+                          // </h3>
+                          // <a href={`/products/${product.id}`}>
+                          //   <img src={product.imageUrl} />
+                          // </a>
+                          // <button
+                          //   type="button"
+                          //   onClick={() => {
+                          //     auth.id // logged in user
+                          //       ? this.props.addToCart(auth.id, product.id) &&
+                          //         Toastify({
+                          //           text: `${product.name} was successfully added to cart`,
+                          //           duration: 3000,
+                          //           destination: `https://grace-pokebay.herokuapp.com/users/${auth.id}/cart`,
+                          //           newWindow: true,
+                          //           close: true,
+                          //           gravity: "top", // `top` or `bottom`
+                          //           position: "right", // `left`, `center` or `right`
+                          //           stopOnFocus: true, // Prevents dismissing of toast on hover
+                          //           style: {
+                          //             background:
+                          //               "linear-gradient(to right, #00b09b, #96c93d)",
+                          //           },
+                          //           onClick: function () {}, // Callback after click
+                          //         }).showToast()
+                          //       : (function addItemToLS(prodId) {
+                          //           // guest
+                          //           const item = products.find(
+                          //             (item) => item.id === prodId
+                          //           )
+                          //           // console.log(item)
+                          //           const res = cart.find(
+                          //             (element) => element.id === prodId
+                          //           )
+                          //           if (cart.length === 0 || !res) {
+                          //             item.quantity = 1
+                          //             cart.push(item)
+                          //           } else {
+                          //             res.quantity++
+                          //           }
+                          //           localStorage.setItem("cart", JSON.stringify(cart))
+                          //           Toastify({
+                          //             text: `${product.name} was successfully added to cart`,
+                          //             duration: 3000,
+                          //             destination: `https://grace-pokebay.herokuapp.com/users/guest/cart`,
+                          //             newWindow: true,
+                          //             close: true,
+                          //             gravity: "top", // `top` or `bottom`
+                          //             position: "right", // `left`, `center` or `right`
+                          //             stopOnFocus: true, // Prevents dismissing of toast on hover
+                          //             style: {
+                          //               background:
+                          //                 "linear-gradient(to right, #00b09b, #96c93d)",
+                          //             },
+                          //             onClick: function () {}, // Callback after click
+                          //           }).showToast()
+                          //         })(product.id)
+                          //   }}
+                          // >
+                          //   Add to cart
+                          // </button>
+                          // {auth.isAdmin ? (
+                          //   <button
+                          //     className="cancel"
+                          //     type="button"
+                          //     onClick={() => {
+                          //       this.props.deleteProduct(product.id)
+                          //       Toastify({
+                          //         text: `${product.name} was successfully removed`,
+                          //         duration: 3000,
+                          //         close: true,
+                          //         gravity: "top", // `top` or `bottom`
+                          //         position: "right", // `left`, `center` or `right`
+                          //         stopOnFocus: true, // Prevents dismissing of toast on hover
+                          //         style: {
+                          //           background:
+                          //             "linear-gradient(to right, #00b09b, #863939)",
+                          //         },
+                          //         onClick: function () {}, // Callback after click
+                          //       }).showToast()
                         }}
                       >
                         <Link to={`/products/${product.id}`}>
@@ -562,7 +577,7 @@ export default function AllProducts(props) {
                               </Typography>
                             </div>
                             <Typography align="center">
-                           {product.description}
+                              {product.description}
                             </Typography>
                           </CardContent>
                         </div>
@@ -668,6 +683,7 @@ export default function AllProducts(props) {
             </Grid>
           )}
         </Container>
+        <BasicPagination pageCount={pageCount} onPageChange={handlePageclick} />
       </main>
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
