@@ -38,7 +38,7 @@ class SingleProduct extends React.Component {
     e.preventDefault()
     const userId = this.props.auth.id
     const productId = this.props.match.params.id
-    const quantity = this.state.quantity === "" ? 0 : this.state.quantity
+    const quantity = this.state.quantity === "" ? 1 : this.state.quantity
 
     if (userId) {
       // signed in user
@@ -60,6 +60,19 @@ class SingleProduct extends React.Component {
 
       window.localStorage.setItem("cart", JSON.stringify(updatedCart))
     }
+    Toastify({
+      text: `${this.props.product.name} was successfully added to cart`,
+      duration: 3000,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background:
+          "linear-gradient(to right, #4040ce, #96c93d)",
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast()
   }
 
   render() {
@@ -85,21 +98,8 @@ class SingleProduct extends React.Component {
               })}
           </select>
           <button
-            onClick={() => {
-              this.handleClick;
-              Toastify({
-                text: `${product.name} was successfully added to cart`,
-                duration: 3000,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                  background:
-                    "linear-gradient(to right, #4040ce, #96c93d)",
-                },
-                onClick: function () {}, // Callback after click
-              }).showToast()}
+            onClick={
+              this.handleClick
             }
             disabled={noneInStock}
             style={{ opacity: noneInStock && 0.5 }}

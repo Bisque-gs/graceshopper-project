@@ -1,4 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+function emailUser(itemInfo) {
+    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal, histUrl } = itemInfo;
+    let itemTable = iNames
+        .map((item, i) => (
+          `<table class="column">
+            <tr>
+                <td class="padding">
+                    <table class="content">
+                        <tr>
+                            <td>
+                                <p style="
+                                    text-align: center;
+                                    font-family: Baskerville, Times,'Times New Roman',serif;
+                                    font-size: 20px;
+                                    font-variant: small-caps;
+                                    font-weight: bold;
+                                ">`+item+`</p>
+                                <img src=`+iImgs[i]+` width="130" style="max-width: 130px" alt=`+item+`/>
+                                <h4>UNIT PRICE: $`+iPrice[i]+`</h4>
+                                <p>QUANTITY: `+iQuant[i]+`</p>
+                                <h4>SUBPRICE: $`+(iSubT[i]).toFixed(2)+`</h4>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+          </table>`
+        ));
+    let totalTable = `
+        <table class="content">
+            <tr>
+                <td class="thankyou">
+                    <h3>TOTAL PRICE: $${(iTotal).toFixed(2)}</h3>
+                </td>
+            </tr>
+        </table>
+    `;
+    return `
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -34,13 +72,6 @@
         font-family: sans-serif;
         color: #171a1b;
     }
-    .thankyou {
-      margin: auto;
-      display: block;
-      font-size: 15px;
-      line-height: 20px;
-      padding: 0 5px;
-    }
     .two-columns {
         text-align: center;
         font-size: 0;
@@ -70,6 +101,19 @@
         line-height: 20px;
         padding: 0 5px;
     }
+    .unit {
+        height: 100%;
+        width: 100%;
+        color: #252525;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .unit .profile {
+        margin: 40px;
+        height: 100%;
+        width: 200px;
+      }
     .two-columns.last {
         padding: 15px 0;
     }
@@ -117,8 +161,8 @@
     <td style="padding: 14px 0 4px">
         <table width="100%">
         <tr>
-            <td class="two-columns">
-            <table class="column">
+            <td style="text-align: center; font-size: 0;">
+            <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 0 62px 10px">
                     <a href="https://grace-pokebay.herokuapp.com/"
@@ -131,7 +175,7 @@
                 </td>
                 </tr>
             </table>
-            <table class="column">
+            <table style="width: 100%; max-width: 300px; display: inline-block; vertical-align: top;">
                 <tr>
                 <td style="padding: 10px 72px">
                     <a href="#"
@@ -175,17 +219,22 @@
 
     <!-- BANNER IMAGE -->
 
-    <tr class="thankyou">
-    <td>
-      <p style="font-weight: bold; font-size: 17px">
-        Your order has been confirmed! Thank you!
+    <tr class="thankyou" style="display: flex; margin: auto;">
+    <td style="width:100%; text-align:center">
+      <p style="font-weight: bold; font-size: 26px;">
+        Your order has been confirmed!
       </p>
-        <img
-          src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
-          width="300"
-          style="max-width: 100%"
-          alt="Thank you!"
-        />
+        <a href="https://grace-pokebay.herokuapp.com/ class="button"
+        >
+            <img
+            src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
+            width="300"
+            style="max-width: 100%; 
+                margin: auto;
+                display: block;"
+            alt="Thank you!"
+            />
+        </a>
     </td>
     </tr>
 
@@ -196,87 +245,11 @@
         <table width="100%">
         <tr>
             <td class="three-columns">
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/bPy578V/email.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            Ecommerce
-                        </p>
-                        <p>Ecommerce paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/2dv4Ryn/settings.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            Web Design
-                        </p>
-                        <p>Web Design paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
-            <table class="column">
-                <tr>
-                <td class="padding">
-                    <table class="content">
-                    <tr>
-                        <td>
-                        <a href="#"
-                            ><img
-                            src="https://i.ibb.co/qFSWNJc/home.png"
-                            width="130"
-                            style="max-width: 130px"
-                            alt=""
-                        /></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 17px">
-                            HTML Email
-                        </p>
-                        <p>HTML Email paragraph</p>
-                        </td>
-                    </tr>
-                    </table>
-                </td>
-                </tr>
-            </table>
+                <p style="font-weight: bold; font-size: 17px">
+                    Your order contains the following item(s):
+                </p>
+                ${itemTable}
+                ${totalTable}
             </td>
         </tr>
         </table>
@@ -298,10 +271,10 @@
                         <td>
                         <a href="#"
                             ><img
-                            src="https://i.ibb.co/zrWcq1p/keyboard.jpg"
+                            src="https://cdn3.iconfinder.com/data/icons/card-games-colored/48/Games_CardGames_Artboard_23-512.png"
                             width="260"
                             style="max-width: 260px"
-                            alt=""
+                            alt="view history pokemon icon"
                         /></a>
                         </td>
                     </tr>
@@ -313,15 +286,25 @@
                 <tr>
                 <td class="padding">
                     <table class="content">
-                    <tr>
-                        <td>
-                        <p style="font-weight: bold; font-size: 18px">
-                            Create Custom Designs
+                    <tr style="display: flex; margin: auto;">
+                        <td style="width:100%; text-align:center">
+                        <p style="font-weight:bold; font-size:18px">
+                            View Order History
                         </p>
-                        <p style="padding-bottom: 16px">
-                            Create Custom Designs Paragraph
+                        <p style="font-size:14px">
+                            *Available for members only
                         </p>
-                        <a href="#" class="button">Read More</a>
+                        <button href="${histUrl}" 
+                          style="background-color: #fc9700;
+                            color: #271538;
+                            text-decoration: none;
+                            padding: 8px 15px;
+                            border-radius: 5px;
+                            font-weight: bold;
+                            border-color: #271538;
+                          ">
+                            View
+                        </button>
                         </td>
                     </tr>
                     </table>
@@ -334,45 +317,19 @@
     </td>
     </tr>
 
-    <!-- TITLE, TEXT & BUTTON -->
-
-    <tr>
-    <td style="padding: 15px 0 50px">
-        <table width="100%">
-        <tr>
-            <td style="text-align: center; padding: 15px">
-            <p style="font-size: 20px; font-weight: bold">
-                HTML Email Template
-            </p>
-            <p
-                style="
-                line-height: 23px;
-                font-size: 15px;
-                padding: 5px 0 15px;
-                "
-            >
-                Email Template Paragraph
-            </p>
-            <a href="#" class="button-dark">View</a>
-            </td>
-        </tr>
-        </table>
-    </td>
-    </tr>
-
     <!-- FOOTER SECTION -->
 
     <tr>
-    <td style="background-color: #271538">
+    <td style="background-color: #99cfff">
         <table width="100%">
         <tr>
             <td
-            style="text-align: center; padding: 45px 20px; color: #ffffff"
+            style="text-align: center; padding: 45px 20px; color: #000000"
             >
-            <a href="#"
+            <a href="https://grace-pokebay.herokuapp.com/"
                 ><img src="https://i.ibb.co/3cRCmhN/logo.png" width="180"
             /></a>
-            <p style="padding: 10px">Modern HTML Email</p>
+            <p style="padding: 10px">PokeBay</p>
             <p style="padding: 10px">
                 123 Street Road, City, State 55555
             </p>
@@ -416,3 +373,7 @@
 </center>
 </body>
 </html>
+`
+}
+
+module.exports = emailUser;

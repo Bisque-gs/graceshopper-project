@@ -37,11 +37,11 @@ class Checkout extends React.Component {
     return (
       <React.Fragment>
         <div className="container">
-          {cartAuthorization ? (
+          {cartAuthorization && (
             <div>
               <br />
               <div className="column">
-                <h2>{user.username}'s CHECKOUT CONFIRMATION PAGE</h2>
+                <h2>Thank you for your order, {user.username}!</h2>
               </div>
               <div className="unit">
                 {cartItems
@@ -101,16 +101,12 @@ class Checkout extends React.Component {
                   <PayPal
                     totalPrice={(total / 10000).toFixed(2)}
                     userId={user.id}
+                    cartItems={cartItems}
                     itemQuantities={itemQuantities}
                     checkout={this.checkout}
                   />
                 </div>
               )}
-            </div>
-          ) : (
-            <div>
-              STOP! YOU VIOLATED THE LAW! PAY THE COURT A FINE OR SERVE YOUR
-              SENTENCE, YOUR STOLEN GOODS ARE NOW FORFEIT{" "}
             </div>
           )}
           <div className="spacer"></div>
