@@ -35,6 +35,11 @@ const AuthForm = (props) => {
           </label>
           <input name="password" type="password" />
         </div>
+        {props.name === "login" && (
+          <div style={{textAlign: "center", fontSize: "11"+"px", textTransform: "uppercase", margin: "0", fontWeight: "bold"}}>
+            <Link to="/products">Reset password</Link>
+          </div>
+        )}
         <div>
           <button type="submit">{displayName}</button>
         </div>
