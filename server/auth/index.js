@@ -4,6 +4,14 @@ const nodemailer = require("nodemailer");
 const emailVerify = require("../../script/emailVerify");
 module.exports = router
 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
+
 router.post("/login", async (req, res, next) => {
   try {
     res.send({ token: await User.authenticate(req.body) })
@@ -13,21 +21,14 @@ router.post("/login", async (req, res, next) => {
 })
 
 router.post("/signup", async (req, res, next) => {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GUSER,
-      pass: process.env.GPASS
-    }
-  })
   try {
     // prevent users from creating Admin accounts
     req.body.isAdmin = false
     req.body.confirmed = false
     const user = await User.create(req.body)
     const token = await user.generateToken();
-    const url = `http://localhost:8080/confirmation/${token}`;
-    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // const url = `http://localhost:8080/confirmation/${token}`;
+    const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
     let emailVerifyHTML = emailVerify(url);
     transporter.sendMail({
       from: process.env.GUSER,
@@ -47,6 +48,40 @@ router.post("/signup", async (req, res, next) => {
     } else {
       next(err)
     }
+  }
+})
+
+router.post("/reset", async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      throw Error("User with email does not exist! Try again or sign-up.")
+    }
+    // const updatedItems = await Promise.all(
+    //   items.map((item, i) => {
+    //     const updated = item.update(
+    //       { quantity: item.quantity - itemQuantities[i].quantity },
+    //       { individualHooks: true }
+    //     )
+    //     return updated
+    //   })
+    // )
+
+    const token = await user.generateToken();
+    const url = `http://localhost:8080/reset/${token}`;
+    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    let emailVerifyHTML = emailVerify(url);
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: email,
+      subject: `Please reset your password, ${user.username}!`,
+      html: emailVerifyHTML
+    })
+    res.send(user)
+  } catch (err) {
+    next(err)
   }
 })
 

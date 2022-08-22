@@ -57,7 +57,7 @@ export const reset = (email) => {
   return async (dispatch) => {
     try {
       console.log("gE reset Redux", email)
-      const { data } = await axios.put(`/auth/reset`, {
+      const { data } = await axios.post(`/auth/reset`, {
         email,
       })
       dispatch(userReset(data))
