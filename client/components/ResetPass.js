@@ -1,4 +1,6 @@
 import React from "react"
+import { connect } from "react-redux"
+import { reset } from "../store/auth"
 
 export class Reset extends React.Component {
   constructor() {
@@ -13,7 +15,8 @@ export class Reset extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const guestEmail = this.state.guestEmail
-    console.log("gE econf", guestEmail)
+    console.log("gE reset", guestEmail)
+    this.props.reset(guestEmail);
   }
 
   handleChange(event) {
@@ -70,4 +73,10 @@ export class Reset extends React.Component {
   }
 }
 
-export default Reset
+function mapDispatch(dispatch) {
+    return {
+      reset: (email) => dispatch(reset(email)),
+    }
+  }
+
+export default connect(null, mapDispatch)(Reset)
