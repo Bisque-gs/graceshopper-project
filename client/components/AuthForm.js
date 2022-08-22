@@ -37,7 +37,7 @@ const AuthForm = (props) => {
         </div>
         {props.name === "login" && (
           <div style={{textAlign: "center", fontSize: "11"+"px", textTransform: "uppercase", margin: "0", fontWeight: "bold"}}>
-            <Link to="/products">Reset password</Link>
+            <Link to="/reset">Reset password</Link>
           </div>
         )}
         <div>
