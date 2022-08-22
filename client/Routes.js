@@ -4,6 +4,7 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import AllProducts from "./components/AllProducts"
 import { Login, Signup } from "./components/AuthForm"
 import Reset from "./components/ResetPass"
+import ResetNewPass from "./components/ResetPassPickNew"
 import Home from "./components/Home"
 import SingleUser from "./components/SingleUser"
 import EditUserProfile from "./components/EditUserProfile"
@@ -55,6 +56,7 @@ class Routes extends Component {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
+            <Route path="/reset/:token/password" exact component={ResetNewPass} />
             <Route path="/reset" component={Reset} />
             <Route path="/signup" component={Signup} />
             <Route exact path="/users/guest/cart" component={Cart} />

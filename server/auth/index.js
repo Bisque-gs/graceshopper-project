@@ -2,6 +2,7 @@ const router = require("express").Router()
 const { User } = require("../db")
 const nodemailer = require("nodemailer");
 const emailVerify = require("../../script/emailVerify");
+const emailReset = require("../../script/emailReset");
 module.exports = router
 
 let transporter = nodemailer.createTransport({
@@ -63,12 +64,12 @@ router.post("/reset", async (req, res, next) => {
     const token = await user.generateToken();
     const url = `http://localhost:8080/reset/${token}`;
     // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
-    let emailVerifyHTML = emailVerify(url);
+    let emailResetHTML = emailReset(url);
     transporter.sendMail({
       from: process.env.GUSER,
       to: email,
       subject: `Please reset your password, ${user.username}!`,
-      html: emailVerifyHTML
+      html: emailResetHTML
     })
     res.send(user)
   } catch (err) {
