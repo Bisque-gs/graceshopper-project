@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer");
 const emailVerify = require("../../script/emailVerify");
 const emailReset = require("../../script/emailReset");
+const emailAccChanged = require("../../script/emailAccChanged");
 module.exports = router
 
 let transporter = nodemailer.createTransport({
@@ -29,8 +30,8 @@ router.post("/signup", async (req, res, next) => {
     req.body.confirmed = false
     const user = await User.create(req.body)
     const token = await user.generateToken();
-    const url = `http://localhost:8080/confirmation/${token}`;
-    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // const url = `http://localhost:8080/confirmation/${token}`;
+    const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
     let emailVerifyHTML = emailVerify(url);
     transporter.sendMail({
       from: process.env.GUSER,
@@ -39,7 +40,7 @@ router.post("/signup", async (req, res, next) => {
       html: emailVerifyHTML,
     })
     if (!user.confirmed) {
-      const error = Error("Success! Please check your email for confirmation! If you don't see it, make sure to check your spam folder!")
+      const error = Error("Success!")
       error.status = 401
       throw error
     }
@@ -63,8 +64,8 @@ router.post("/reset", async (req, res, next) => {
     }
 
     const token = await user.generateToken();
-    const url = `http://localhost:8080/reset/${token}`;
-    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // const url = `http://localhost:8080/reset/${token}`;
+    const url = `https://grace-pokebay.herokuapp.com/reset/${token}`;
     let emailResetHTML = emailReset(url);
     transporter.sendMail({
       from: process.env.GUSER,
@@ -91,6 +92,13 @@ router.post('/reset/:token/password', async (req, res, next) => {
     user.password = await bcrypt.hash(newPass, 5)
 
     await User.update({ password: user.password }, { where: { email } });
+    let emailAccChangedHTML = emailAccChanged();
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: email,
+      subject: `Your account information has been updated, ${user.username}!`,
+      html: emailAccChangedHTML
+    })
     res.send(user)
   } catch (e) {
     next(e)
