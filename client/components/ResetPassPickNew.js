@@ -9,6 +9,7 @@ export class ResetNewPass extends React.Component {
       newPassword: "",
       guestEmail: "",
       verifyPassword: "",
+      submitted: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -16,14 +17,29 @@ export class ResetNewPass extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const newPassword = this.state.newPassword;
-    const guestEmail = this.state.guestEmail;
-    const verifyPassword = this.state.verifyPassword;
-    console.log("newPassword", newPassword)
-    console.log("guestEmail", guestEmail)
-    console.log("verifyPassword", verifyPassword)
+    const { newPassword, guestEmail, verifyPassword } = this.state
     this.props.resetPass(guestEmail, newPassword, verifyPassword);
-    
+    Toastify({
+      text: `Your password has been reset!`,
+      duration: 3000,
+      destination: `https://grace-pokebay.herokuapp.com/login`,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background:
+          "linear-gradient(to right, #4040ce, #96c93d)",
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast()
+    this.setState({
+      newPassword: "",
+      guestEmail: "",
+      verifyPassword: "",
+      submitted: true,
+    })
   }
 
   handleChange(event) {
@@ -33,7 +49,7 @@ export class ResetNewPass extends React.Component {
   }
 
   render() {
-    const { newPassword, guestEmail, verifyPassword } = this.state
+    const { newPassword, guestEmail, verifyPassword, submitted } = this.state
     return (
       <div
         style={{
@@ -97,7 +113,10 @@ export class ResetNewPass extends React.Component {
             value={verifyPassword}
             onChange={this.handleChange}
           />
-          <button className="submit" type="submit">
+          <button className="submit"
+            disabled={submitted}
+            style={{ opacity: submitted && 0.5 }}
+            type="submit">
             Submit
           </button>
         </form>

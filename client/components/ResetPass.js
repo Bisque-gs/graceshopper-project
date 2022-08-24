@@ -16,8 +16,6 @@ export class Reset extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const guestEmail = this.state.guestEmail
-    this.setState({submitted: true})
-    console.log("gE reset", guestEmail)
     this.props.reset(guestEmail);
     Toastify({
       text: `Check your email for further instructions!`,
@@ -34,6 +32,7 @@ export class Reset extends React.Component {
     }).showToast()
     this.setState({
       guestEmail: "",
+      submitted: true
     })
   }
 
