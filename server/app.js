@@ -36,15 +36,6 @@ app.get('/reset/:token', async (req, res) => {
   return res.redirect(`http://localhost:8080/reset/${token}/password`)
 })
 
-app.post('/reset/:token/password', async (req, res) => {
-  try {
-    // const { id } = await jwt.verify(req.params.token, process.env.JWT)
-    // await User.update({ password: }, { where: { id } });
-  } catch (e) {
-    res.send('error', e);
-  }
-})
-
 app.use('/api', require('./api'))
 
 app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));

@@ -68,6 +68,21 @@ export const reset = (email) => {
   }
 }
 
+export const resetPassword = (email, newPass, confirmPass) => {
+  return async (dispatch) => {
+    try {
+      console.log("gE reset Redux", email)
+      const { data } = await axios.post(`/auth/reset/:token/password`, {
+        email, newPass, confirmPass
+      })
+      dispatch(userReset(data))
+    } catch (error) {
+      console.log(error)
+      return dispatch(userReset({ error: error.response.data }))
+    }
+  }
+}
+
 export const logout = () => {
   window.localStorage.removeItem(TOKEN)
   window.localStorage.setItem("cart", "[]")

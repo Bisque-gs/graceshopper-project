@@ -22,7 +22,7 @@ export class ResetNewPass extends React.Component {
     console.log("newPassword", newPassword)
     console.log("guestEmail", guestEmail)
     console.log("verifyPassword", verifyPassword)
-    this.props.resetPass(guestEmail, newPassword);
+    this.props.resetPass(guestEmail, newPassword, verifyPassword);
     
   }
 
@@ -108,7 +108,7 @@ export class ResetNewPass extends React.Component {
 
 function mapDispatch(dispatch) {
     return {
-      resetPass: (email) => dispatch(resetPassword(email, newPass)),
+      resetPass: (email, newPass, confirmPass) => dispatch(resetPassword(email, newPass, confirmPass)),
     }
   }
 

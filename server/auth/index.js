@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const { User } = require("../db")
+const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer");
 const emailVerify = require("../../script/emailVerify");
 const emailReset = require("../../script/emailReset");
@@ -74,6 +75,25 @@ router.post("/reset", async (req, res, next) => {
     res.send(user)
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/reset/:token/password', async (req, res, next) => {
+  const { email, newPass, confirmPass } = req.body;
+  try {
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      throw Error("User with email does not exist! Try again or sign-up.")
+    }
+    if (newPass !== confirmPass) {
+      throw Error("Passwords must match!")
+    }
+    user.password = await bcrypt.hash(newPass, 5)
+
+    await User.update({ password: user.password }, { where: { email } });
+    res.send(user)
+  } catch (e) {
+    next(e)
   }
 })
 
