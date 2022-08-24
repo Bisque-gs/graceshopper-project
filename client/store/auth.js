@@ -7,12 +7,18 @@ const TOKEN = "token"
  * ACTION TYPES
  */
 const SET_AUTH = "SET_AUTH"
-
+const USER_RESET = "USER_RESET"
 /**
  * ACTION CREATORS
  */
 const setAuth = (auth) => ({ type: SET_AUTH, auth })
 
+const userReset = (auth) => {
+  return {
+    type: USER_RESET,
+    auth,
+  }
+}
 /**
  * THUNK CREATORS
  */
@@ -47,6 +53,36 @@ export const authenticate =
     }
   }
 
+export const reset = (email) => {
+  return async (dispatch) => {
+    try {
+      console.log("gE reset Redux", email)
+      const { data } = await axios.post(`/auth/reset`, {
+        email,
+      })
+      dispatch(userReset(data))
+    } catch (error) {
+      console.log(error)
+      return dispatch(userReset({ error: error.response.data }))
+    }
+  }
+}
+
+export const resetPassword = (email, newPass, confirmPass) => {
+  return async (dispatch) => {
+    try {
+      console.log("gE reset Redux", email)
+      const { data } = await axios.post(`/auth/reset/:token/password`, {
+        email, newPass, confirmPass
+      })
+      dispatch(userReset(data))
+    } catch (error) {
+      console.log(error)
+      return dispatch(userReset({ error: error.response.data }))
+    }
+  }
+}
+
 export const logout = () => {
   window.localStorage.removeItem(TOKEN)
   window.localStorage.setItem("cart", "[]")
@@ -57,13 +93,28 @@ export const logout = () => {
   }
 }
 
+const defaultState = {
+  user: {},
+  error: "",
+}
+
 /**
  * REDUCER
  */
-export default function (state = {}, action) {
+export default function (state = defaultState, action) {
   switch (action.type) {
     case SET_AUTH:
       return action.auth
+    case USER_RESET:
+      return action.auth.error
+        ? {
+            ...state,
+            error: action.auth.error,
+          }
+        : {
+            ...state,
+            error: "",
+          }
     default:
       return state
   }

@@ -35,10 +35,27 @@ const AuthForm = (props) => {
           </label>
           <input name="password" type="password" />
         </div>
+        {props.name === "login" && (
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "11" + "px",
+              textTransform: "uppercase",
+              margin: "0",
+              fontWeight: "bold",
+            }}
+          >
+            <Link to="/reset">Reset password</Link>
+          </div>
+        )}
+        {error && error.response && <div style={{
+          textAlign: "center",
+          fontSize: "14" + "px",
+          width: "200" + "px",
+        }}> {error.response.data} </div>}
         <div>
           <button type="submit">{displayName}</button>
         </div>
-        {error && error.response && <div> {error.response.data} </div>}
       </form>
     </div>
   )
@@ -75,7 +92,21 @@ const mapDispatch = (dispatch) => {
       const userName = evt.target.username.value
       const password = evt.target.password.value
       const email = evt.target.email ? evt.target.email.value : null
-
+      {
+        formName === "signup" &&
+          Toastify({
+            text: `${userName}, please check your email for confirmation! If you don't see it, make sure to check your spam folder!`,
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #4040ce, #96c93d)",
+            },
+            onClick: function () {}, // Callback after click
+          }).showToast()
+      }
       dispatch(authenticate(userName, password, email, formName))
     },
   }

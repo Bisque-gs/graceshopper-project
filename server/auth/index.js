@@ -1,8 +1,19 @@
 const router = require("express").Router()
 const { User } = require("../db")
+const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer");
 const emailVerify = require("../../script/emailVerify");
+const emailReset = require("../../script/emailReset");
+const emailAccChanged = require("../../script/emailAccChanged");
 module.exports = router
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -13,21 +24,14 @@ router.post("/login", async (req, res, next) => {
 })
 
 router.post("/signup", async (req, res, next) => {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GUSER,
-      pass: process.env.GPASS
-    }
-  })
   try {
     // prevent users from creating Admin accounts
     req.body.isAdmin = false
     req.body.confirmed = false
     const user = await User.create(req.body)
     const token = await user.generateToken();
-    const url = `http://localhost:8080/confirmation/${token}`;
-    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // const url = `http://localhost:8080/confirmation/${token}`;
+    const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
     let emailVerifyHTML = emailVerify(url);
     transporter.sendMail({
       from: process.env.GUSER,
@@ -36,7 +40,7 @@ router.post("/signup", async (req, res, next) => {
       html: emailVerifyHTML,
     })
     if (!user.confirmed) {
-      const error = Error("Success! Please check your email for confirmation! If you don't see it, make sure to check your spam folder!")
+      const error = Error("Success!")
       error.status = 401
       throw error
     }
@@ -47,6 +51,57 @@ router.post("/signup", async (req, res, next) => {
     } else {
       next(err)
     }
+  }
+})
+
+router.post("/reset", async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      throw Error("User with email does not exist! Try again or sign-up.")
+    }
+
+    const token = await user.generateToken();
+    // const url = `http://localhost:8080/reset/${token}`;
+    const url = `https://grace-pokebay.herokuapp.com/reset/${token}`;
+    let emailResetHTML = emailReset(url);
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: email,
+      subject: `Please reset your password, ${user.username}!`,
+      html: emailResetHTML
+    })
+    res.send(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/reset/:token/password', async (req, res, next) => {
+  const { email, newPass, confirmPass } = req.body;
+  try {
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      throw Error("User with email does not exist! Try again or sign-up.")
+    }
+    if (newPass !== confirmPass) {
+      throw Error("Passwords must match!")
+    }
+    user.password = await bcrypt.hash(newPass, 5)
+
+    await User.update({ password: user.password }, { where: { email } });
+    let emailAccChangedHTML = emailAccChanged();
+    transporter.sendMail({
+      from: process.env.GUSER,
+      to: email,
+      subject: `Your account information has been updated, ${user.username}!`,
+      html: emailAccChangedHTML
+    })
+    res.send(user)
+  } catch (e) {
+    next(e)
   }
 })
 
