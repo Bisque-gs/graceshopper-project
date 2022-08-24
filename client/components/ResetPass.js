@@ -7,6 +7,7 @@ export class Reset extends React.Component {
     super()
     this.state = {
       guestEmail: "",
+      submitted: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -15,8 +16,25 @@ export class Reset extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const guestEmail = this.state.guestEmail
+    this.setState({submitted: true})
     console.log("gE reset", guestEmail)
     this.props.reset(guestEmail);
+    Toastify({
+      text: `Check your email for further instructions!`,
+      duration: 3000,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background:
+          "linear-gradient(to right, #4040ce, #96c93d)",
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast()
+    this.setState({
+      guestEmail: "",
+    })
   }
 
   handleChange(event) {
@@ -26,7 +44,7 @@ export class Reset extends React.Component {
   }
 
   render() {
-    const { guestEmail } = this.state
+    const { guestEmail, submitted } = this.state;
     return (
       <div
         style={{
@@ -56,15 +74,10 @@ export class Reset extends React.Component {
             value={guestEmail}
             onChange={this.handleChange}
           />
-          <h4
-            style={{
-              textAlign: "center",
-              fontSize: "14" + "px",
-            }}
-          >
-            Check your email for further instructions!
-          </h4>
-          <button className="submit" type="submit">
+          <button className="submit" 
+            disabled={submitted}
+            style={{ opacity: submitted && 0.5 }}
+            type="submit">
             Submit
           </button>
         </form>
