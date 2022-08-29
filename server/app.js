@@ -33,7 +33,7 @@ app.get('/reset/:token', async (req, res) => {
   } catch (e) {
     res.send('error', e);
   }
-  return res.redirect(`http://localhost:8080/reset/${token}/password`)
+  return res.redirect(`https://grace-pokebay.herokuapp.com/reset/${token}/password`)
 })
 
 app.use('/api', require('./api'))
