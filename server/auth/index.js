@@ -9,6 +9,8 @@ module.exports = router
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GUSER,
     pass: process.env.GPASS

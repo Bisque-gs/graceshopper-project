@@ -125,7 +125,7 @@ function emailVerify(url) {
     <tr class="thankyou">
     <td style="padding: 0px 50px; text-align:center">
       <p style="font-weight: bold; font-size: 26px;">
-        Verify you email address!
+        Verify your email address!
       </p>
       <p style="padding: 0px 50px">
         This email address was recently used to log into PokEbay application. If this was you, please verify your email address by clicking the following link:
