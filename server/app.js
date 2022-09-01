@@ -1,9 +1,18 @@
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
-const { User } = require('./db')
 const jwt = require("jsonwebtoken")
 const app = express()
+const { User, Order, OrderProducts, Product } = require("./db")
+const nodemailer = require("nodemailer");
+const schedule = require('node-schedule');
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GUSER,
+    pass: process.env.GPASS
+  }
+})
 module.exports = app
 
 // logging middleware
@@ -14,6 +23,15 @@ app.use(express.json())
 
 // auth and api routes
 app.use('/auth', require('./auth'))
+
+const brushTeethReminder = schedule.scheduleJob('0 10 9 * * *', () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
+  transporter.sendMail({
+    from: process.env.GUSER,
+    to: 'andstatik@gmail.com',
+    subject: `Daily reminder to brush your teeth!`,
+    html: "Hey you! Brush your teeth! I will come back tomorrow to check-in on you again, you little punk!"
+  })
+})
 
 app.get('/confirmation/:token', async (req, res) => {
   try {
