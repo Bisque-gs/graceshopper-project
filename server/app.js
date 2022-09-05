@@ -24,13 +24,23 @@ app.use(express.json())
 // auth and api routes
 app.use('/auth', require('./auth'))
 
-const brushTeethReminder = schedule.scheduleJob('0 10 9 * * *', () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
-  transporter.sendMail({
-    from: process.env.GUSER,
-    to: 'andstatik@gmail.com',
-    subject: `Daily reminder to brush your teeth!`,
-    html: "Hey you! Brush your teeth! I will come back tomorrow to check-in on you again, you little punk!"
-  })
+const brushTeethReminder = schedule.scheduleJob('0 5 7 * * *', async () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
+  const orders = await Order.findAll({
+    where: {
+      isCurrentOrder: true
+    }
+  });
+  await orders.map(async (orderObj) => {
+      const userWithOpenOrder = await User.findByPk(orderObj.dataValues.userId);
+      const email = userWithOpenOrder.email;
+      transporter.sendMail({
+        from: process.env.GUSER,
+        to: email,
+        subject: `Daily reminder to brush your teeth!`,
+        html: "Hey you! Brush your teeth! I will come back tomorrow to check-in on you again, you little punk!"
+      })
+    }
+  )
 })
 
 app.get('/confirmation/:token', async (req, res) => {
