@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 const app = express()
 const { User, Order, OrderProducts, Product } = require("./db")
 const nodemailer = require("nodemailer");
+const emailUser = require("../script/emailUser");
 const schedule = require('node-schedule');
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -24,20 +25,46 @@ app.use(express.json())
 // auth and api routes
 app.use('/auth', require('./auth'))
 
-const brushTeethReminder = schedule.scheduleJob('0 5 7 * * *', async () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
-  const orders = await Order.findAll({
+schedule.scheduleJob('5 51 6 * * *', async () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
+  const orders = await Order.findAll({ // find all current orders
     where: {
       isCurrentOrder: true
     }
   });
-  await orders.map(async (orderObj) => {
+  await orders.map(async (orderObj) => { // for each order we detect a user...
       const userWithOpenOrder = await User.findByPk(orderObj.dataValues.userId);
-      const email = userWithOpenOrder.email;
-      transporter.sendMail({
+      const email = userWithOpenOrder.email; //...extract email
+      const orderInfo = await OrderProducts.findAll({
+        where: {
+          orderId: orderObj.dataValues.id
+        }
+      })
+      let iNames = [];
+      let iQuant = [];
+      let iImgs = [];
+      let iPrice = [];
+      let iSubT = [];
+      const products = await Promise.all(
+        orderInfo.map(async (orderObj) => {
+          const product = await Product.findByPk(orderObj.dataValues.productId)
+          iQuant.push(orderObj.dataValues.quantity)
+          return product;
+        })
+      );
+      products.map((item, i) => {
+        iNames.push(item.dataValues.name);
+        iImgs.push(item.dataValues.imageUrl);
+        iPrice.push(item.dataValues.price / 100);
+        iSubT.push(iQuant[i] * (item.dataValues.price / 100));//
+      })
+      let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
+      console.log(iNames, iQuant, iImgs, iPrice, iSubT, iTotal)
+      let emailUserHTML = emailUser({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal });
+      transporter.sendMail({ //message that user
         from: process.env.GUSER,
         to: email,
-        subject: `Daily reminder to brush your teeth!`,
-        html: "Hey you! Brush your teeth! I will come back tomorrow to check-in on you again, you little punk!"
+        subject: `Did you forget to checkout? 😉`,
+        html: emailUserHTML
       })
     }
   )
