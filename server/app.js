@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const app = express()
 const { User, Order, OrderProducts, Product } = require("./db")
 const nodemailer = require("nodemailer");
-const emailUser = require("../script/emailUser");
+const emailReminder = require("../script/emailReminder");
 const schedule = require('node-schedule');
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -25,7 +25,7 @@ app.use(express.json())
 // auth and api routes
 app.use('/auth', require('./auth'))
 
-schedule.scheduleJob('5 51 6 * * *', async () => { //sends every day at 9:10AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
+schedule.scheduleJob('0 30 7 * * 4', async () => { //sends every Thursday at 7:30AM local time (secs, mins, hour(24), day, month, dayOfWeek(0=7=Sun))
   const orders = await Order.findAll({ // find all current orders
     where: {
       isCurrentOrder: true
@@ -58,13 +58,14 @@ schedule.scheduleJob('5 51 6 * * *', async () => { //sends every day at 9:10AM l
         iSubT.push(iQuant[i] * (item.dataValues.price / 100));//
       })
       let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
-      console.log(iNames, iQuant, iImgs, iPrice, iSubT, iTotal)
-      let emailUserHTML = emailUser({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal });
+      let cartUrl = `https://grace-pokebay.herokuapp.com/users/${userWithOpenOrder.id}/cart`;
+      console.log(cartUrl)
+      let emailReminderHTML = emailReminder({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal, cartUrl });
       transporter.sendMail({ //message that user
         from: process.env.GUSER,
         to: email,
         subject: `Did you forget to checkout? 😉`,
-        html: emailUserHTML
+        html: emailReminderHTML
       })
     }
   )
