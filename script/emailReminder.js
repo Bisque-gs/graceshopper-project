@@ -1,5 +1,5 @@
-function emailUser(itemInfo) {
-    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal, histUrl } = itemInfo;
+function emailReminder(itemInfo) {
+    const { iNames, iQuant, iImgs, iPrice, iSubT, iTotal, cartUrl } = itemInfo;
     let itemTable = iNames
         .map((item, i) => (
           `<table class="column">
@@ -221,13 +221,13 @@ function emailUser(itemInfo) {
 
     <tr class="thankyou" style="display: flex; margin: auto;">
     <td style="width:100%; text-align:center">
-      <p style="font-weight: bold; font-size: 26px;">
-        Your order has been confirmed!
+      <p style="font-weight: bold; font-size: 20px;">
+        It looks like you forgot to checkout your pokemon cards! Please follow the link below if you want to secure those!
       </p>
         <a href="https://grace-pokebay.herokuapp.com/ class="button"
         >
             <img
-            src="https://storage.googleapis.com/nianticweb-media/pokemongo/helper/sticker_nigiyaka_16_0508.png"
+            src="https://i0.wp.com/www.wallpaperup.com/uploads/wallpapers/2016/07/18/997813/6b727a3d526b5c870639c2758bd5f3d5.jpg"
             width="300"
             style="max-width: 100%; 
                 margin: auto;
@@ -246,7 +246,7 @@ function emailUser(itemInfo) {
         <tr>
             <td class="three-columns">
                 <p style="font-weight: bold; font-size: 17px">
-                    Your order contains the following item(s):
+                    Your cart contains the following item(s):
                 </p>
                 ${itemTable}
                 ${totalTable}
@@ -274,7 +274,7 @@ function emailUser(itemInfo) {
                             src="https://cdn3.iconfinder.com/data/icons/card-games-colored/48/Games_CardGames_Artboard_23-512.png"
                             width="260"
                             style="max-width: 260px"
-                            alt="view history pokemon icon"
+                            alt="view cart pokemon icon"
                         /></a>
                         </td>
                     </tr>
@@ -289,12 +289,12 @@ function emailUser(itemInfo) {
                     <tr style="display: flex; margin: auto;">
                         <td style="width:100%; text-align:center">
                         <p style="font-weight:bold; font-size:18px">
-                            View Order History
+                            Checkout now!
                         </p>
                         <p style="font-size:14px">
                             *Available for members only
                         </p>
-                        <a href="${histUrl}">
+                        <a href="${cartUrl}">
                             <button style="
                                 background-color: #fc9700;
                                 color: #271538;
@@ -378,4 +378,4 @@ function emailUser(itemInfo) {
 `
 }
 
-module.exports = emailUser;
+module.exports = emailReminder;
