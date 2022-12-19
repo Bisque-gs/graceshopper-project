@@ -12,7 +12,7 @@
     <br />
 
 ## Project Site
-https://grace-pokebay.herokuapp.com
+https://pokebay.onrender.com
 
 ## Team Members
 https://github.com/BrianClark1 <br />
