@@ -58,7 +58,7 @@ schedule.scheduleJob('0 30 7 * * 4', async () => { //sends every Thursday at 7:3
         iSubT.push(iQuant[i] * (item.dataValues.price / 100));//
       })
       let iTotal = iSubT.reduce((prev, curr) => prev + curr, 0);
-      let cartUrl = `https://grace-pokebay.herokuapp.com/users/${userWithOpenOrder.id}/cart`;
+      let cartUrl = `https://pokebay.onrender.com/users/${userWithOpenOrder.id}/cart`;
       console.log(cartUrl)
       let emailReminderHTML = emailReminder({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal, cartUrl });
       transporter.sendMail({ //message that user
@@ -78,7 +78,7 @@ app.get('/confirmation/:token', async (req, res) => {
   } catch (e) {
     res.send('error', e);
   }
-  return res.redirect('https://grace-pokebay.herokuapp.com/login')
+  return res.redirect('https://pokebay.onrender.com/login')
 })
 
 app.get('/reset/:token', async (req, res) => {
@@ -89,7 +89,7 @@ app.get('/reset/:token', async (req, res) => {
   } catch (e) {
     res.send('error', e);
   }
-  return res.redirect(`https://grace-pokebay.herokuapp.com/reset/${token}/password`)
+  return res.redirect(`https://pokebay.onrender.com/reset/${token}/password`)
 })
 
 app.use('/api', require('./api'))
