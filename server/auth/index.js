@@ -33,7 +33,7 @@ router.post("/signup", async (req, res, next) => {
     const user = await User.create(req.body)
     const token = await user.generateToken();
     // const url = `http://localhost:8080/confirmation/${token}`;
-    const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    const url = `https://pokebay.onrender.com/confirmation/${token}`;
     let emailVerifyHTML = emailVerify(url);
     transporter.sendMail({
       from: process.env.GUSER,
@@ -67,7 +67,7 @@ router.post("/reset", async (req, res, next) => {
 
     const token = await user.generateToken();
     // const url = `http://localhost:8080/reset/${token}`;
-    const url = `https://grace-pokebay.herokuapp.com/reset/${token}`;
+    const url = `https://pokebay.onrender.com/reset/${token}`;
     let emailResetHTML = emailReset(url);
     transporter.sendMail({
       from: process.env.GUSER,
