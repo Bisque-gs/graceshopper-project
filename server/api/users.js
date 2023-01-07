@@ -323,7 +323,7 @@ router.put("/:userId/cart/checkout", async (req, res, next) => {
     const userId = req.params.userId;
     const user = await User.findByPk(userId)
     // const histUrl = `http://localhost:8080/users/${userId}/cart/orderhistory`;
-    const histUrl = `https://grace-pokebay.herokuapp.com/users/${userId}/cart/orderhistory`;
+    const histUrl = `https://pokebay.onrender.com/users/${userId}/cart/orderhistory`;
     let emailUserHTML = emailUser({ iNames, iQuant, iImgs, iPrice, iSubT, iTotal, histUrl });
     transporter.sendMail({
       from: process.env.GUSER,

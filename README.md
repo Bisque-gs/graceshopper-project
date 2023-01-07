@@ -1,7 +1,7 @@
 # Grace Pokebay
 
 <p align="center">
-  <a href="https://grace-pokebay.herokuapp.com/">
+  <a href="https://pokebay.onrender.com/">
     <img src="https://github.com/Bisque-gs/graceshopper-project/blob/main/public/logo.png?raw=true" alt="Logo" width="120" height="120">
   </a>
 
@@ -12,7 +12,7 @@
     <br />
 
 ## Project Site
-https://grace-pokebay.herokuapp.com
+https://pokebay.onrender.com
 
 ## Team Members
 https://github.com/BrianClark1 <br />
