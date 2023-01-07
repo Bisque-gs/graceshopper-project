@@ -29,23 +29,23 @@ router.post("/signup", async (req, res, next) => {
   try {
     // prevent users from creating Admin accounts
     req.body.isAdmin = false
-    req.body.confirmed = false
+    req.body.confirmed = true; // change to false if want user to confirm
     const user = await User.create(req.body)
     const token = await user.generateToken();
     // const url = `http://localhost:8080/confirmation/${token}`;
-    const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
-    let emailVerifyHTML = emailVerify(url);
-    transporter.sendMail({
-      from: process.env.GUSER,
-      to: user.email,
-      subject: `Verify your email for PokEbay, ${user.username}!`,
-      html: emailVerifyHTML,
-    })
-    if (!user.confirmed) {
-      const error = Error("Success!")
-      error.status = 401
-      throw error
-    }
+    // const url = `https://grace-pokebay.herokuapp.com/confirmation/${token}`;
+    // let emailVerifyHTML = emailVerify(url);
+    // transporter.sendMail({
+    //   from: process.env.GUSER,
+    //   to: user.email,
+    //   subject: `Verify your email for PokEbay, ${user.username}!`,
+    //   html: emailVerifyHTML,
+    // })
+    // if (!user.confirmed) {
+    //   const error = Error("Success!")
+    //   error.status = 401
+    //   throw error
+    // }
     res.send({ token: token })
   } catch (err) {
     if (err.name === "SequelizeUniqueConstraintError") {

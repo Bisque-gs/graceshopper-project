@@ -95,16 +95,15 @@ const mapDispatch = (dispatch) => {
       {
         formName === "signup" &&
           Toastify({
-            text: `${userName}, please check your email for confirmation! If you don't see it, make sure to check your spam folder!`,
+            text: `${userName}, welcome aboard!`,
             duration: 3000,
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "right", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "linear-gradient(to right, #4040ce, #96c93d)",
+              background: "linear-gradient(to right, #398486, #398485)",
             },
-            onClick: function () {}, // Callback after click
           }).showToast()
       }
       dispatch(authenticate(userName, password, email, formName))
